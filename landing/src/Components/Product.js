@@ -1,19 +1,32 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Grid, Hidden } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
+import React from 'react';
+import useWindowDimensions from '../helper/getDimensions';
+
+const useStyles = makeStyles((theme) => ({
+    mobile: {
+        height: "85vh"
+    },
+}));
 
 function Product() {
+    const classes = useStyles();
+    const { height, width } = useWindowDimensions();
+
     return (
         <div id="inicio">
-            <Grid container style={{ backgroundColor: "white", height: "85vh" }}>
+            <Grid container style={{ backgroundColor: "white", width: "100%" }} className={width > 481 ? classes.mobile : ""}>
                 <Grid item xs={12} md={12}>
-                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "6vh" }}>¿TENÉS GANAS DE ESCUCHAR MÚSICA?</h1>
+                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>¿TENÉS GANAS DE ESCUCHAR MÚSICA?</h1>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "6vh"}}>QUE NADA TE LO IMPIDA.</h1>
+                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>QUE NADA TE LO IMPIDA.</h1>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                    <img src={"/img/logo.png"} style={{ height: "30vh", position: "relative", top: "50%", transform: "translateY(-50%)" }}
-                    />
+                <Grid item xs={12} md={12} style={{ height: "45vh"}}>
+                    {width > 638 ?
+                        <img src={"/img/logo.png"} style={{ height: "100%" }} />
+                        :
+                        <img src={"/img/logo.png"} style={{ height: "auto", bottom: 0, maxWidth: "100%", display: "block" }} />
+                    }
                 </Grid>
             </Grid>
             {/* <Player

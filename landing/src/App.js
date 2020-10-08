@@ -31,7 +31,7 @@ const App = () => {
       <Menu/>
       <Product />
       <Test/>
-      <Us/>
+      {/* <Us/> */}
     </div>
   );
 }

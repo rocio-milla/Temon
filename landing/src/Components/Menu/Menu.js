@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(2),
     },
     appbar: {
-        backgroundColor: theme.palette.secondary.main
+        backgroundColor: theme.palette.secondary.main,
+        width: "100%"
     },
     title: {
         flexGrow: 1,
@@ -44,9 +45,6 @@ function Menu() {
     const { height, width } = useWindowDimensions();
     const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        console.log(width)
-    }, [height, width])
     return (
         <div className={classes.root}>
             <AppBar position="static" className={classes.appbar}>
