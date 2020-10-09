@@ -44,7 +44,7 @@ function Menu() {
             <AppBar position="static" className={classes.appbar}>
                 {width > 481 ?
                     <Toolbar className={classes.toolbar}>
-                        <Button className={classes.menuText} href="#probalo">PROBALO</Button>
+                        <Button className={classes.menuText} href="#probalo" >PROBALO</Button>
                         <Button className={classes.menuText} href="#comofunciona">CÓMO FUNCIONA</Button>
                         <Button className={classes.menuText} href="#equipo">NOSOTROS</Button>
                     </Toolbar>
@@ -58,9 +58,9 @@ function Menu() {
                 !(width > 481) &&
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <AppBar position="static" className={classes.appbar} style={{ alignItems: "center" }}>
-                        <Button className={classes.menuText} href="#inicio">INICIO</Button>
-                        <Button className={classes.menuText} href="#probalo">PROBALO</Button>
-                        <Button className={classes.menuText} href="#equipo">NOSOTROS</Button>
+                        <Button className={classes.menuText} onClick={() => setOpen(false)} href="#inicio">PROBALO</Button>
+                        <Button className={classes.menuText} onClick={() => setOpen(false)} href="#probalo">CÓMO FUNCIONA</Button>
+                        <Button className={classes.menuText} onClick={() => setOpen(false)} href="#equipo">NOSOTROS</Button>
                     </AppBar>
                 </Collapse>
             }

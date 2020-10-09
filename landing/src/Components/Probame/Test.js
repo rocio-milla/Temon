@@ -30,7 +30,7 @@ const Test = () => {
                         <h1 style={{ color: "white", fontWeight: 700, fontSize: "7vw" }}>PROBALO AHORA</h1>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <img src={"/img/qr.png"} alt="Código QR" style={{ height: "auto", bottom: 0, maxWidth: "80%" }} />
+                        <img src={"/img/qr.jpeg"} alt="Código QR" style={{ height: "auto", bottom: 0, width: "60%" }} />
                     </Grid>
                 </>
             )
