@@ -48,7 +48,11 @@ const CardExtended = ({ open, name, url, description, close }) => {
                     <Grid item xs={6} >
                         <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}>{name}</h1>
 
-                        <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}>{description}</h1>
+                        {typeof description === "string" ?
+                            <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}>{description}</h1>
+                            :
+                            description.map((x) => <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}> {x}</h1>)
+                        }
                     </Grid>
                 </>
             )
@@ -57,10 +61,15 @@ const CardExtended = ({ open, name, url, description, close }) => {
             return (
                 <>
                     <Grid item xs={12}>
-                        <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw" }}>{description}</h1>
+                        <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw" }}>{name}</h1>
+                        {typeof description === "string" ?
+                            <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw" }}>{description}</h1>
+                            :
+                            description.map((x) => <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}> {x}</h1>)
+                        }
                     </Grid>
                     <Grid item xs={12}>
-                        <img src={url} alt={name} style={{ height: "auto", bottom: 0, maxWidth: "80%" }} />
+                        <img src={url} alt={name} style={{ height: "auto", bottom: 0, maxWidth: "100%" }} />
                     </Grid>
                 </>
             )

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OurCard = ({ url, name, description, open }) => {
-    console.log(url)
+    console.log(description)
     const classes = useStyles();
 
     const handleExpandClick = () => {
@@ -50,7 +50,11 @@ const OurCard = ({ url, name, description, open }) => {
             />
             <CardContent>
                 <Typography className={classes.text}>
-                    {description}
+                    {typeof description === "string" ?
+                        description
+                        :
+                        description.map((x) => <p style={{ margin: 0 }}> {x}</p>)
+                    }
                 </Typography>
                 <CardActions>
                     <Button color="primary" variant="contained" onClick={() => handleExpandClick()} className={classes.text} style={{ width: "100%" }}>

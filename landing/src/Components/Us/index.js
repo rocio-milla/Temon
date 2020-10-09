@@ -24,7 +24,7 @@ function Us() {
                     <OurCard name="Miguel Quiroz" url="/img/nosotros/migue.jpg" description="Hola. Soy Miguel :D ¿Qué debería escribir acá?" open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Rocio Milla" url="/img/nosotros/rocio.jpg" description="Me encanta la tecnología :)" open={setOpen} />
+                    <OurCard name="Rocio Milla" url="/img/nosotros/rocio.jpg" description={["Web developer. 🖥️", "Videojuegos. 🎮", "Cositas tiernas y rosas. 🌸"]} open={setOpen} />
                 </Grid>
             </Grid>
             <CardExtended open={open.open} name={open.name} url={open.url}
