@@ -29,15 +29,6 @@ function Product() {
                     }
                 </Grid>
             </Grid>
-            {/* <Player
-                ref={appPlayer}
-                playsInline
-                poster="/assets/poster.png"
-                src="/img/videoplayback.mp4"
-                volume={10}
-                autoPlay
-                style={{ visibility: "hidden", pointerEvents: "none" }}
-            /> */}
         </div>
     )
 }

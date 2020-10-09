@@ -50,14 +50,6 @@ function Menu() {
             <AppBar position="static" className={classes.appbar}>
                 {width > 481 ?
                     <Toolbar className={classes.toolbar}>
-                        {/* <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton> */}
                         <Button className={classes.menuText} href="#inicio">INICIO</Button>
                         <Button className={classes.menuText} href="#probalo">PROBALO</Button>
                         <Button className={classes.menuText} href="#equipo">NOSOTROS</Button>
