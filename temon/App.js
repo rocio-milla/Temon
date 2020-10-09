@@ -12,6 +12,7 @@ import 'react-native-gesture-handler';
 import HomeScreen from './Components/Home/Index';
 import { createStackNavigator } from '@react-navigation/stack';
 import ResultsScreen from './Components/Results/Index';
+import MusicPlayerScreen from './Components/MusicPlayer/Index'; 
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const App: () => React$Node = () => {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Results" component={ResultsScreen} />
+          <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
