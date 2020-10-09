@@ -1,5 +1,5 @@
-import { Button, Grid, makeStyles } from '@material-ui/core'
-import React from 'react'
+import { Button, Grid, makeStyles } from '@material-ui/core';
+import React from 'react';
 import useWindowDimensions from '../../helper/getDimensions';
 
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Test = () => {
-    const { height, width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
     const classes = useStyles();
 
     const Content = () => {
@@ -30,7 +30,7 @@ const Test = () => {
                         <h1 style={{ color: "white", fontWeight: 700, fontSize: "7vw" }}>PROBALO AHORA</h1>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <img src={"/img/qr.png"} style={{ height: "auto", bottom: 0, maxWidth: "80%" }} />
+                        <img src={"/img/qr.png"} alt="Código QR" style={{ height: "auto", bottom: 0, maxWidth: "80%" }} />
                     </Grid>
                 </>
             )
@@ -42,7 +42,6 @@ const Test = () => {
                         <h1 style={{ color: "white", fontWeight: 700, fontSize: "10vw" }}>PROBALO AHORA</h1>
                     </Grid>
                     <Grid item xs={12}>
-
                         <Button className={classes.menuText} onClick={() => console.log("Click!")}>DESCARGAR</Button>
                     </Grid>
                 </>
@@ -51,7 +50,7 @@ const Test = () => {
     }
 
     return (
-        <Grid container style={width > 638 ? { backgroundColor: "#4F831F", width: "100%",  paddingTop: "5%", paddingBottom: "5%" } : { backgroundColor: "#4F831F", height: "50vh", width: "100%" }} justify="center" alignItems="center" id="probalo">
+        <Grid container style={width > 638 ? { backgroundColor: "#4F831F", width: "100%", paddingTop: "5%", paddingBottom: "5%" } : { backgroundColor: "#4F831F", height: "50vh", width: "100%" }} justify="center" alignItems="center" id="probalo">
             <Content />
         </Grid>
     )

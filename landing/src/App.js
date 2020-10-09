@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import './App.css';
 import HowItWorks from './Components/comoFunciona';
+import Footer from './Components/Footer/Footer';
 import Menu from './Components/Menu/Menu';
 import Test from './Components/Probame/Test';
 import Product from './Components/Product';
@@ -14,6 +15,7 @@ const App = () => {
       <Test />
       <HowItWorks />
       <Us />
+      {/* <Footer /> */}
     </div>
   );
 }

@@ -1,22 +1,13 @@
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import React, { useState } from 'react';
-import useWindowDimensions from '../../helper/getDimensions';
 import OurCard from './Card';
 import CardExtended from './CardExtended';
 
-const useStyles = makeStyles((theme) => ({
-    mobile: {
-        height: "85vh"
-    },
-}));
-
 function Us() {
-    const classes = useStyles();
-    const { height, width } = useWindowDimensions();
     const [open, setOpen] = useState({ open: false, name: "", url: "", description: "" });
     return (
         <div id="equipo">
-            <Grid container style={{ backgroundColor: "white", paddingLeft: "2%", paddingRight: "2%", backgroundColor: "#A548D8" }} justify="center" alignItems="center" spacing={1}>
+            <Grid container style={{ paddingLeft: "2%", paddingRight: "2%", backgroundColor: "#A548D8", margin: 0 }} justify="center" alignItems="center" spacing={1}>
                 <Grid item xs={12} md={12}>
                     <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>NOSOTROS</h1>
                 </Grid>

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Product() {
     const classes = useStyles();
-    const { height, width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
 
     return (
         <div id="inicio">
@@ -21,11 +21,11 @@ function Product() {
                 <Grid item xs={12} md={12}>
                     <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>QUE NADA TE LO IMPIDA.</h1>
                 </Grid>
-                <Grid item xs={12} md={12} style={{ height: "45vh"}}>
+                <Grid item xs={12} md={12} style={{ height: "45vh" }}>
                     {width > 638 ?
-                        <img src={"/img/logo.png"} style={{ height: "100%" }} />
+                        <img src={"/img/logo.png"} alt="Logo de temon" style={{ height: "100%" }} />
                         :
-                        <img src={"/img/logo.png"} style={{ height: "auto", bottom: 0, maxWidth: "100%", display: "block" }} />
+                        <img src={"/img/logo.png"} alt="Logo de temon" style={{ height: "auto", bottom: 0, maxWidth: "100%", display: "block" }} />
                     }
                 </Grid>
             </Grid>

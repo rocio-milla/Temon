@@ -1,18 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import React from 'react';
 import useWindowDimensions from '../../helper/getDimensions';
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +43,7 @@ const CardExtended = ({ open, name, url, description, close }) => {
             return (
                 <>
                     <Grid item xs={6}>
-                        <img src={url} style={{ height: "auto", bottom: 0, maxWidth: "100%", paddingLeft: "1vh" }} />
+                        <img src={url} alt={name} style={{ height: "auto", bottom: 0, maxWidth: "100%", paddingLeft: "1vh" }} />
                     </Grid>
                     <Grid item xs={6} >
                         <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}>{name}</h1>
@@ -67,7 +60,7 @@ const CardExtended = ({ open, name, url, description, close }) => {
                         <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw" }}>{description}</h1>
                     </Grid>
                     <Grid item xs={12}>
-                        <img src={url} style={{ height: "auto", bottom: 0, maxWidth: "80%" }} />
+                        <img src={url} alt={name} style={{ height: "auto", bottom: 0, maxWidth: "80%" }} />
                     </Grid>
                 </>
             )

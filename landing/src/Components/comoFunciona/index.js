@@ -1,18 +1,8 @@
-import { Grid, makeStyles } from '@material-ui/core';
-import { Favorite, ImportantDevices, MusicNote, PhoneAndroidRounded } from '@material-ui/icons';
+import { Grid } from '@material-ui/core';
+import { Favorite, MusicNote, PhoneAndroidRounded } from '@material-ui/icons';
 import React from 'react';
-import useWindowDimensions from '../../helper/getDimensions';
-
-const useStyles = makeStyles((theme) => ({
-    mobile: {
-        height: "85vh"
-    },
-}));
 
 const HowItWorks = () => {
-    const classes = useStyles();
-    const { height, width } = useWindowDimensions();
-
     return (
         <div id="comofunciona">
             <Grid container style={{ backgroundColor: "white", width: "100%" }}>

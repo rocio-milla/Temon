@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { Button, Collapse } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { Button, Collapse, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import Toolbar from '@material-ui/core/Toolbar';
+import React, { useState } from 'react';
 import useWindowDimensions from '../../helper/getDimensions';
-import { StarBorder } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Menu() {
     const classes = useStyles();
-    const { height, width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
     const [open, setOpen] = useState(false);
 
     return (
