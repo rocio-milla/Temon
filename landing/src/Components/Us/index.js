@@ -21,7 +21,7 @@ function Us() {
                     <OurCard name="Leandro Coronel" url="/img/nosotros/lean.jpg" description="Hola. Soy Lean :D ¿Qué debería escribir acá?" open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Miguel Quiroz" url="/img/nosotros/migue.jpg" description="Hola. Soy Miguel :D ¿Qué debería escribir acá?" open={setOpen} />
+                    <OurCard name="Miguel Quiroz" url="/img/nosotros/migue.jpg" description={["Tester automatizador", "Diseñador gráfico textil", "Series y peliculas"]} open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <OurCard name="Rocio Milla" url="/img/nosotros/rocio.jpg" description={["Web developer. 🖥️", "Videojuegos. 🎮", "Cositas tiernas y rosas. 🌸"]} open={setOpen} />
