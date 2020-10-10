@@ -12,19 +12,19 @@ function Us() {
                     <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>NOSOTROS</h1>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Yessica Zornetta" url="/img/nosotros/yessi.jpg" description="Hola. Soy Yessi :D ¿Qué debería escribir acá?" open={setOpen} />
+                    <OurCard name="Yessica Zornetta" url="/img/nosotros/yessi.jpg" description={["📈 Business Analyst", "✈ Amante de viajar", "💅 Manicura"]} open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Juan Milla" url="/img/nosotros/juan.jpg" description="Hola. Soy Juanjo :D ¿Qué debería escribir acá?" open={setOpen} />
+                    <OurCard name="Juan Milla" url="/img/nosotros/juan.jpg" description={["👨‍💻 Software developer", "📸 Fotógrafo amateur", "🚴‍♂️ Ciclista"]} open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Leandro Coronel" url="/img/nosotros/lean.jpg" description={["Web developer", "Atención en una librería", "tomar siestas"]} open={setOpen} />
+                    <OurCard name="Leandro Coronel" url="/img/nosotros/lean.jpg" description={["🖥️ Web developer", "📚 Atención en una librería", "😴 Tomar siestas"]} open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Miguel Quiroz" url="/img/nosotros/migue.jpg" description={["Tester automatizador", "Diseñador gráfico textil", "Series y peliculas"]} open={setOpen} />
+                    <OurCard name="Miguel Quiroz" url="/img/nosotros/migue.jpg" description={["🤖 Tester automatizador", "🖊 Diseñador gráfico textil", "🎬 Series y películas"]} open={setOpen} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <OurCard name="Rocio Milla" url="/img/nosotros/rocio.jpg" description={["Web developer. 🖥️", "Videojuegos. 🎮", "Cositas tiernas y rosas. 🌸"]} open={setOpen} />
+                    <OurCard name="Rocio Milla" url="/img/nosotros/rocio.jpg" description={["🖥️ Web developer", "🎮 Videojuegos", "🌸 Cositas tiernas y rosas"]} open={setOpen} />
                 </Grid>
             </Grid>
             <CardExtended open={open.open} name={open.name} url={open.url}
