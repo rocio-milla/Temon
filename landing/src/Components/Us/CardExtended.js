@@ -51,7 +51,7 @@ const CardExtended = ({ open, name, url, description, close }) => {
                         {typeof description === "string" ?
                             <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}>{description}</h1>
                             :
-                            description.map((x) => <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}> {x}</h1>)
+                            description.map((x, i) => <h1 key={i} style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}> {x}</h1>)
                         }
                     </Grid>
                 </>
@@ -65,7 +65,7 @@ const CardExtended = ({ open, name, url, description, close }) => {
                         {typeof description === "string" ?
                             <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw" }}>{description}</h1>
                             :
-                            description.map((x) => <h1 style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}> {x}</h1>)
+                            description.map((x,i) => <h1 key={i} style={{ color: "black", fontWeight: 700, fontSize: "7vw", margin: 0 }}> {x}</h1>)
                         }
                     </Grid>
                     <Grid item xs={12}>
