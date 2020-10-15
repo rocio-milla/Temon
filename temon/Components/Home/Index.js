@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Image,
-    Text, View
+    Text, View,TouchableOpacity
 } from 'react-native';
 import { Button, Icon} from 'react-native-elements';
 import LiveAudioStream from 'react-native-live-audio-stream';
@@ -9,36 +9,48 @@ import { Buffer } from 'buffer';
 
 const HomeScreen = ({ navigation }) => {
 
-  iniciarGrabacion = () => {
+    let value ;
 
-const options = {
-    sampleRate: 32000,  // default is 44100 but 32000 is adequate for accurate voice recognition
-    channels: 1,        // 1 or 2, default 1
-    bitsPerSample: 16,  // 8 or 16, default 16
-    audioSource: 6,     // android only (see below)
-  };
+    const options = {
+        sampleRate: 32000,  // default is 44100 but 32000 is adequate for accurate voice recognition
+        channels: 1,        // 1 or 2, default 1
+        bitsPerSample: 16,  // 8 or 16, default 16
+        audioSource: 6,     // android only (see below)
+      };
+    
+      LiveAudioStream.init(options);
 
-  LiveAudioStream.init(options);
 
-    console.warn("iniciar")
+    startRecording = () => {
+
+    console.warn("start")
     
     LiveAudioStream.start();
 
-   LiveAudioStream.on('data', data => {
+    LiveAudioStream.on('data', data => {
         var chunk = Buffer.from(data, 'base64');
-
-        console.warn(chunk);
+        value = chunk;
+        console.warn(value);
       });
 
 }
 
-detenerGrabacion = () => {  
+stopRecording = () => {  
 
-    console.warn("parar")
+    console.warn("stop")
     LiveAudioStream.stop();
 
-}
+    /*fetch('https://77zrf57v5k.execute-api.us-east-1.amazonaws.com/default/solante-transcribe', {
+        method: 'GET', // or 'PUT'
+        headers: {
+         'X-API-KEY': 'taGJN51Ylz8PHK6Sfp96J2BUCnCL02rK5IlWvd2N'
+        },
+        body: value
+      })
+  .then(response => response.json())
+  .then(data => console.warn(data));*/
 
+}
     return (
 
         <>
@@ -47,21 +59,17 @@ detenerGrabacion = () => {
                     style={{ height: "100%", width: "100%", resizeMode: 'contain' }} />
             </View>
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+               
+             <TouchableOpacity
+              onPressIn={this.startRecording}    onPressOut={this.stopRecording}>
                 <Icon
                     name="microphone"
                     type='font-awesome'
                     color='#a646dd'
-                    size={75}
-                    reverse
-                    onPress={this.iniciarGrabacion} 
-                />
-                <Icon
-                    name="stop-circle"
-                    type='font-awesome'
-                    color='#a646dd'
                     size={150}
-                    onPress={this.detenerGrabacion} 
+                    reverse
                 />
+             </TouchableOpacity>
             </View>
         </>
     );
