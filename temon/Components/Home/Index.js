@@ -28,8 +28,8 @@ const HomeScreen = ({ navigation }) => {
     LiveAudioStream.start();
 
     LiveAudioStream.on('data', data => {
-        var chunk = Buffer.from(data, 'base64');
-        value = chunk;
+      //  var chunk = Buffer.from(data, 'base64');
+        value = data;
         console.warn(value);
       });
 
@@ -40,15 +40,15 @@ stopRecording = () => {
     console.warn("stop")
     LiveAudioStream.stop();
 
-    /*fetch('https://77zrf57v5k.execute-api.us-east-1.amazonaws.com/default/solante-transcribe', {
-        method: 'GET', // or 'PUT'
+    fetch('https://77zrf57v5k.execute-api.us-east-1.amazonaws.com/default/solante-transcribe', {
+        method: 'POST', // or 'PUT'
         headers: {
-         'X-API-KEY': 'taGJN51Ylz8PHK6Sfp96J2BUCnCL02rK5IlWvd2N'
+         'x-api-key': 'taGJN51Ylz8PHK6Sfp96J2BUCnCL02rK5IlWvd2N'
         },
         body: value
       })
   .then(response => response.json())
-  .then(data => console.warn(data));*/
+  .then(data => console.warn(data));
 
 }
     return (
