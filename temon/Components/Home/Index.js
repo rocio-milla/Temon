@@ -48,8 +48,8 @@ stopRecording = () => {
         body: value
       })
   .then(response => response.json())
-  .then(data => console.warn(data));
-
+  .then(data => console.warn(data))
+  .catch(error => console.error(error));
 }
     return (
 
