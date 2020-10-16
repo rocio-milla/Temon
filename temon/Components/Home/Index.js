@@ -8,25 +8,25 @@ import LiveAudioStream from 'react-native-live-audio-stream';
 import { Buffer } from 'buffer';
 
 const startRecording = (setValue) => {
-    console.warn("started")
 
     LiveAudioStream.start();
 
     LiveAudioStream.on('data', data => {
-        var chunk = Buffer.from(data, 'base64');
-        setValue(chunk)
+        // var chunk = Buffer.from(data, 'base64');
+        setValue(data)
     });
 }
 
 const stopRecording = (value, setResultFetch) => {
+    console.log(value.toString())
     LiveAudioStream.stop();
-    console.log("stopped! data: ", value);
     fetch('https://77zrf57v5k.execute-api.us-east-1.amazonaws.com/default/solante-transcribe', {
         method: 'POST', // or 'PUT'
         headers: {
             'x-api-key': 'taGJN51Ylz8PHK6Sfp96J2BUCnCL02rK5IlWvd2N',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            // 'Accept': 'application/json',
+            // 'Content-Type': 'application/json'
+            "Content-Type": "application/octet-stream"
         },
         body: value
     })
