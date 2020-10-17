@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core';
-import { Favorite, MusicNote, PhoneAndroidRounded } from '@material-ui/icons';
+import { Favorite, FiberManualRecord, MusicNote, PhoneAndroidRounded } from '@material-ui/icons';
 import React from 'react';
 
 const HowItWorks = () => {
@@ -12,15 +12,15 @@ const HowItWorks = () => {
 
                 <Grid item xs={12} md={12}>
                     <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%", marginBottom: 0 }}>TEMON ES UN REPRODUCTOR DE MÚSICA PARA USUARIOS DE BAJA VISIÓN.</h1>
-                    <MusicNote color="primary" style={{ fontSize: "500%" }} />
+                    <FiberManualRecord color="primary" style={{ fontSize: "500%" }} />
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%", marginBottom: 0 }}>CUENTA CON CONTRASTE ALTO, BOTONES GRANDES, BÚSQUEDA POR VOZ Y TODO AQUELLO QUE NO PODÉS HACER CON OTRAS APLICACIONES.</h1>
-                    <PhoneAndroidRounded color="secondary" style={{ fontSize: "500%" }} />
+                    <FiberManualRecord color="primary" style={{ fontSize: "500%" }} />
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%", marginBottom: 0 }}>TODOS ESCUCHAMOS MÚSICA, ¿O NO?</h1>
-                    <Favorite color="primary" style={{ fontSize: "500%", marginBottom: "2%" }} />
+                    <FiberManualRecord color="primary" style={{ fontSize: "500%", marginBottom: "2%" }} />
                 </Grid>
             </Grid>
         </div>
