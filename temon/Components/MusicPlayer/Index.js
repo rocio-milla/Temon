@@ -1,77 +1,165 @@
-import React,{useEffect,useState} from 'react';
-import {Image,Text, View,TouchableOpacity,StyleSheet} from 'react-native';
+import React,{useEffect,useState,useRef} from 'react';
+import {Image,Text, View,TouchableOpacity,StyleSheet,TouchableWithoutFeedback} from 'react-native';
 import {Header,LearnMoreLinks,Colors,DebugInstructions,ReloadInstructions,} from 'react-native/Libraries/NewAppScreen';
 import { Button, Icon,Slider } from 'react-native-elements';
-import TrackPlayer, { getPosition, pause, play } from 'react-native-track-player';
-
+import TrackPlayer, { getPosition, getTrack, pause, play ,useTrackPlayerProgress,TrackPlayerEvents,Capability} from 'react-native-track-player';
+import styles from './IndexStyle'
 
 const track = {
-    id: "1",
-    url: "https://cdns-preview-d.dzcdn.net/stream/c-deda7fa9316d9e9e880d2c6207e92260-8.mp3",
-    title: "Track Title",
-    artist: "Track Artist"
+  id: "1",
+  url: "https://cdns-preview-d.dzcdn.net/stream/c-deda7fa9316d9e9e880d2c6207e92260-8.mp3",
+  title: "Harder, Better, Faster, Stronger",
+  artist: "Daft Punk"
 }
 
 const track2 = {
   id: "2",
   url: "https://cdns-preview-0.dzcdn.net/stream/c-01ef0c4982c94b86c7c0e6b2a70dde4b-7.mp3",
-  title: "Track Title",
-  artist: "Track Artist"
+  title: "Digital Love",
+  artist: "Daft Punk"
 }
 
 const track3 = {
-  id: "2",
-  url: "https://cdns-preview-b.dzcdn.net/stream/c-b2e0166bba75a78251d6dca9c9c3b41a-7.mp3",
-  title: "Track Title",
-  artist: "Track Artist"
+  id: "3",
+  url: "https://cdns-preview-8.dzcdn.net/stream/c-83ff26e7b23e7a7a248f3392d04f2fed-3.mp3",
+  title: "Pillar Of Fire",
+  artist: "Tony Levin"
 }
 
-function alertT(){
-  alert("dasd")
-}
+TrackPlayer.setupPlayer().then(async () => {
+  TrackPlayer.updateOptions({
+		alwaysPauseOnInterruption: true,
+		waitForBuffer: true,
+		stopWithApp: true,
+		capabilities: [
+			TrackPlayer.CAPABILITY_PLAY,
+			TrackPlayer.CAPABILITY_PAUSE,
+			TrackPlayer.CAPABILITY_SEEK_TO,
+			TrackPlayer.CAPABILITY_JUMP_FORWARD,
+      TrackPlayer.CAPABILITY_JUMP_BACKWARD,
+      TrackPlayer.CAPABILITY_JUMP_BACKWARD,
+      TrackPlayer.CAPABILITY_SEEK_TO,
+      TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+      TrackPlayer.CAPABILITY_SKIP,
+      TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+		],
+	});
+  await TrackPlayer.add([track,track2,track3]);
+});
+
+
+let date;
+let count=0;
+let timer;
 
 const MusicPlayerScreen = () => {
- 
-  TrackPlayer.setupPlayer().then(async () => {
-    await TrackPlayer.add([track,track2,track3]);
-  });
-
+  
+  const { position, bufferedPosition, duration } = useTrackPlayerProgress(100)
   const [buttonPlay,setButtonPlay] = useState("") 
-  const [position,setPosition] = useState(0)
-  const [statePlayer,setStatePlayer] = useState("play")
+  const [idTrack,setIdTrack] = useState("")
+  const [musicTheme,setMusicTheme] = useState({id: "",url: "",title: "",artist: "",duration:0})
+  //const [count,setCount] = useState({value:0,state:0})
+  //const [dateTouch,setDateTouch] = useState(null)
   
   useEffect(()=>{
-    setButtonPlay("pause")    
+        setButtonPlay("pause")  
+        TrackPlayer.play()
+        TrackActual()
+        TrackPlayer.addEventListener("playback-track-changed",()=>{
+          console.log("ahora si")
+          TrackActual()
+        })
   },[])
 
-  let button = "pause"
   let playAndStop = () =>{
-    if(button == "pause"){
-      button = "play"
-      TrackPlayer.play()
-      alertT
+    if(buttonPlay == "pause"){
+      setButtonPlay("play")
+      TrackPlayer.pause()
     }
     else{
-      button = "pause"
-      TrackPlayer.pause()
-      //setButtonPlay("pause")
+      setButtonPlay("pause")
+      TrackPlayer.play()
     }
-  }
-
-  const duration = ()=>{
-    let duration = TrackPlayer.getDuration().then((res)=>{alert(res)})
-    return duration;
   }
 
   const nextTrack = ()=>{
     TrackPlayer.skipToNext();
+    TrackActual()
   }
 
-  const prevTrack =() =>{
+  const prevTrack = () =>{
     TrackPlayer.skipToPrevious()
+    TrackActual()
   }
-  
-    return (
+
+  let updateTheme = (res) =>{
+    setMusicTheme({
+      id : res.id,
+      url: res.url,
+      title: res.title,
+      artist: res.artist
+    })
+  }
+
+  let getIdTrack = (res) =>{
+    setIdTrack(res)
+    TrackPlayer.getTrack(res).then((data)=>{
+      updateTheme(data)
+    })
+  } 
+
+  const setPositionTrack =(e)=>{
+    TrackPlayer.seekTo(e)
+  }
+
+  const TrackActual = () =>{
+    TrackPlayer.getCurrentTrack().then(
+      (res)=>{ getIdTrack(res) }
+    )
+  }
+
+  const touchScreen = () =>{
+    if(count == 0){
+      count+=1
+      date = new Date()
+      timer = setTimeout(function(){ playAndStop() }, 1000);
+      console.log("cont init: "+count)
+    }
+    else{
+      let newDate = new Date()
+      let diff = date.getTime() - newDate.getTime()
+      let dateDiff = diff / 1000
+      let diffSecond = Math.abs(dateDiff)
+      if(diffSecond <= 1){
+        count += 1
+        console.log("tiempo: "+diffSecond)
+        if(count == 2){
+          clearTimeout(timer);
+          timer = setTimeout(function(){ nextTrack() }, 1000);
+        }
+        
+        else if(count == 3){
+          clearTimeout(timer);
+          timer = setTimeout(function(){ prevTrack() }, 1000);
+          count = 0
+        }
+        date = newDate
+      }
+      else{
+        count=1
+        timer = setTimeout(function(){ playAndStop() }, 1000);
+        date = new Date()
+        console.log("teimpo:"+diffSecond)
+        console.log("cont: "+count)
+      }
+    }
+  }
+
+  const longTouchScreen = () =>{
+    var timer  = setTimeout(function(){ alert("asd") },1000);
+  }
+
+    return ( 
       <>
         <View style={styles.headers}>
             <View style={styles.menu}>
@@ -85,17 +173,18 @@ const MusicPlayerScreen = () => {
         </View>
 
         <View style={styles.screen}>
-          <Text></Text>
+          <TouchableOpacity onLongPress={()=>longTouchScreen()} style={styles.screenButton} onPress={()=>{touchScreen()}}>
+            
+          </TouchableOpacity>
         </View>
 
         <View style={styles.viewName}>
             <View style={styles.name}>
-            <Text style={styles.nameMusic}>QUEEN - KILLE...</Text>
+            <Text style={styles.nameMusic}>{musicTheme.title}</Text>
             </View>
         </View>
 
         <View style={styles.musicPlayer}>         
-          
 
           <View style={styles.contSlider}>  
             <View style={styles.musicButtons}>
@@ -115,175 +204,20 @@ const MusicPlayerScreen = () => {
                 style={styles.slider} 
                 minimumValue={0}
                 step={1}
-                maximumValue= {10}
+                maximumValue= {duration}
+                value={position}
+                onValueChange={(res)=>setPositionTrack(res)}
                 minimumTrackTintColor="#000"
                 maximumTrackTintColor="#C3C3C3"
                 trackStyle={{ height: 30, backgroundColor: 'transparent' }}
                 thumbStyle={{ height: 20, width: 20, backgroundColor: 'transparent' }}
               />
-              <Text>pos:{0}, duration:</Text>
+              <Text>pos:{position},duration:{duration},idTrack{idTrack}</Text>
+              
           </View>
         </View>
       </>
     );
-
 };
-
-/*
-<View style={styles.soundOptions}>
-            <View style={styles.options}>
-                <TouchableOpacity style={styles.iconStart}>
-                <Icon
-                    name="star"
-                    type='font-awesome'
-                    color='#fff'
-                    size={40}
-                />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconPlus}>
-                <Icon
-                    name="plus"
-                    type='font-awesome'
-                    color='#fff'
-                    size={40}
-                />
-                </TouchableOpacity>
-            </View>
-        </View>
-
-*/ 
-
-const styles = StyleSheet.create({
-    headers:{
-      backgroundColor:"#000",
-      height:100,
-      justifyContent:"center",
-      alignItems:"center",
-    },
-    menu:{
-      height:"100%",
-      width:"90%",
-      flexDirection:"row",
-      justifyContent:"space-between",
-      alignItems:"center",
-    },
-    iconSearch:{
-      height:70,
-      width:70,
-      borderRadius:35,
-      justifyContent:"center",
-      alignItems:"center",
-      
-    },
-    iconLibrary:{
-      height:70,
-      width:70,
-      borderRadius:35,
-      backgroundColor:"#fff",
-    },
-    scrollView: {
-      backgroundColor: Colors.lighter,
-    },
-  
-    screen:{
-      backgroundColor:"#787878",
-      flex:3,
-      justifyContent:"center",
-      alignItems:"center",  
-    },
-  
-    soundOptions:{
-      justifyContent:"center",
-      alignItems:"center",
-      flexDirection:"row",
-    },
-    options:{
-      width:"90%",
-      height:100,
-      justifyContent:"space-between",
-      alignItems:"center",
-      flexDirection:"row",
-    },
-    iconStart:{
-      height:70,
-      width:70,
-      justifyContent:"center",
-      alignItems:"center",
-      backgroundColor:"#047373",
-      borderRadius:35,
-    },
-    iconPlus:{
-      justifyContent:"center",
-      
-      height:70,
-      width:70,
-      backgroundColor:"#FE4900",
-      borderRadius:35,
-    },
-  
-    viewName:{
-      justifyContent:"center",
-      alignItems:"center",
-      height:70
-    },
-    name:{
-      justifyContent:"center",
-      alignItems:"center",
-      width:"90%",
-    },
-    nameMusic:{
-      fontSize:38,
-    },
-    
-    musicPlayer: {
-      flex:2,
-      justifyContent:"center",
-      alignItems:"center",
-    },
-    musicButtons:{
-      width:"100%",
-      flexDirection:"row",
-      alignItems:"center",
-      justifyContent:"space-between",
-    },
-    prevButton:{
-      width:100,
-      height:100,
-      borderRadius:50,
-      backgroundColor:"#03902D",
-      justifyContent:"center",
-      alignItems:"center",
-    },
-    playButton:{
-      width:120,
-      height:120,
-      backgroundColor:"#000000",
-      borderRadius:60,
-      justifyContent:"center",
-      alignItems:"center",
-    },
-    nextButton:{
-      width:100,
-      height:100,
-      borderRadius:50,
-      backgroundColor:"#9E00B4",
-      justifyContent:"center",
-      alignItems:"center",
-    },
-    
-    contSlider:{
-      flex:2,
-      width:"90%",
-      marginLeft: 10,
-      marginRight: 10,
-      alignItems: "stretch",
-      justifyContent: "center", 
-    },
-    slider:{
-      width:"100%",
-      flex:1,
-    },
-  
-  });
 
 export default MusicPlayerScreen;
