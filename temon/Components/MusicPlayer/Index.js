@@ -11,6 +11,10 @@ const track = {
   title: "Harder, Better, Faster, Stronger",
   artist: "Daft Punk"
 }
+/*
+https://cdns-preview-d.dzcdn.net/stream/c-deda7fa9316d9e9e880d2c6207e92260-8.mp3
+https://youtube.com/watch?v=2Q_ZzBGPdqE
+*/
 
 const track2 = {
   id: "2",
@@ -47,7 +51,32 @@ TrackPlayer.setupPlayer().then(async () => {
   await TrackPlayer.add([track,track2,track3]);
 });
 
+/*
+console.log("111")
+const funti = async ()=>{
+const apiCancion = await fetch('http://192.168.1.46:3000/musica/escuchar', {
+                   method: 'POST',
+                   headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      url:"https://youtube.com/watch?v=2Q_ZzBGPdqE",
+                    })
+                  })
+                  .then((response) => response.blob())
+                  .then((responseData) => {
+                      console.log(
+                          "POST Response",
+                          "Response Body -> " + responseData
+                      )
+                  })
+                  .done();
+}
 
+console.log(funti())
+console.log("333")
+*/
 let date;
 let count=0;
 let timer;
@@ -63,7 +92,7 @@ const MusicPlayerScreen = () => {
   
   useEffect(()=>{
         setButtonPlay("pause")  
-        TrackPlayer.play()
+        //TrackPlayer.play()
         TrackActual()
         TrackPlayer.addEventListener("playback-track-changed",()=>{
           //console.log("ahora si")
