@@ -12,8 +12,9 @@ app.listen(3000, () => {
 });
 
 app.post('/musica/escuchar', async (req, res) => {
-
   try {
+    console.log("body: ", req.body)
+
     const url = req.body.url;
     const audio = youtubeDownloader(url, {
       filter: 'audioonly'

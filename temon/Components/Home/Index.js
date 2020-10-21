@@ -150,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
 
     <>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Image source={require('../../images/index.jpg')}
+        <Image source={require('../../images/logo.png')}
           style={{ height: "100%", width: "100%", resizeMode: 'contain' }} />
       </View>
       <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>

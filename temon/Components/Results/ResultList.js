@@ -43,7 +43,10 @@ function Cancion(props) {
   const { url, video } = item;
 
   const playCancion = () => {
-    navigation.navigate('MusicPlayer');
+    navigation.navigate('MusicPlayer', {
+      title: video,
+      song: url
+    });
   };
   return (
     <TouchableOpacity onPress={() => playCancion()}>
