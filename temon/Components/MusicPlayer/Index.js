@@ -66,7 +66,7 @@ const MusicPlayerScreen = () => {
         TrackPlayer.play()
         TrackActual()
         TrackPlayer.addEventListener("playback-track-changed",()=>{
-          console.log("ahora si")
+          //console.log("ahora si")
           TrackActual()
         })
   },[])
@@ -123,7 +123,7 @@ const MusicPlayerScreen = () => {
       count+=1
       date = new Date()
       timer = setTimeout(function(){ playAndStop() }, 1000);
-      console.log("cont init: "+count)
+      //console.log("cont init: "+count)
     }
     else{
       let newDate = new Date()
@@ -149,8 +149,8 @@ const MusicPlayerScreen = () => {
         count=1
         timer = setTimeout(function(){ playAndStop() }, 1000);
         date = new Date()
-        console.log("teimpo:"+diffSecond)
-        console.log("cont: "+count)
+        //console.log("teimpo:"+diffSecond)
+        //console.log("cont: "+count)
       }
     }
   }

@@ -12,14 +12,15 @@ function Product() {
     const classes = useStyles();
     const { width } = useWindowDimensions();
 
+
     return (
         <div id="inicio">
             <Grid container style={{ backgroundColor: "white", width: "100%" }} className={width > 481 ? classes.mobile : ""}>
                 <Grid item xs={12} md={12}>
-                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>¿TENÉS GANAS DE ESCUCHAR MÚSICA?</h1>
+                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "5vw", marginBottom: 0, paddingBottom: 0  }}>¿TENÉS GANAS DE ESCUCHAR MÚSICA?</h1>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "250%" }}>QUE NADA TE LO IMPIDA.</h1>
+                    <h1 style={{ color: "black", fontWeight: 700, fontSize: "5vw", marginTop: 0, paddingTop: 0  }}>QUE NADA TE LO IMPIDA</h1>
                 </Grid>
                 <Grid item xs={12} md={12} style={{ height: "45vh" }}>
                     {width > 638 ?

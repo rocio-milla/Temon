@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OurCard = ({ url, name, description, open }) => {
-    console.log(url)
     const classes = useStyles();
 
     const handleExpandClick = () => {
@@ -49,9 +48,13 @@ const OurCard = ({ url, name, description, open }) => {
                 title={name}
             />
             <CardContent>
-                <Typography className={classes.text}>
-                    {description}
-                </Typography>
+                    {typeof description === "string" ?
+                        <Typography className={classes.text}>
+                            description
+                        </Typography>
+                        :
+                        description.map((x, i) => <Typography key={i} className={classes.text} style={{ margin: 0 }}> {x}</Typography>)
+                    }
                 <CardActions>
                     <Button color="primary" variant="contained" onClick={() => handleExpandClick()} className={classes.text} style={{ width: "100%" }}>
                         AGRANDAR

@@ -50,7 +50,7 @@ const Test = () => {
     }
 
     return (
-        <Grid container style={width > 638 ? { backgroundColor: "#4F831F", width: "100%", paddingTop: "5%", paddingBottom: "5%" } : { backgroundColor: "#4F831F", height: "50vh", width: "100%" }} justify="center" alignItems="center" id="probalo">
+        <Grid container style={width > 638 ? { backgroundColor: "#1b7701", width: "100%", paddingTop: "5%", paddingBottom: "5%" } : { backgroundColor: "#1b7701", height: "50vh", width: "100%" }} justify="center" alignItems="center" id="probalo">
             <Content />
         </Grid>
     )
