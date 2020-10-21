@@ -79,8 +79,12 @@ const MusicPlayerScreen = ({ route }) => {
   }, [])
 
   useEffect(() => {
-    if(song2)
-      setMusicTheme({ url: URL.createObjectURL(song2), title: title })
+    if (song2) {
+      const val = URL.createObjectURL(song2);
+      console.log(val)
+      // console.log(song2.stream())
+      setMusicTheme({ url: song2, title: title })
+    }
   }, [song2])
 
   useEffect(() => {
@@ -95,7 +99,15 @@ const MusicPlayerScreen = ({ route }) => {
       body: JSON.stringify(bodyToSend)
     })
       .then(response => response.blob())
-      .then(blob => { setSong(blob) })
+      .then(blob => {
+        setSong(blob)
+        // const fileReaderInstance = new FileReader();
+        // fileReaderInstance.readAsDataURL(blob);
+        // fileReaderInstance.onload = () => {
+        //   base64data = fileReaderInstance.result;
+        //   setSong(base64data)
+        //   console.log(base64data);
+      })
       .catch((error) => {
         console.log("Hubo un error ", error)
       });

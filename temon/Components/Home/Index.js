@@ -132,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
         },
         body: JSON.stringify(bodyToSend)
       })
-        .then(response => response.json())
+        .then(response => {return response.json()})
         .then(results => {
           navigation.navigate('Results', {
             results: results.responseArray,
