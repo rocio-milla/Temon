@@ -40,7 +40,7 @@ const App: () => React$Node = () => {
               headerTintColor: '#fff',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:50,
+                fontSize:45,
               },
             }}
           />

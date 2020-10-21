@@ -6,7 +6,7 @@ import {
   TouchableOpacity, View
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-
+import { PersonalConfig } from '../../PersonalConfig.js';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -34,43 +34,36 @@ const HomeScreen = ({ navigation }) => {
 
   const onSpeechStart = (e) => {
     //Invoked when .start() is called without error
-    console.log('onSpeechStart: ', e);
     setStarted('√');
   };
 
   const onSpeechEnd = (e) => {
     //Invoked when SpeechRecognizer stops recognition
-    console.log('onSpeechEnd: ', e);
     setEnd('√');
   };
 
   const onSpeechError = (e) => {
     //Invoked when an error occurs.
-    console.log('onSpeechError: ', e);
     setError(JSON.stringify(e.error));
   };
 
   const onSpeechResults = (e) => {
     //Invoked when SpeechRecognizer is finished recognizing
-    console.log('onSpeechResults: ', e);
     setResults(e.value);
   };
 
   const onSpeechPartialResults = (e) => {
     //Invoked when any results are computed
-    console.log('onSpeechPartialResults: ', e);
     setPartialResults(e.value);
   };
 
   const onSpeechVolumeChanged = (e) => {
     //Invoked when pitch that is recognized changed
-    console.log('onSpeechVolumeChanged: ', e);
     setPitch(e.value);
   };
 
   const startRecognizing = async () => {
     //Starts listening for speech for a specific locale
-    console.log('audio');
     try {
       await Voice.start('es-US');
       setPitch('');
@@ -122,12 +115,17 @@ const HomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    return (() => {
+      destroyRecognizer();
+    })
+  }, [])
+
+  useEffect(() => {
     if (results[0]) {
-      console.log("resultado final: ", results[0]);
       const bodyToSend = {
         cancion: results[0]
       }
-      fetch(`http://192.168.0.33:3000/musica/buscar`, {
+      fetch(`${PersonalConfig.url}/musica/buscar`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json; charset=utf-8"
@@ -137,7 +135,7 @@ const HomeScreen = ({ navigation }) => {
         .then(response => response.json())
         .then(results => {
           navigation.navigate('Results', {
-            resultados: results.responseArray,
+            results: results.responseArray,
           });
         })
         .catch((error) => {
