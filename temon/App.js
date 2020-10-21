@@ -28,7 +28,22 @@ const App: () => React$Node = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Results" component={ResultsScreen} />
+          <Stack.Screen
+            name="Results"
+            component={ResultsScreen}
+            options={{
+              title: 'RESULTADOS',
+              headerStyle: {
+                backgroundColor: '#a548d8',
+                height: 100,
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize:50,
+              },
+            }}
+          />
           <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} />
         </Stack.Navigator>
       </NavigationContainer>
