@@ -89,8 +89,8 @@ const HomeScreen = ({ navigation }) => {
         })
         .catch((error) => {
           console.log("Hubo un error ", error)
+          setLoading(false);
         });
-
     } else {
       setLoading(false);
     }

@@ -10,7 +10,7 @@ const MusicPlayerScreen = ({ route }) => {
   const { title, song } = route.params;
 
   // const { position, duration } = useTrackPlayerProgress(100)
-  const progress = TrackPlayer.useTrackPlayerProgress();
+  // const progress = TrackPlayer.useTrackPlayerProgress();
   const [buttonPlay, setButtonPlay] = useState("pause")
   const [idTrack, setIdTrack] = useState("")
   const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 })
@@ -23,46 +23,23 @@ const MusicPlayerScreen = ({ route }) => {
 
   useEffect(() => {
     const setPlayer = async () => {
-      // await TrackPlayer.setupPlayer().then(async () => {
-      //   TrackPlayer.updateOptions({
-      //     alwaysPauseOnInterruption: true,
-      //     waitForBuffer: true,
-      //     stopWithApp: true,
-      //     capabilities: [
-      //       TrackPlayer.CAPABILITY_PLAY,
-      //       TrackPlayer.CAPABILITY_PAUSE,
-      //       TrackPlayer.CAPABILITY_SEEK_TO,
-      //       TrackPlayer.CAPABILITY_JUMP_FORWARD,
-      //       TrackPlayer.CAPABILITY_JUMP_BACKWARD,
-      //       TrackPlayer.CAPABILITY_JUMP_BACKWARD,
-      //       TrackPlayer.CAPABILITY_SEEK_TO,
-      //       TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-      //       TrackPlayer.CAPABILITY_SKIP,
-      //       TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-      //     ],
-      //   });
-      // });
       if (!playerReady) {
         await TrackPlayer.setupPlayer();
 
         await TrackPlayer.updateOptions({
-
+          stopWithApp: true,
           capabilities: [
             TrackPlayer.CAPABILITY_PLAY,
             TrackPlayer.CAPABILITY_PAUSE,
             TrackPlayer.CAPABILITY_STOP,
             TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
             TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-            TrackPlayer.CAPABILITY_SEEK_TO
           ],
 
           compactCapabilities: [
             TrackPlayer.CAPABILITY_PLAY,
             TrackPlayer.CAPABILITY_PAUSE,
-            TrackPlayer.CAPABILITY_STOP,
-            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-            TrackPlayer.CAPABILITY_SEEK_TO
+            TrackPlayer.CAPABILITY_SKIP,
           ]
         });
 
