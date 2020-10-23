@@ -176,7 +176,7 @@ const MusicPlayerScreen = ({ route }) => {
       </View>
       <View style={styles.viewName}>
         <View style={styles.name}>
-          <Text style={styles.nameMusic}>{runes.substr(musicTheme.title.substr, 0, 18)}</Text>
+          <Text style={styles.nameMusic}>{runes.substr(musicTheme.title !== "" ? musicTheme.title : title, 0, 18)}</Text>
         </View>
       </View>
       <View style={styles.musicPlayer}>
