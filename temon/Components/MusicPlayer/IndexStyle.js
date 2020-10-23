@@ -88,7 +88,6 @@ export default StyleSheet.create({
     nameMusic:{
       fontSize:38,
     },
-    
     musicPlayer: {
       flex:2,
       justifyContent:"center",
@@ -104,25 +103,16 @@ export default StyleSheet.create({
       width:100,
       height:100,
       borderRadius:50,
-      backgroundColor:"#03902D",
-      justifyContent:"center",
-      alignItems:"center",
     },
     playButton:{
       width:120,
       height:120,
-      backgroundColor:"#000000",
       borderRadius:60,
-      justifyContent:"center",
-      alignItems:"center",
     },
     nextButton:{
       width:100,
       height:100,
       borderRadius:50,
-      backgroundColor:"#9E00B4",
-      justifyContent:"center",
-      alignItems:"center",
     },
     
     contSlider:{

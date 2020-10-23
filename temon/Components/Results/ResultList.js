@@ -1,16 +1,6 @@
 import { size } from 'lodash';
 import React from "react";
-import {
-  ActivityIndicator, FlatList,
-
-
-  ScrollView, StyleSheet,
-  Text,
-
-
-
-  TouchableOpacity, View
-} from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 
 export default function ResultList(props) {
@@ -20,7 +10,7 @@ export default function ResultList(props) {
     <>
       {size(results) > 0 ? (
         <FlatList
-        style={styles.main}
+          style={styles.main}
           data={results}
           renderItem={(cancion) => (
             <Cancion cancion={cancion} navigation={navigation} />
@@ -30,7 +20,7 @@ export default function ResultList(props) {
       ) : (
           <View style={styles.loaderCanciones}>
             <ActivityIndicator size="large" />
-            <Text>Cargando canciones</Text>
+            <Text>0 RESULTADOS</Text>
           </View>
         )}
     </>

@@ -1,95 +1,74 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Image, Text, View, TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { Header, LearnMoreLinks, Colors, DebugInstructions, ReloadInstructions, } from 'react-native/Libraries/NewAppScreen';
-import { Button, Icon, Slider } from 'react-native-elements';
-import TrackPlayer, { getPosition, getTrack, pause, play, useTrackPlayerProgress, TrackPlayerEvents, Capability } from 'react-native-track-player';
-import styles from './IndexStyle'
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Icon, Slider } from 'react-native-elements';
+import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
 import { PersonalConfig } from '../../PersonalConfig.js';
-
-const track = {
-  id: "1",
-  url: "https://cdns-preview-d.dzcdn.net/stream/c-deda7fa9316d9e9e880d2c6207e92260-8.mp3",
-  title: "Harder, Better, Faster, Stronger",
-  artist: "Daft Punk"
-}
-
-const track2 = {
-  id: "2",
-  url: "https://cdns-preview-0.dzcdn.net/stream/c-01ef0c4982c94b86c7c0e6b2a70dde4b-7.mp3",
-  title: "Digital Love",
-  artist: "Daft Punk"
-}
-
-const track3 = {
-  id: "3",
-  url: "https://cdns-preview-8.dzcdn.net/stream/c-83ff26e7b23e7a7a248f3392d04f2fed-3.mp3",
-  title: "Pillar Of Fire",
-  artist: "Tony Levin"
-}
-
-TrackPlayer.setupPlayer().then(async () => {
-  TrackPlayer.updateOptions({
-    alwaysPauseOnInterruption: true,
-    waitForBuffer: true,
-    stopWithApp: true,
-    capabilities: [
-      TrackPlayer.CAPABILITY_PLAY,
-      TrackPlayer.CAPABILITY_PAUSE,
-      TrackPlayer.CAPABILITY_SEEK_TO,
-      TrackPlayer.CAPABILITY_JUMP_FORWARD,
-      TrackPlayer.CAPABILITY_JUMP_BACKWARD,
-      TrackPlayer.CAPABILITY_JUMP_BACKWARD,
-      TrackPlayer.CAPABILITY_SEEK_TO,
-      TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-      TrackPlayer.CAPABILITY_SKIP,
-      TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-    ],
-  });
-  await TrackPlayer.add([track, track2, track3]);
-});
-
-
-let date;
-let count = 0;
-let timer;
+import styles from './IndexStyle';
 
 const MusicPlayerScreen = ({ route }) => {
   const { title, song } = route.params;
 
-  const { position, bufferedPosition, duration } = useTrackPlayerProgress(100)
+  // const { position, duration } = useTrackPlayerProgress(100)
+  const progress = TrackPlayer.useTrackPlayerProgress();
   const [buttonPlay, setButtonPlay] = useState("pause")
   const [idTrack, setIdTrack] = useState("")
   const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 })
-  const [song2, setSong] = useState();
   //const [count,setCount] = useState({value:0,state:0})
   //const [dateTouch,setDateTouch] = useState(null)
-
+  let date;
+  let count = 0;
+  let timer;
+  let playerReady = false;
 
   useEffect(() => {
-    TrackPlayer.setupPlayer({}).then(async () => {
-    })
-
-    // setButtonPlay("pause")
-    // TrackPlayer.play()
-    // TrackActual()
-    // TrackPlayer.addEventListener("playback-track-changed", () => {
-    //   console.log("ahora si")
-    //   TrackActual()
-    // })
-  }, [])
-
-  // useEffect(() => {
-  //   if (song2) {
-  //     const val = URL.createObjectURL(song2);
-  //     console.log(val)
-  //     // console.log(song2.stream())
-  //     setMusicTheme({ url: song2, title: title })
-  //   }
-  // }, [song2])
-
-  useEffect(async e => {
     const setPlayer = async () => {
-      await TrackPlayer.setupPlayer();
+      // await TrackPlayer.setupPlayer().then(async () => {
+      //   TrackPlayer.updateOptions({
+      //     alwaysPauseOnInterruption: true,
+      //     waitForBuffer: true,
+      //     stopWithApp: true,
+      //     capabilities: [
+      //       TrackPlayer.CAPABILITY_PLAY,
+      //       TrackPlayer.CAPABILITY_PAUSE,
+      //       TrackPlayer.CAPABILITY_SEEK_TO,
+      //       TrackPlayer.CAPABILITY_JUMP_FORWARD,
+      //       TrackPlayer.CAPABILITY_JUMP_BACKWARD,
+      //       TrackPlayer.CAPABILITY_JUMP_BACKWARD,
+      //       TrackPlayer.CAPABILITY_SEEK_TO,
+      //       TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+      //       TrackPlayer.CAPABILITY_SKIP,
+      //       TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+      //     ],
+      //   });
+      // });
+      if (!playerReady) {
+        await TrackPlayer.setupPlayer();
+
+        await TrackPlayer.updateOptions({
+
+          capabilities: [
+            TrackPlayer.CAPABILITY_PLAY,
+            TrackPlayer.CAPABILITY_PAUSE,
+            TrackPlayer.CAPABILITY_STOP,
+            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+            TrackPlayer.CAPABILITY_SEEK_TO
+          ],
+
+          compactCapabilities: [
+            TrackPlayer.CAPABILITY_PLAY,
+            TrackPlayer.CAPABILITY_PAUSE,
+            TrackPlayer.CAPABILITY_STOP,
+            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+            TrackPlayer.CAPABILITY_SEEK_TO
+          ]
+        });
+
+        playerReady = true;
+      }
+      await TrackPlayer.reset();
 
       console.log("Mi URL ", `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(song)}`);
 
@@ -98,20 +77,25 @@ const MusicPlayerScreen = ({ route }) => {
         url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(song)}`,
         title: title
       });
-      console.log("Se agregó el track :)");
       await TrackPlayer.play();
-      console.log("El track debería empezar a sonar!")
       setMusicTheme({ ...musicTheme, title: title })
     };
 
-      setPlayer();
-    
-      return (() => {
-        console.log("unmount :)")
-      })
-    }, [])
+    setPlayer();
 
-  let playAndStop = () => {
+    return (() => {
+      TrackPlayer.destroy();
+    })
+  }, [])
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        TrackPlayer.destroy();
+      };
+    }, []));
+
+  const playAndStop = () => {
     if (buttonPlay == "pause") {
       setButtonPlay("play")
       TrackPlayer.pause()
@@ -123,13 +107,15 @@ const MusicPlayerScreen = ({ route }) => {
   }
 
   const nextTrack = () => {
+    console.log("next track")
     TrackPlayer.skipToNext();
     TrackActual()
   }
 
   const prevTrack = () => {
-    TrackPlayer.skipToPrevious()
-    TrackActual()
+    console.log("previous track")
+    // TrackPlayer.skipToPrevious()
+    // TrackActual()
   }
 
   let updateTheme = (res) => {
@@ -147,9 +133,9 @@ const MusicPlayerScreen = ({ route }) => {
     })
   }
 
-  const setPositionTrack = (e) => {
-    TrackPlayer.seekTo(e)
-  }
+  // const setPositionTrack = (e) => {
+  //   TrackPlayer.seekTo(e)
+  // }
 
   const TrackActual = () => {
     TrackPlayer.getCurrentTrack().then(
@@ -161,8 +147,8 @@ const MusicPlayerScreen = ({ route }) => {
     if (count == 0) {
       count += 1
       date = new Date()
-      timer = setTimeout(function () { playAndStop() }, 1000);
-      console.log("cont init: " + count)
+      timer = setTimeout(function () { playAndStop() }, 100);
+      //console.log("cont init: "+count)
     }
     else {
       let newDate = new Date()
@@ -171,31 +157,28 @@ const MusicPlayerScreen = ({ route }) => {
       let diffSecond = Math.abs(dateDiff)
       if (diffSecond <= 1) {
         count += 1
-        console.log("tiempo: " + diffSecond)
         if (count == 2) {
           clearTimeout(timer);
-          timer = setTimeout(function () { nextTrack() }, 1000);
+          timer = setTimeout(function () { nextTrack() }, 100);
         }
 
         else if (count == 3) {
           clearTimeout(timer);
-          timer = setTimeout(function () { prevTrack() }, 1000);
+          timer = setTimeout(function () { prevTrack() }, 100);
           count = 0
         }
         date = newDate
       }
       else {
         count = 1
-        timer = setTimeout(function () { playAndStop() }, 1000);
+        timer = setTimeout(function () { playAndStop() }, 100);
         date = new Date()
-        console.log("teimpo:" + diffSecond)
-        console.log("cont: " + count)
       }
     }
   }
 
   const longTouchScreen = () => {
-    var timer = setTimeout(function () { alert("asd") }, 1000);
+    console.log("toque largo");
   }
 
   return (
@@ -203,56 +186,46 @@ const MusicPlayerScreen = ({ route }) => {
       <View style={styles.headers}>
         <View style={styles.menu}>
           <TouchableOpacity style={styles.iconSearch}>
-            <Icon name="search" type='font-awesome' color='#fff' size={40} />
+            <Icon name="search" type='font-awesome' color='black' reverse size={40} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconLibrary}>
             <Text style={styles.library}></Text>
           </TouchableOpacity>
         </View>
       </View>
-
       <View style={styles.screen}>
-        <TouchableOpacity onLongPress={() => longTouchScreen()} style={styles.screenButton} onPress={() => { touchScreen() }}>
-
-        </TouchableOpacity>
+        <Pressable onLongPress={() => longTouchScreen()} style={styles.screenButton} onPress={() => { touchScreen() }} />
       </View>
-
       <View style={styles.viewName}>
         <View style={styles.name}>
-          <Text style={styles.nameMusic}>{musicTheme.title}</Text>
+          <Text style={styles.nameMusic}>{musicTheme.title.substr(0, 18)}</Text>
         </View>
       </View>
-
       <View style={styles.musicPlayer}>
-
         <View style={styles.contSlider}>
           <View style={styles.musicButtons}>
             <TouchableOpacity style={styles.prevButton} onPress={() => prevTrack()}>
-              <Icon name="backward" type='font-awesome' color='#ffffff' size={50} />
+              <Icon name="backward" type='font-awesome' color='#03902D' reverse size={50} />
             </TouchableOpacity>
-
             <TouchableOpacity style={styles.playButton} onPress={() => playAndStop()}>
-              <Icon name={buttonPlay} id="iconPlay" type='font-awesome' color='#ffffff' size={60} />
+              <Icon name={buttonPlay} id="iconPlay" type='font-awesome' color='black' reverse size={60} />
             </TouchableOpacity>
-
             <TouchableOpacity style={styles.nextButton} onPress={() => nextTrack()}>
-              <Icon name="forward" type='font-awesome' color='#ffffff' size={50} />
+              <Icon name="forward" type='font-awesome' color='#9E00B4' reverse size={50} />
             </TouchableOpacity>
           </View>
-          <Slider
+          {/* <Slider
             style={styles.slider}
             minimumValue={0}
             step={1}
             maximumValue={duration}
             value={position}
-            onValueChange={(res) => setPositionTrack(res)}
+            // onValueChange={(res) => setPositionTrack(res)}
             minimumTrackTintColor="#000"
             maximumTrackTintColor="#C3C3C3"
             trackStyle={{ height: 30, backgroundColor: 'transparent' }}
             thumbStyle={{ height: 20, width: 20, backgroundColor: 'transparent' }}
-          />
-          <Text>pos:{position},duration:{duration},idTrack{idTrack}</Text>
-
+          /> */}
         </View>
       </View>
     </>

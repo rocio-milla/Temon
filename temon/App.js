@@ -38,7 +38,7 @@ const App: () => React$Node = () => {
     // <ThemeProvider theme={theme}>
     <NavigationContainer theme={themeNavigation}>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
         <Stack.Screen
           name="Results"
           component={ResultsScreen}
@@ -55,7 +55,7 @@ const App: () => React$Node = () => {
             },
           }}
         />
-        <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} />
+        <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
       </Stack.Navigator>
     </NavigationContainer>
     // </ThemeProvider>
