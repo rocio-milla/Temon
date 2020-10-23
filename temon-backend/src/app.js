@@ -15,19 +15,18 @@ app.get('/musica/escuchar', async (req, res) => {
   try {
     console.log("body: ", req.body)
 
-
-		console.log('URL requested', req.query.url)
+    console.log('URL requested', req.query.url)
     const url = req.query.url;
     const audio = youtubeDownloader(url, {
-			filter: format => format.container === 'mp4',
-			quality: 'highestaudio'
-		});
+      filter: format => format.container === 'mp4',
+      quality: 'highestaudio'
+    });
 
     res.set("Content-Type", "video/mp4");
     
-		audio.pipe(res);
+    audio.pipe(res);
 		
-		console.log('request served');
+    console.log('request served');
   } catch (error) {
     console.log(`ocurrió un error al obtener el audio de ${url}`);
     res.status(500);
