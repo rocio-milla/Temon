@@ -11,17 +11,23 @@ app.listen(3000, () => {
  console.log("El servidor está inicializado en el puerto 3000");
 });
 
-app.post('/musica/escuchar', async (req, res) => {
-
+app.get('/musica/escuchar', async (req, res) => {
   try {
-    const url = req.body.url;
+    console.log("body: ", req.body)
+
+
+		console.log('URL requested', req.query.url)
+    const url = req.query.url;
     const audio = youtubeDownloader(url, {
-      filter: 'audioonly'
-    });
+			filter: format => format.container === 'mp4',
+			quality: 'highestaudio'
+		});
 
     res.set("Content-Type", "video/mp4");
     
-    audio.pipe(res);
+		audio.pipe(res);
+		
+		console.log('request served');
   } catch (error) {
     console.log(`ocurrió un error al obtener el audio de ${url}`);
     res.status(500);
