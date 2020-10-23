@@ -87,35 +87,29 @@ const MusicPlayerScreen = ({ route }) => {
   //   }
   // }, [song2])
 
-  useEffect(() => {
-    const bodyToSend = {
-      url: song
-    }
-    fetch(`${PersonalConfig.url}/musica/escuchar`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify(bodyToSend)
-    })
-      // .then(response => response.blob())
-      .then(async res => {
-        await TrackPlayer.setupPlayer();
-        console.log("Estoy en el fetch ", res);
-        await TrackPlayer.add({
-          id: 1,
-          url: res,
-          title: title
-        });
-        console.log("Se agregó el track :)");
-        await TrackPlayer.play();
-        console.log("El track debería empezar a sonar!")
-        setMusicTheme({ ...musicTheme, title: title })
-      })
-      .catch((error) => {
-        console.log("Hubo un error ", error)
+  useEffect(async e => {
+    const setPlayer = async () => {
+      await TrackPlayer.setupPlayer();
+
+      console.log("Mi URL ", `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(song)}`);
+
+      await TrackPlayer.add({
+        id: 1,
+        url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(song)}`,
+        title: title
       });
-  }, [])
+      console.log("Se agregó el track :)");
+      await TrackPlayer.play();
+      console.log("El track debería empezar a sonar!")
+      setMusicTheme({ ...musicTheme, title: title })
+    };
+
+      setPlayer();
+    
+      return (() => {
+        console.log("unmount :)")
+      })
+    }, [])
 
   let playAndStop = () => {
     if (buttonPlay == "pause") {
