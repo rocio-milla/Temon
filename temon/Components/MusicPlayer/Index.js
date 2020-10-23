@@ -78,14 +78,14 @@ const MusicPlayerScreen = ({ route }) => {
     // })
   }, [])
 
-  useEffect(() => {
-    if (song2) {
-      const val = URL.createObjectURL(song2);
-      console.log(val)
-      // console.log(song2.stream())
-      setMusicTheme({ url: song2, title: title })
-    }
-  }, [song2])
+  // useEffect(() => {
+  //   if (song2) {
+  //     const val = URL.createObjectURL(song2);
+  //     console.log(val)
+  //     // console.log(song2.stream())
+  //     setMusicTheme({ url: song2, title: title })
+  //   }
+  // }, [song2])
 
   useEffect(() => {
     const bodyToSend = {
@@ -98,15 +98,19 @@ const MusicPlayerScreen = ({ route }) => {
       },
       body: JSON.stringify(bodyToSend)
     })
-      .then(response => response.blob())
-      .then(blob => {
-        setSong(blob)
-        // const fileReaderInstance = new FileReader();
-        // fileReaderInstance.readAsDataURL(blob);
-        // fileReaderInstance.onload = () => {
-        //   base64data = fileReaderInstance.result;
-        //   setSong(base64data)
-        //   console.log(base64data);
+      // .then(response => response.blob())
+      .then(async res => {
+        await TrackPlayer.setupPlayer();
+        console.log("Estoy en el fetch ", res);
+        await TrackPlayer.add({
+          id: 1,
+          url: res,
+          title: title
+        });
+        console.log("Se agregó el track :)");
+        await TrackPlayer.play();
+        console.log("El track debería empezar a sonar!")
+        setMusicTheme({ ...musicTheme, title: title })
       })
       .catch((error) => {
         console.log("Hubo un error ", error)
