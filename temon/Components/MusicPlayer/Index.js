@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, Slider } from 'react-native-elements';
 import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
+import runes from 'runes';
 import { PersonalConfig } from '../../PersonalConfig.js';
 import styles from './IndexStyle';
 
@@ -175,7 +176,7 @@ const MusicPlayerScreen = ({ route }) => {
       </View>
       <View style={styles.viewName}>
         <View style={styles.name}>
-          <Text style={styles.nameMusic}>{musicTheme.title.substr(0, 18)}</Text>
+          <Text style={styles.nameMusic}>{runes.substr(musicTheme.title.substr, 0, 18)}</Text>
         </View>
       </View>
       <View style={styles.musicPlayer}>

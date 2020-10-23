@@ -2,6 +2,7 @@ import { size } from 'lodash';
 import React from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Divider } from 'react-native-elements';
+import runes from 'runes';
 
 export default function ResultList(props) {
   const { navigation, results } = props;
@@ -42,8 +43,8 @@ function Cancion(props) {
     <TouchableOpacity onPress={() => playCancion()}>
       <View style={styles.cancionView}>
         {/* <Text style={styles.cancionName}>{singer}</Text> */}
-        <Text style={styles.cancionName}>{video.substr(0, 18)}</Text>
-        {video.substr(18, 15) !== "" && <Text style={styles.cancionName}>{`${video.substr(18, 15)}...`}</Text>}
+        <Text style={styles.cancionName}>{runes.substr(video, 0, 18)}</Text>
+        {runes.substr(video, 18, 15) !== "" && <Text style={styles.cancionName}>{`${runes.substr(video, 18, 15)}...`}</Text>}
       </View>
       <Divider style={styles.divider} />
     </TouchableOpacity>
