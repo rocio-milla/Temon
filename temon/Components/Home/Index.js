@@ -7,6 +7,7 @@ import {
   TouchableOpacity, View
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import Sound from 'react-native-sound';
 import { PersonalConfig } from '../../PersonalConfig.js';
 
 const HomeScreen = ({ navigation }) => {
@@ -14,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
   const [error, setError] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const start_recording = new Sound('start_recording.mp3', Sound.MAIN_BUNDLE);
   const onSpeechError = (e) => {
     //Invoked when an error occurs.
     setError(JSON.stringify(e.error));
@@ -105,7 +106,11 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
           <TouchableOpacity
-            onPressIn={async () => await startRecognizing()} onPressOut={async () => await stopRecognizing()}>
+            onPressIn={async () => {
+              start_recording.play();
+              await startRecognizing();
+            }}
+             onPressOut={async () => await stopRecognizing()}>
             <Icon
               name="microphone"
               type='font-awesome'
