@@ -246,8 +246,7 @@ const styles = StyleSheet.create ({
       marginTop: 50
    },
    textInput: {
-
       borderWidth: 1,
-
+      fontSize: 20
    }
 })
