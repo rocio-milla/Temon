@@ -13,6 +13,7 @@ import HomeScreen from './Components/Home/Index';
 import { createStackNavigator } from '@react-navigation/stack';
 import ResultsScreen from './Components/Results/Index';
 import MusicPlayerScreen from './Components/MusicPlayer/Index';
+import ScreenPlaylists from './Components/Playlists/Index';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,7 @@ const App: () => React$Node = () => {
           }}
         />
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
+        <Stack.Screen name="Playlists" component={ScreenPlaylists} options={{ headerShown: false }} unmountOnBlur={true}/>
       </Stack.Navigator>
     </NavigationContainer>
     // </ThemeProvider>
