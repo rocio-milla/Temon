@@ -111,8 +111,6 @@ else{
 
    };
 
-
-
    deletePlaylist = (id) => {
     db.transaction(tx => {
     tx.executeSql(
@@ -208,31 +206,31 @@ else{
                   )}
                 />
 
-                <Dialog.Container visible={this.state.visible}>
-                <Dialog.Title>PLAYLIST</Dialog.Title>
+                <Dialog.Container visible={this.state.visible}  >
+                <Dialog.Title style = {{fontSize:50 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
                 <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input>
 
-           <Select
+           <Select 
             onSelect = {this.onSelect.bind(this)}
             defaultText  = {this.state.colour}
-            style = {{borderWidth : 1, backgroundColor :this.state.colour} }
+            style = {{ margin:7,width:250,height:120,borderWidth : 1, backgroundColor :this.state.colour} }
             textStyle = {{color:this.state.colour}}
             backdropStyle  = {{backgroundColor : "#d3d5d6"}}
             optionListStyle = {{backgroundColor : "#F5FCFF"}}
           >
 
-          <Option  style = {{backgroundColor : "#7685ed"}}value = "#7685ed"></Option>
-          <Option style = {{backgroundColor : "yellow"}} value = "yellow"></Option>
-          <Option style = {{backgroundColor : "black"}} value = "black"></Option>
-          <Option style = {{backgroundColor : "blue"}} value = "blue"></Option>
-          <Option style = {{backgroundColor : "red"}} value = "red"></Option>
-          <Option style = {{backgroundColor : "grey"}} value = "grey"></Option>
-          <Option style = {{backgroundColor : "pink"}} value = "pink"></Option>
-          <Option style = {{backgroundColor : "orange"}} value = "orange"></Option>
+          <Option  style = {{backgroundColor : "#7685ed",height:100}}value = "#7685ed"></Option>
+          <Option style = {{backgroundColor : "yellow",height:100}} value = "yellow"></Option>
+          <Option style = {{backgroundColor : "black",height:100}} value = "black"></Option>
+          <Option style = {{backgroundColor : "blue",height:100}} value = "blue"></Option>
+          <Option style = {{backgroundColor : "red",height:100}} value = "red"></Option>
+          <Option style = {{backgroundColor : "grey",height:100}} value = "grey"></Option>
+          <Option style = {{backgroundColor : "pink",height:100}} value = "pink"></Option>
+          <Option style = {{backgroundColor : "orange",height:100}} value = "orange"></Option>
 
           </Select>
-          <Dialog.Button label="AGREGAR" onPress={this.addPlaylist} />
-          <Dialog.Button label="CANCELAR" onPress={this.hideDialog} />
+          <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
+          <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
           </Dialog.Container>
           </View>
       )
@@ -248,9 +246,8 @@ const styles = StyleSheet.create ({
       marginTop: 50
    },
    textInput: {
-      margin: 15,
-      height: 10,
+
       borderWidth: 1,
-      backgroundColor: '#7685ed'
+
    }
 })
