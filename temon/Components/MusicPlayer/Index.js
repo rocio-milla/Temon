@@ -162,7 +162,7 @@ const MusicPlayerScreen = ({ route }) => {
   }
 
   const library = () => {
-    navigation.navigate('Playlists');
+    navigation.navigate('Library');
   };
 
   return (
