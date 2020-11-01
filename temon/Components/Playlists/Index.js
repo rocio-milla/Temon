@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet,FlatList , ToastAndroid} from 'react-native'
+import { View, StyleSheet,FlatList , ToastAndroid,TextInput } from 'react-native'
 import Dialog from "react-native-dialog";
 import {Select, Option} from "react-native-chooser";
 import { Icon,Button } from 'react-native-elements';   
@@ -149,6 +149,13 @@ else{
 
     };
 
+     onChangeText = (text) => {
+
+      console.log(text);
+
+    }
+
+
    ListViewItemSeparator = () => {
       return (
         <View style={{ height: 0, width: '100%', backgroundColor: '#808080' }} />
@@ -181,57 +188,61 @@ else{
 
                     <View key={item.id} style={{ backgroundColor: 'white', padding: 20 ,flexDirection: 'row'  ,alignItems:'center'   }}>
 
-                  <Button
-                   titleStyle={{
-                   color: "white",
-                   fontSize: 38,
-                   fontWeight: "bold"
-                  }}
-                   buttonStyle={{
-                   backgroundColor: item.colour,
-                   borderRadius: 10,
-                   height: 90,
-                   width: 250,  
-                   }}
-                   title={item.name}/>
+                      <Button
+                      titleStyle={{
+                      color: "white",
+                      fontSize: 38,
+                      fontWeight: "bold"
+                      }}
+                      buttonStyle={{
+                      backgroundColor: item.colour,
+                      borderRadius: 10,
+                      height: 90,
+                      width: 250,  
+                      }}
+                      title={item.name}/>
 
 
-<Icon onPress = {()=>this.deletePlaylist(item.id)}
-  name='trash'
-  type='evilicon'
-  color='black'
-  size={100}
-/>
+                      <Icon onPress = {()=>this.deletePlaylist(item.id)}
+                        name='trash'
+                        type='evilicon'
+                        color='black'
+                        size={100}
+                        />
                     </View>
                   )}
                 />
 
                 <Dialog.Container visible={this.state.visible}  >
                 <Dialog.Title style = {{fontSize:50 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
-                <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input>
+               
+                <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
+                onChangeText={ this.source}/>
 
-           <Select 
-            onSelect = {this.onSelect.bind(this)}
-            defaultText  = {this.state.colour}
-            style = {{ margin:7,width:250,height:120,borderWidth : 1, backgroundColor :this.state.colour} }
-            textStyle = {{color:this.state.colour}}
-            backdropStyle  = {{backgroundColor : "#d3d5d6"}}
-            optionListStyle = {{backgroundColor : "#F5FCFF"}}
-          >
+    {/*        <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input> */}
+         
+              <Select 
+                onSelect = {this.onSelect.bind(this)}
+                defaultText  = {this.state.colour}
+                style = {{ margin:7,width:250,height:120,borderWidth : 1, backgroundColor :this.state.colour} }
+                textStyle = {{color:this.state.colour}}
+                backdropStyle  = {{backgroundColor : "#d3d5d6"}}
+                optionListStyle = {{backgroundColor : "#F5FCFF"}}
+              >
 
-          <Option  style = {{backgroundColor : "#7685ed",height:100}}value = "#7685ed"></Option>
-          <Option style = {{backgroundColor : "yellow",height:100}} value = "yellow"></Option>
-          <Option style = {{backgroundColor : "black",height:100}} value = "black"></Option>
-          <Option style = {{backgroundColor : "blue",height:100}} value = "blue"></Option>
-          <Option style = {{backgroundColor : "red",height:100}} value = "red"></Option>
-          <Option style = {{backgroundColor : "grey",height:100}} value = "grey"></Option>
-          <Option style = {{backgroundColor : "pink",height:100}} value = "pink"></Option>
-          <Option style = {{backgroundColor : "orange",height:100}} value = "orange"></Option>
+              <Option  style = {{backgroundColor : "#C84B02",height:100}}value = "#C84B02"></Option>
+              <Option style = {{backgroundColor : "#3300CC",height:100}} value = "#3300CC"></Option>
+              <Option style = {{backgroundColor : "#D12734",height:100}} value = "#D12734"></Option>
+              <Option style = {{backgroundColor : "#47761C",height:100}} value = "#47761C"></Option>
+              <Option style = {{backgroundColor : "#0B797E",height:100}} value = "#0B797E"></Option>
+              <Option style = {{backgroundColor : "#A646DD",height:100}} value = "#A646DD"></Option>
+              <Option style = {{backgroundColor : "#000000",height:100}} value = "#000000"></Option>
+              <Option style = {{backgroundColor : "#CF2EAD",height:100}} value = "#CF2EAD"></Option>
 
-          </Select>
-          <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
-          <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
-          </Dialog.Container>
+              </Select>
+              <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
+              <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
+              </Dialog.Container>
           </View>
       )
    }
