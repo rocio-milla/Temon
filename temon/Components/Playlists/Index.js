@@ -16,15 +16,14 @@ class ScreenPlaylists extends Component {
       'name' :'',
       'elementList':[],
       'visible':false,
-      'colour' : "red",
-   
+      'colour' : '#A646DD',
    }
 
    componentDidMount() {
     db.transaction(tx => {
 
       tx.executeSql(
-        'create table if not exists playlist (id integer primary key not null, name text,colour text);',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
+        'create table if not exists playlist (name text not null,colour text not null, primary key(name,colour));',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
       );
 
       //---------listar----------//
@@ -50,9 +49,6 @@ class ScreenPlaylists extends Component {
     this.setState({colour : value});
   }
 
-
-
-
    //-------modal---------//
     showDialog = () => {
 
@@ -71,50 +67,92 @@ class ScreenPlaylists extends Component {
 
   console.log(name);
   this.setState({ 'name' : name});
+  
 } 
 
    addPlaylist = ()=>{
+     let cont=0;
+    console.log("a agregar")
+    console.log(this.state.name)
+    console.log(this.state.colour)
+
 
     if(this.state.name!=''){
 
-     db.transaction(
-       tx => {
-        console.log(tx.executeSql('insert into playlist (name,colour) values (?,?)',[this.state.name,this.state.colour],()=>console.log("sucess"),(a,b)=>console.log(b)));
+      for (let element of this.state.elementList) {
 
-        tx.executeSql('SELECT * from playlist', [], (tx, results) => {
-         var len = results.rows.length;
-         let elements = [];
+        if(element.name==this.state.name && element.colour==this.state.colour){
 
-        if(len > 0) {
-   
-           for (let i = 0; i < len; i++) {
-             elements.push(results.rows.item(i));
-             console.log(results.rows.item(i));
-           }
-           this.setState({ elementList:elements});
-           console.log(this.state.elementList)
-
+            console.log("cambia a 1")
+            cont=cont+1;
+  
+             }
         }
-       });
 
-        console.log("exit");
+    console.log("la condicion es : "+ cont)
+
+    if(cont==1)
+    {
+          ToastAndroid.show('YA EXISTE', ToastAndroid.SHORT);
+         console.log("ya existe")
+    }
+
+    else{
+
+      console.log("no existe")
+      db.transaction(
+        tx => {
+        tx.executeSql('insert into playlist (name,colour) values (?,?)',[this.state.name,this.state.colour]   ,
+          (tx, results) => {
+
+          if (results.rowsAffected > 0) {
+            console.log("insertado")
+      
+          } 
+
+          else {
+            console.log("no se inserto")
+          }
+     });
+
+     console.log("segunda parte")
+      tx.executeSql('SELECT * from playlist', [], (tx, results) => {
+      var len = results.rows.length;
+       let elements = [];
+
+       if(len > 0) {
+
+      for (let i = 0; i < len; i++) {
+        elements.push(results.rows.item(i));
+        console.log(results.rows.item(i));
       }
-    )
-    this.setState({ visible:false});
+      this.setState({ elementList:elements});
+      console.log(this.state.elementList)
 
+   }
+  });
+
+ }
+)
+      this.setState({ visible:false});
+
+}
     } 
 
-else{
-  this.setState({ visible:true});
-  ToastAndroid.show('INGRESE NOMBRE', ToastAndroid.SHORT);
-}
+      else
+      {
+       this.setState({ visible:true});
+       ToastAndroid.show('INGRESE NOMBRE', ToastAndroid.SHORT);
+    }
 
    };
 
-   deletePlaylist = (id) => {
+   deletePlaylist = (name,colour) => {
+     console.log(name)
+     console.log(colour)
     db.transaction(tx => {
     tx.executeSql(
-    'DELETE FROM  playlist where id=?', [id],
+    'DELETE FROM  playlist where name=? and colour=?', [name,colour],
     (tx, results) => {
     console.log('Results', results.rowsAffected); if (results.rowsAffected > 0) {
       console.log("id borrado :"+id)
@@ -204,7 +242,7 @@ else{
                       title={item.name}/>
 
 
-                      <Icon onPress = {()=>this.deletePlaylist(item.id)}
+                      <Icon onPress = {()=>this.deletePlaylist(item.name,item.colour)}
                         name='trash'
                         type='evilicon'
                         color='black'
