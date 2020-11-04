@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet,FlatList , ToastAndroid,TextInput } from 'react-native'
+import { View, StyleSheet,FlatList , ToastAndroid,TextInput,Animated,Text } from 'react-native'
 import Dialog from "react-native-dialog";
 import {Select, Option} from "react-native-chooser";
 import { Icon,Button } from 'react-native-elements';   
@@ -17,9 +17,13 @@ class ScreenPlaylists extends Component {
       'elementList':[],
       'visible':false,
       'colour' : '#A646DD',
+      startValue: new Animated.Value(0),
+      endValue: new Animated.Value(1)
+
    }
 
    componentDidMount() {
+
     db.transaction(tx => {
 
       tx.executeSql(
@@ -93,7 +97,23 @@ class ScreenPlaylists extends Component {
 
     if(cont==1)
     {
-          ToastAndroid.show('YA EXISTE', ToastAndroid.SHORT);
+
+      Animated.sequence([
+        Animated.timing(this.state.startValue, {
+
+          toValue: 1,
+          duration: 2000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(this.state.startValue, {
+
+          toValue: 0,
+          duration: 2000,
+          useNativeDriver: true,
+        })
+      ]).start()
+
+         // ToastAndroid.show('YA EXISTE', ToastAndroid.SHORT);
          console.log("ya existe")
     }
 
@@ -142,6 +162,8 @@ class ScreenPlaylists extends Component {
       else
       {
        this.setState({ visible:true});
+
+
        ToastAndroid.show('INGRESE NOMBRE', ToastAndroid.SHORT);
     }
 
@@ -204,6 +226,8 @@ class ScreenPlaylists extends Component {
       return (
          <View style = {styles.container}>
 
+
+
             <Button onPress={this.showDialog}
                 titleStyle={{
                 color: "white",
@@ -253,6 +277,15 @@ class ScreenPlaylists extends Component {
                 />
 
                 <Dialog.Container visible={this.state.visible}  >
+
+                <Animated.View
+          style={[styles.square, {opacity: this.state.startValue}]}
+        >
+
+        <Text style={{ color: 'white',  fontSize:38, fontWeight: 'bold' }}>
+              YA EXISTE
+              </Text>
+            </Animated.View>
                 <Dialog.Title style = {{fontSize:50 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
                
                 <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
@@ -298,5 +331,12 @@ const styles = StyleSheet.create ({
    textInput: {
       borderWidth: 1,
       fontSize: 20
-   }
+   },
+
+   square: {
+    alignItems: 'center',
+    height: 50,
+    width: 300,
+    backgroundColor: 'green',
+  }
 })
