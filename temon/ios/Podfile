@@ -10,6 +10,10 @@ target 'temon' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-voice', :path => '../node_modules/@react-native-community/voice'
+
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'temonTests' do
     inherit! :complete
     # Pods for testing

@@ -14,8 +14,6 @@ app.listen(3000, () => {
 app.get('/musica/escuchar', async (req, res) => {
   try {
     console.log("body: ", req.body)
-
-    console.log('URL requested', req.query.url)
     const url = req.query.url;
     const audio = youtubeDownloader(url, {
       filter: format => format.container === 'mp4',
