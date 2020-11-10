@@ -98,8 +98,8 @@ const HomeScreen = ({ navigation }) => {
 		}
 	}, [results])
 
-	const getGenreResults = () => {
-		const genreResults = GetGenres(navigation);
+	const getGenreResults = async () => {
+		const genreResults = await GetGenres(navigation);
 
 		navigation.navigate('GenreList', {
 			genreResults

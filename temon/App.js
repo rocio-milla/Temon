@@ -58,8 +58,38 @@ const App: () => React$Node = () => {
           }}
         />
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
-				<Stack.Screen name="GenreList" component={GenreListScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
-				<Stack.Screen name="GenreListSongs" component={GenreListArtistsScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
+				<Stack.Screen
+					name="GenreList"
+					component={GenreListScreen}
+					options={{
+            title: 'GÉNEROS',
+            headerStyle: {
+              backgroundColor: '#a548d8',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+				/>
+				<Stack.Screen
+					name="GenreListSongs"
+					component={GenreListArtistsScreen}
+					options={{
+            title: 'ARTISTAS',
+            headerStyle: {
+              backgroundColor: '#a548d8',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+				/>
       </Stack.Navigator>
     </NavigationContainer>
     // </ThemeProvider>
