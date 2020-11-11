@@ -10,9 +10,11 @@ var SQLite = require('react-native-sqlite-storage');
 var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexample.db'});
 
 
-const ScreenPlayListSelected = ( props ) => {
 
-  console.log("ffff");
+const ScreenPlayListSelected = ( {route }) => {
+
+  const { title, colour,songs} = route.params;
+/*  console.log("ffff");
   db.transaction(tx => {
 
     tx.executeSql('SELECT * from playlist', [], (tx, results) => {
@@ -27,21 +29,34 @@ const ScreenPlayListSelected = ( props ) => {
          console.log(this.state.elementList)
      });
 
-  });
- 
+  });*/
 
-  const { navigation, route } = props;
-  const { id, name } = route.params;
-  console.log(route.params);
 
+  //onst { navigation, route } = props;
+
+  //console.log(route.params);
 
   return (
 
-   // <>
-   
-  <Text>Holaaa Nombre Lista</Text>
+    <>
+         <View>
+         <Text style={{fontSize :38, backgroundColor:colour}}>{title}</Text>
+        <FlatList
+                  data={songs}
+                
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
 
-    //</>
+                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
+
+                      <Text style={{fontSize :20}}>{item.title}</Text>
+
+                    </View>
+                  )}
+                />
+            
+  </View>
+    </>
 );
 }
 export default ScreenPlayListSelected;

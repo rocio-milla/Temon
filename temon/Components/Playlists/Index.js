@@ -17,9 +17,11 @@ class ScreenPlaylists extends Component {
       'elementList':[],
       'visible':false,
       'colour' : '#A646DD',
+      'elementsListPlaylist':[],
+      'listAllSong':[],
+
       startValue: new Animated.Value(0),
       endValue: new Animated.Value(1)
-
    }
 
    componentDidMount() {
@@ -30,15 +32,23 @@ class ScreenPlaylists extends Component {
         'create table if not exists playlist (name text not null,colour text not null, primary key(name,colour));',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
       );
 
-      //--------------------------------Listas de ejemplo -------------------------//
+
+            //--------------------------------tabla de canciones -------------------------//
       tx.executeSql(
-        'create table if not exists playlistSongs (name text not null,singer text not null,song text not null);',[],()=>console.log("tablaCreada"),(a,b)=>console.log(b)
+        'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
       );
-      db.transaction((tx)=>{
-        tx.executeSql(        
-          'INSERT INTO playlist (name,colour) VALUES (?,?),(?,?),(?,?)',
-          ["Clasicos!","#C84B02","Variados","#3300CC","Rock","#C84B02"],
-          (tx, results) => {               
+///////////////------------------//////////////////////
+
+
+        tx.executeSql(  
+          'INSERT OR IGNORE  INTO playlist (name,colour) VALUES (?,?),(?,?),(?,?)',
+          ["Clasicos!","#CF2EAD",
+          "Variados","#3300CC",
+          "Rock","#C84B02"]
+          ,
+          (tx, results) => {  
+            
+            
             if (results.rowsAffected > 0 ) {
               console.log('Insert success');              
             } else {
@@ -46,11 +56,13 @@ class ScreenPlaylists extends Component {
             }
           }
         );
-      });
-      db.transaction((tx)=>{
+ 
         tx.executeSql(        
-          'INSERT INTO playlistSongs (name,singer,song) VALUES (?,?,?),(?,?,?),(?,?,?)',
-          ["Clasicos!","Queen","We will rock you","Variados","Madonna","La isla bonita","Rock","Virus","Imágenes paganas"],
+          'INSERT OR IGNORE INTO song (url,title,namePlaylist,colour) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)',
+          ["url1","Queen - We will rock you","Clasicos!","#CF2EAD",
+           "url2","Madonna - La isla bonita","Clasicos!","#CF2EAD",
+           "url3","Virus - Imágenes paganas","Variados","#3300CC",
+           "url4","Queen - Killer Queen","Variados","#3300CC"],
          // "Clasicos!","Guns N Roses","Roses - Welcome To The Jungle",
          // "Clasicos!","The Beatles","Helter Skelter"],
           //"Variados","Madonna","La isla bonita",
@@ -67,11 +79,9 @@ class ScreenPlaylists extends Component {
             }
           }
         );
-      });
-      //--------------------------------FINListas de ejemplo -------------------------//
 
 
-      //---------listar----------//
+      //---------listar playlists----------//
       tx.executeSql('SELECT * from playlist', [], (tx, results) => {
          var len = results.rows.length;
 
@@ -85,9 +95,87 @@ class ScreenPlaylists extends Component {
        });
 
        //-------------///
+
+////////////----------SOLO PARA VER TODAS LAS CANCIONES------///////////
+    /*   tx.executeSql('SELECT * from song', [], (tx, results) => {
+        var len = results.rows.length;
+        console.log(len)
+        let elements = [];
+        if(len > 0) {
+          for (let i = 0; i < len; i++) {
+            elements.push(results.rows.item(i));
+            console.log(results.rows.item(i));
+          }
+          this.setState({ listAllSong:elements});
+          console.log(this.state.listAllSong)
+    
+        }
+      if(len==0){
+          console.log("no hay")
+        let elements = [];
+    
+        this.setState({ listAllSong:elements});
+    }
+    
+      });*/
+
+//----------------------------------------------//
+
     });
+
   }
 
+  PlaylistElements = (name,colour) => {
+
+    //console.log(name+"-"+colour)
+  
+    db.transaction(tx => {
+   
+    tx.executeSql('SELECT * from song where namePlaylist=? and colour=?', [name,colour], (tx, results) => {
+      var len = results.rows.length;
+      console.log(len)
+      let elements = [];
+      if(len > 0) {
+        for (let i = 0; i < len; i++) {
+          elements.push(results.rows.item(i));
+         // console.log(results.rows.item(i));
+        }
+        this.setState({ elementsListPlaylist:elements});
+      //  console.log(this.state.elementsListPlaylist)
+  
+      console.log("-------------------lista de canciones-------------------")
+      console.log(this.state.elementsListPlaylist)
+
+      this.props.navigation.navigate('PlayListSelected', {
+        title:name,
+        colour:colour,
+        songs:this.state.elementsListPlaylist
+      });
+      }
+
+    if(len==0){
+        console.log("no hay")
+      let elements = [];
+  
+      this.setState({ elementsListPlaylist:elements});
+
+      console.log("-------------------lista de canciones-------------------")
+      console.log(this.state.elementsListPlaylist)
+
+      this.props.navigation.navigate('PlayListSelected', {
+        title:name,
+        colour:colour,
+        songs:this.state.elementsListPlaylist
+      });
+  }
+  
+    });
+  });
+
+
+  };
+  
+  
   onSelect(value) {
 
     console.log("color seleccionado es: "+ value)
@@ -195,7 +283,6 @@ class ScreenPlaylists extends Component {
  }
 )
       this.setState({ visible:false});
-
 }
     } 
 
@@ -218,12 +305,11 @@ class ScreenPlaylists extends Component {
     (tx, results) => {
     console.log('Results', results.rowsAffected); if (results.rowsAffected > 0) {
       console.log("id borrado :"+id)
-
     } 
     }
     );
 
-    //----------listar------//
+    //----------listar playlists------//
     tx.executeSql('SELECT * from playlist', [], (tx, results) => {
       var len = results.rows.length;
       let elements = [];
@@ -250,9 +336,7 @@ class ScreenPlaylists extends Component {
     };
 
      onChangeText = (text) => {
-
       console.log(text);
-
     }
 
 
@@ -263,6 +347,7 @@ class ScreenPlaylists extends Component {
     };
 
    render() {
+
       return (
          <View style = {styles.container}>
 
@@ -287,7 +372,27 @@ class ScreenPlaylists extends Component {
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => (
                     <View key={item.id} style={{ backgroundColor: 'white', padding: 10 ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-                      <Lista item={item}/>
+                    
+                    <Button
+                      titleStyle={{
+                      color: "white",
+                      fontSize: 38,
+                      fontWeight: "bold"
+                      }}
+
+                      buttonStyle={{
+                        backgroundColor: item.colour,
+                        borderRadius: 10,
+                        height: 90,
+                        width: 250,  
+                        }}
+
+                    onPress={()=>this.PlaylistElements(item.name,item.colour)} 
+                 
+                      title={item.name}/>
+                    
+                    { /* <Lista       item={item}  />*/}
+
                       <Icon onPress = {()=>this.deletePlaylist(item.name,item.colour)}
                         name='trash'
                         type='evilicon'
@@ -304,7 +409,6 @@ class ScreenPlaylists extends Component {
                 <Animated.View
           style={[styles.square, {opacity: this.state.startValue}]}
         >
-
         <Text style={{ color: 'white',  fontSize:38, fontWeight: 'bold' }}>
               YA EXISTE
               </Text>
@@ -338,6 +442,41 @@ class ScreenPlaylists extends Component {
               <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
               <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
               </Dialog.Container>
+
+
+            { /*PARA VER LAS CANCIONES DE LA PLAYLIST
+            
+            <FlatList
+                  data={this.state.elementsListPlaylist}
+                  ItemSeparatorComponent={this.ListViewItemSeparator}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+
+                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
+
+                      <Text style={{fontSize :20}}>{item.title}</Text>
+
+                    </View>
+                  )}
+                />*/}
+
+
+{ /*  SOLO PARA VER TODAS LAS CANCIONES
+           <FlatList
+                  data={this.state.listAllSong}
+                  ItemSeparatorComponent={this.ListViewItemSeparator}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+
+                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
+
+                      <Text style={{fontSize :20}}>{item.title}</Text>
+
+
+                    </View>
+                  )}
+                  />*/}
+
           </View>
       )
    }
@@ -356,12 +495,20 @@ function Lista(props){
                       fontSize: 38,
                       fontWeight: "bold"
                       }}
-                      onPress={() => 
+
+                      buttonStyle={{
+                        backgroundColor: item.colour,
+                        borderRadius: 10,
+                        height: 90,
+                        width: 250,  
+                        }}
+                     onPress={() => 
                         navigation.navigate("PlayListSelected", {
                         screen: "PlayListSelected",
                           params: { name },
                         })
                       }
+                        
                       title={name}/>
   );
 }
