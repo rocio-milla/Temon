@@ -15,6 +15,7 @@ import ResultsScreen from './Components/Results/Index';
 import MusicPlayerScreen from './Components/MusicPlayer/Index';
 import ScreenPlaylists from './Components/Playlists/Index';
 import ScreenLibrary from './Components/Library/Index';
+import ScreenPlayListSelected from './Components/PlayListSelected/Index';
 
 const Stack = createStackNavigator();
 
@@ -76,7 +77,22 @@ const App: () => React$Node = () => {
         />
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
         <Stack.Screen name="Playlists" component={ScreenPlaylists} options={{ headerShown: false }} unmountOnBlur={true}/>
-
+        <Stack.Screen
+          name="PlayListSelected"
+          component={ScreenPlayListSelected}
+          options={{
+            title: 'LISTA',
+            headerStyle: {
+              backgroundColor: '#a548d8',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
     // </ThemeProvider>

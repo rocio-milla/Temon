@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View, StyleSheet,FlatList , ToastAndroid,TextInput,Animated,Text } from 'react-native'
+import { View, StyleSheet,FlatList , ToastAndroid,TextInput,Animated,Text,TouchableOpacity } from 'react-native'
 import Dialog from "react-native-dialog";
 import {Select, Option} from "react-native-chooser";
-import { Icon,Button } from 'react-native-elements';   
+import { Icon,Button } from 'react-native-elements';
+import {useNavigation } from '@react-navigation/native';
 
 
 var SQLite = require('react-native-sqlite-storage')
@@ -10,7 +11,6 @@ var SQLite = require('react-native-sqlite-storage')
 var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexample.db'})
 
 class ScreenPlaylists extends Component {
-
 
    state = {
       'name' :'',
@@ -29,6 +29,47 @@ class ScreenPlaylists extends Component {
       tx.executeSql(
         'create table if not exists playlist (name text not null,colour text not null, primary key(name,colour));',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
       );
+
+      //--------------------------------Listas de ejemplo -------------------------//
+      tx.executeSql(
+        'create table if not exists playlistSongs (name text not null,singer text not null,song text not null);',[],()=>console.log("tablaCreada"),(a,b)=>console.log(b)
+      );
+      db.transaction((tx)=>{
+        tx.executeSql(        
+          'INSERT INTO playlist (name,colour) VALUES (?,?),(?,?),(?,?)',
+          ["Clasicos!","#C84B02","Variados","#3300CC","Rock","#C84B02"],
+          (tx, results) => {               
+            if (results.rowsAffected > 0 ) {
+              console.log('Insert success');              
+            } else {
+              console.log('Insert failed');
+            }
+          }
+        );
+      });
+      db.transaction((tx)=>{
+        tx.executeSql(        
+          'INSERT INTO playlistSongs (name,singer,song) VALUES (?,?,?),(?,?,?),(?,?,?)',
+          ["Clasicos!","Queen","We will rock you","Variados","Madonna","La isla bonita","Rock","Virus","Imágenes paganas"],
+         // "Clasicos!","Guns N Roses","Roses - Welcome To The Jungle",
+         // "Clasicos!","The Beatles","Helter Skelter"],
+          //"Variados","Madonna","La isla bonita",
+          //"Variados","The Rolling Stones","I can't get no",
+          //"Variados","Juanes","Es por ti",
+          //"Rock","Los Abuelos de la Nada","Mil horas",
+          //"Rock","Soda Stereo","Cuando pase el temblor",
+          //"Rock","Virus ","Imágenes paganas"],
+          (tx, results) => {               
+            if (results.rowsAffected > 0 ) {
+              console.log('cancion insertada');              
+            } else {
+              console.log('cancion no insertada');
+            }
+          }
+        );
+      });
+      //--------------------------------FINListas de ejemplo -------------------------//
+
 
       //---------listar----------//
       tx.executeSql('SELECT * from playlist', [], (tx, results) => {
@@ -79,7 +120,6 @@ class ScreenPlaylists extends Component {
     console.log("a agregar")
     console.log(this.state.name)
     console.log(this.state.colour)
-
 
     if(this.state.name!=''){
 
@@ -226,8 +266,6 @@ class ScreenPlaylists extends Component {
       return (
          <View style = {styles.container}>
 
-
-
             <Button onPress={this.showDialog}
                 titleStyle={{
                 color: "white",
@@ -248,24 +286,8 @@ class ScreenPlaylists extends Component {
                   ItemSeparatorComponent={this.ListViewItemSeparator}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => (
-
                     <View key={item.id} style={{ backgroundColor: 'white', padding: 10 ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-
-                      <Button
-                      titleStyle={{
-                      color: "white",
-                      fontSize: 38,
-                      fontWeight: "bold"
-                      }}
-                      buttonStyle={{
-                      backgroundColor: item.colour,
-                      borderRadius: 10,
-                      height: 90,
-                      width: 250,  
-                      }}
-                      title={item.name}/>
-
-
+                      <Lista item={item}/>
                       <Icon onPress = {()=>this.deletePlaylist(item.name,item.colour)}
                         name='trash'
                         type='evilicon'
@@ -273,6 +295,7 @@ class ScreenPlaylists extends Component {
                         size={100}
                         />
                     </View>
+                  
                   )}
                 />
 
@@ -320,6 +343,28 @@ class ScreenPlaylists extends Component {
    }
 }
 export default ScreenPlaylists
+
+function Lista(props){
+  const { item } = props;
+  const {name} = item;
+  console.log(name);
+  const navigation = useNavigation();
+  return(
+    <Button
+                      titleStyle={{
+                      color: "white",
+                      fontSize: 38,
+                      fontWeight: "bold"
+                      }}
+                      onPress={() => 
+                        navigation.navigate("PlayListSelected", {
+                        screen: "PlayListSelected",
+                          params: { name },
+                        })
+                      }
+                      title={name}/>
+  );
+}
 
 const styles = StyleSheet.create ({
    container: {
