@@ -29,7 +29,7 @@ import {useNavigation } from '@react-navigation/native';
 
                 <View key={item.id} style={styles.cancionView}>
 
-                  <Text style={styles.cancionName}>{item.title}</Text>
+                  <Text style={styles.cancionName}>{item.title.substr(0, 18)}...</Text>
                   <Text style={styles.divider}></Text>
 
                 </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
   cancionView: {
     backgroundColor: 'white' ,flexDirection: 'column'  ,alignItems:'center'  ,  justifyContent: 'center' ,   marginTop: 8,
-    marginBottom: 8,
+    marginTop: 8,
     marginLeft: 20,
     marginRight: 20
   },
@@ -55,13 +55,14 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: "bold",
     marginTop: 4,
+    marginBottom: 8
   },
   divider: {
     backgroundColor: "#4f831f",
     marginLeft: 20,
     marginRight: 20,
     height: 12,
-    width:320
+    width:340
   },
 
 });
