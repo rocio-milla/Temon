@@ -40,7 +40,7 @@ const App: () => React$Node = () => {
   return (
     // <ThemeProvider theme={theme}>
     <NavigationContainer theme={themeNavigation}>
-      <Stack.Navigator initialRouteName="Playlists">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
         <Stack.Screen
           name="Results"
@@ -81,9 +81,9 @@ const App: () => React$Node = () => {
           name="PlayListSelected"
           component={ScreenPlayListSelected}
           options={{
-            title: 'LISTA',
+            title: '',
             headerStyle: {
-              backgroundColor: '#a548d8',
+              backgroundColor: 'white',
               height: 100,
             },
             headerTintColor: '#fff',
