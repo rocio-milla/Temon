@@ -94,22 +94,28 @@ export default StyleSheet.create({
       alignItems:"center",
     },
     musicButtons:{
-      width:"100%",
+      width:"90%",
       flexDirection:"row",
       alignItems:"center",
       justifyContent:"space-between",
     },
     prevButton:{
+      backgroundColor:"#03902D",
       width:100,
       height:100,
       borderRadius:50,
+      justifyContent:"center"
     },
     playButton:{
+      backgroundColor:"black",
+      justifyContent:"center",
       width:120,
       height:120,
       borderRadius:60,
     },
     nextButton:{
+      backgroundColor:"#9E00B4",
+      justifyContent:"center",
       width:100,
       height:100,
       borderRadius:50,

@@ -7,6 +7,8 @@ import runes from 'runes';
 export default function ResultList(props) {
   const { navigation, results } = props;
 
+  console.log(results)
+
   return (
     <>
       {size(results) > 0 ? (
@@ -14,7 +16,7 @@ export default function ResultList(props) {
           style={styles.main}
           data={results}
           renderItem={(cancion) => (
-            <Cancion cancion={cancion} navigation={navigation} />
+            <Cancion results={results} cancion={cancion} navigation={navigation} />
           )}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -29,14 +31,15 @@ export default function ResultList(props) {
 }
 
 function Cancion(props) {
-  const { cancion, navigation } = props;
+  const { results, cancion, navigation } = props;
   const { item } = cancion;
   const { url, video } = item;
-
+  
   const playCancion = () => {
     navigation.navigate('MusicPlayer', {
       title: video,
-      song: url
+      song: url,
+      results: results
     });
   };
   return (
