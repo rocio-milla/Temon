@@ -287,5 +287,4 @@ export default ['1 Girl Nation',
 'Yelle',
 'Yuri',
 'ZOEgirl',
-'References',
 ]
