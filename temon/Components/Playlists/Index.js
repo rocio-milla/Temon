@@ -4,6 +4,7 @@ import Dialog from "react-native-dialog";
 import {Select, Option} from "react-native-chooser";
 import { Icon,Button } from 'react-native-elements';
 import {useNavigation } from '@react-navigation/native';
+import Mic from './mic';
 
 
 var SQLite = require('react-native-sqlite-storage')
@@ -19,6 +20,7 @@ class ScreenPlaylists extends Component {
       'colour' : '#A646DD',
       'elementsListPlaylist':[],
       'listAllSong':[],
+       'results':[],
 
       startValue: new Animated.Value(0),
       endValue: new Animated.Value(1)
@@ -415,8 +417,14 @@ class ScreenPlaylists extends Component {
             </Animated.View>
                 <Dialog.Title style = {{fontSize:50 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
                
-                <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
-                onChangeText={ this.source}/>
+
+
+              <Mic setResults={(texto)=>this.setState({ name:texto}) }/>
+
+<Text>{this.state.name}</Text>
+
+              { /* <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
+                onChangeText={ this.source}/>*/}
 
     {/*        <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input> */}
          
