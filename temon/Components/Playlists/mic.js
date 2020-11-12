@@ -71,17 +71,17 @@ const Mic = ({setResults}) => {
     <>
 
         <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
-          <TouchableOpacity
+          <TouchableOpacity style={{marginTop:130 }}
             onPressIn={async () => {
  
               await startRecognizing();
             }}
              onPressOut={async () => await stopRecognizing()}>
-            <Icon
+            <Icon 
               name="microphone"
               type='font-awesome'
               color='#a646dd'
-              size={150}
+              size={90}
               reverse
             />
           </TouchableOpacity>

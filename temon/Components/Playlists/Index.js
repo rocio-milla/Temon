@@ -408,49 +408,47 @@ class ScreenPlaylists extends Component {
 
                 <Dialog.Container visible={this.state.visible}  >
 
-                <Animated.View
-          style={[styles.square, {opacity: this.state.startValue}]}
-        >
-        <Text style={{ color: 'white',  fontSize:38, fontWeight: 'bold' }}>
-              YA EXISTE
-              </Text>
-            </Animated.View>
-                <Dialog.Title style = {{fontSize:50 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
-               
+                  <Animated.View style={[styles.square, {opacity: this.state.startValue}]} >
+                  <Text style={{ color: 'white',  fontSize:38, fontWeight: 'bold' }}> YA EXISTE
+                  </Text>
+                  </Animated.View>
+                  
+                  <View style={{marginTop:-70,flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
 
+                    <Dialog.Title style = {{fontSize:38 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
+                    <Text style = {{margin:0 ,fontSize:38 , fontWeight: "bold", textAlign: 'center'}}>{this.state.name}</Text>
+                    <Mic setResults={(texto)=>this.setState({ name:texto}) }/>
 
-              <Mic setResults={(texto)=>this.setState({ name:texto}) }/>
-
-<Text>{this.state.name}</Text>
+                  </View>
+              
 
               { /* <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
                 onChangeText={ this.source}/>*/}
 
     {/*        <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input> */}
          
-              <Select 
-                onSelect = {this.onSelect.bind(this)}
-                defaultText  = {this.state.colour}
-                style = {{ margin:7,width:250,height:125,borderWidth : 1, backgroundColor :this.state.colour} }
-                textStyle = {{color:this.state.colour}}
-                backdropStyle  = {{backgroundColor : "#d3d5d6"}}
-                optionListStyle = {{backgroundColor : "#F5FCFF",width:250,height:250}}
-              >
+                <Select 
+                  onSelect = {this.onSelect.bind(this)}
+                  defaultText  = {this.state.colour}
+                  style = {{ margin:23,marginTop:150,width:250, height:150,borderWidth : 1, backgroundColor :this.state.colour} }
+                  textStyle = {{color:this.state.colour}}
+                  backdropStyle  = {{backgroundColor : "#d3d5d6"}}
+                  optionListStyle = {{backgroundColor : "#F5FCFF",width:250,height:250}}>
+                <Option  style = {{backgroundColor : "#C84B02",height:125}}value = "#C84B02"></Option>
+                <Option style = {{backgroundColor : "#3300CC",height:125}} value = "#3300CC"></Option>
+                <Option style = {{backgroundColor : "#D12734",height:125}} value = "#D12734"></Option>
+                <Option style = {{backgroundColor : "#47761C",height:125}} value = "#47761C"></Option>
+                <Option style = {{backgroundColor : "#0B797E",height:125}} value = "#0B797E"></Option>
+                <Option style = {{backgroundColor : "#A646DD",height:125}} value = "#A646DD"></Option>
+                <Option style = {{backgroundColor : "#000000",height:125}} value = "#000000"></Option>
+                <Option style = {{backgroundColor : "#CF2EAD",height:125}} value = "#CF2EAD"></Option>
+                </Select>
 
-              <Option  style = {{backgroundColor : "#C84B02",height:125}}value = "#C84B02"></Option>
-              <Option style = {{backgroundColor : "#3300CC",height:125}} value = "#3300CC"></Option>
-              <Option style = {{backgroundColor : "#D12734",height:125}} value = "#D12734"></Option>
-              <Option style = {{backgroundColor : "#47761C",height:125}} value = "#47761C"></Option>
-              <Option style = {{backgroundColor : "#0B797E",height:125}} value = "#0B797E"></Option>
-              <Option style = {{backgroundColor : "#A646DD",height:125}} value = "#A646DD"></Option>
-              <Option style = {{backgroundColor : "#000000",height:125}} value = "#000000"></Option>
-              <Option style = {{backgroundColor : "#CF2EAD",height:125}} value = "#CF2EAD"></Option>
-
-              </Select>
-              <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
-              <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
+                <Dialog.Button style = {{marginRight:25,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
+                <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
+              
               </Dialog.Container>
-
+           
 
             { /*PARA VER LAS CANCIONES DE LA PLAYLIST
             
