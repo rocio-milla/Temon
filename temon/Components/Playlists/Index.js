@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View, StyleSheet,FlatList , ToastAndroid,TextInput,Animated,Text } from 'react-native'
+import { View, StyleSheet,FlatList , ToastAndroid,TextInput,Animated,Text,TouchableOpacity } from 'react-native'
 import Dialog from "react-native-dialog";
 import {Select, Option} from "react-native-chooser";
-import { Icon,Button } from 'react-native-elements';   
+import { Icon,Button } from 'react-native-elements';
+import {useNavigation } from '@react-navigation/native';
+import Mic from './mic';
 
 
 var SQLite = require('react-native-sqlite-storage')
@@ -11,15 +13,17 @@ var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexamp
 
 class ScreenPlaylists extends Component {
 
-
    state = {
       'name' :'',
       'elementList':[],
       'visible':false,
       'colour' : '#A646DD',
+      'elementsListPlaylist':[],
+      'listAllSong':[],
+       'results':[],
+
       startValue: new Animated.Value(0),
       endValue: new Animated.Value(1)
-
    }
 
    componentDidMount() {
@@ -30,7 +34,56 @@ class ScreenPlaylists extends Component {
         'create table if not exists playlist (name text not null,colour text not null, primary key(name,colour));',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
       );
 
-      //---------listar----------//
+
+            //--------------------------------tabla de canciones -------------------------//
+      tx.executeSql(
+        'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
+      );
+///////////////------------------//////////////////////
+
+
+        tx.executeSql(  
+          'INSERT OR IGNORE  INTO playlist (name,colour) VALUES (?,?),(?,?),(?,?)',
+          ["Clasicos!","#CF2EAD",
+          "Variados","#3300CC",
+          "Rock","#C84B02"]
+          ,
+          (tx, results) => {  
+            
+            
+            if (results.rowsAffected > 0 ) {
+              console.log('Insert success');              
+            } else {
+              console.log('Insert failed');
+            }
+          }
+        );
+ 
+        tx.executeSql(        
+          'INSERT OR IGNORE INTO song (url,title,namePlaylist,colour) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)',
+          ["url1","Queen - We will rock you","Clasicos!","#CF2EAD",
+           "url2","Madonna - La isla bonita","Clasicos!","#CF2EAD",
+           "url3","Virus - Imágenes paganas","Variados","#3300CC",
+           "url4","Queen - Killer Queen","Variados","#3300CC"],
+         // "Clasicos!","Guns N Roses","Roses - Welcome To The Jungle",
+         // "Clasicos!","The Beatles","Helter Skelter"],
+          //"Variados","Madonna","La isla bonita",
+          //"Variados","The Rolling Stones","I can't get no",
+          //"Variados","Juanes","Es por ti",
+          //"Rock","Los Abuelos de la Nada","Mil horas",
+          //"Rock","Soda Stereo","Cuando pase el temblor",
+          //"Rock","Virus ","Imágenes paganas"],
+          (tx, results) => {               
+            if (results.rowsAffected > 0 ) {
+              console.log('cancion insertada');              
+            } else {
+              console.log('cancion no insertada');
+            }
+          }
+        );
+
+
+      //---------listar playlists----------//
       tx.executeSql('SELECT * from playlist', [], (tx, results) => {
          var len = results.rows.length;
 
@@ -44,9 +97,87 @@ class ScreenPlaylists extends Component {
        });
 
        //-------------///
+
+////////////----------SOLO PARA VER TODAS LAS CANCIONES------///////////
+    /*   tx.executeSql('SELECT * from song', [], (tx, results) => {
+        var len = results.rows.length;
+        console.log(len)
+        let elements = [];
+        if(len > 0) {
+          for (let i = 0; i < len; i++) {
+            elements.push(results.rows.item(i));
+            console.log(results.rows.item(i));
+          }
+          this.setState({ listAllSong:elements});
+          console.log(this.state.listAllSong)
+    
+        }
+      if(len==0){
+          console.log("no hay")
+        let elements = [];
+    
+        this.setState({ listAllSong:elements});
+    }
+    
+      });*/
+
+//----------------------------------------------//
+
     });
+
   }
 
+  PlaylistElements = (name,colour) => {
+
+    //console.log(name+"-"+colour)
+  
+    db.transaction(tx => {
+   
+    tx.executeSql('SELECT * from song where namePlaylist=? and colour=?', [name,colour], (tx, results) => {
+      var len = results.rows.length;
+      console.log(len)
+      let elements = [];
+      if(len > 0) {
+        for (let i = 0; i < len; i++) {
+          elements.push(results.rows.item(i));
+         // console.log(results.rows.item(i));
+        }
+        this.setState({ elementsListPlaylist:elements});
+      //  console.log(this.state.elementsListPlaylist)
+  
+      console.log("-------------------lista de canciones-------------------")
+      console.log(this.state.elementsListPlaylist)
+
+      this.props.navigation.navigate('PlayListSelected', {
+        title:name,
+        colour:colour,
+        songs:this.state.elementsListPlaylist
+      });
+      }
+
+    if(len==0){
+        console.log("no hay")
+      let elements = [];
+  
+      this.setState({ elementsListPlaylist:elements});
+
+      console.log("-------------------lista de canciones-------------------")
+      console.log(this.state.elementsListPlaylist)
+
+      this.props.navigation.navigate('PlayListSelected', {
+        title:name,
+        colour:colour,
+        songs:this.state.elementsListPlaylist
+      });
+  }
+  
+    });
+  });
+
+
+  };
+  
+  
   onSelect(value) {
 
     console.log("color seleccionado es: "+ value)
@@ -79,7 +210,6 @@ class ScreenPlaylists extends Component {
     console.log("a agregar")
     console.log(this.state.name)
     console.log(this.state.colour)
-
 
     if(this.state.name!=''){
 
@@ -155,7 +285,6 @@ class ScreenPlaylists extends Component {
  }
 )
       this.setState({ visible:false});
-
 }
     } 
 
@@ -178,12 +307,11 @@ class ScreenPlaylists extends Component {
     (tx, results) => {
     console.log('Results', results.rowsAffected); if (results.rowsAffected > 0) {
       console.log("id borrado :"+id)
-
     } 
     }
     );
 
-    //----------listar------//
+    //----------listar playlists------//
     tx.executeSql('SELECT * from playlist', [], (tx, results) => {
       var len = results.rows.length;
       let elements = [];
@@ -210,9 +338,7 @@ class ScreenPlaylists extends Component {
     };
 
      onChangeText = (text) => {
-
       console.log(text);
-
     }
 
 
@@ -223,10 +349,9 @@ class ScreenPlaylists extends Component {
     };
 
    render() {
+
       return (
          <View style = {styles.container}>
-
-
 
             <Button onPress={this.showDialog}
                 titleStyle={{
@@ -248,23 +373,27 @@ class ScreenPlaylists extends Component {
                   ItemSeparatorComponent={this.ListViewItemSeparator}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => (
-
                     <View key={item.id} style={{ backgroundColor: 'white', padding: 10 ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-
-                      <Button
+                    
+                    <Button
                       titleStyle={{
                       color: "white",
                       fontSize: 38,
                       fontWeight: "bold"
                       }}
-                      buttonStyle={{
-                      backgroundColor: item.colour,
-                      borderRadius: 10,
-                      height: 90,
-                      width: 250,  
-                      }}
-                      title={item.name}/>
 
+                      buttonStyle={{
+                        backgroundColor: item.colour,
+                        borderRadius: 10,
+                        height: 90,
+                        width: 250,  
+                        }}
+
+                    onPress={()=>this.PlaylistElements(item.name,item.colour)} 
+                 
+                      title={item.name}/>
+                    
+                    { /* <Lista       item={item}  />*/}
 
                       <Icon onPress = {()=>this.deletePlaylist(item.name,item.colour)}
                         name='trash'
@@ -273,53 +402,122 @@ class ScreenPlaylists extends Component {
                         size={100}
                         />
                     </View>
+                  
                   )}
                 />
 
                 <Dialog.Container visible={this.state.visible}  >
 
-                <Animated.View
-          style={[styles.square, {opacity: this.state.startValue}]}
-        >
+                  <Animated.View style={[styles.square, {opacity: this.state.startValue}]} >
+                  <Text style={{ color: 'white',  fontSize:38, fontWeight: 'bold' }}> YA EXISTE
+                  </Text>
+                  </Animated.View>
+                  
+                  <View style={{marginTop:-70,flex: 1,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
 
-        <Text style={{ color: 'white',  fontSize:38, fontWeight: 'bold' }}>
-              YA EXISTE
-              </Text>
-            </Animated.View>
-                <Dialog.Title style = {{fontSize:50 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
-               
-                <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
-                onChangeText={ this.source}/>
+                    <Dialog.Title style = {{fontSize:38 , fontWeight: "bold"}}>NOMBRE</Dialog.Title>
+                    <Text style = {{margin:0 ,fontSize:38 , fontWeight: "bold", textAlign: 'center'}}>{this.state.name}</Text>
+                    <Mic setResults={(texto)=>this.setState({ name:texto}) }/>
+
+                  </View>
+              
+
+              { /* <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
+                onChangeText={ this.source}/>*/}
 
     {/*        <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input> */}
          
-              <Select 
-                onSelect = {this.onSelect.bind(this)}
-                defaultText  = {this.state.colour}
-                style = {{ margin:7,width:250,height:125,borderWidth : 1, backgroundColor :this.state.colour} }
-                textStyle = {{color:this.state.colour}}
-                backdropStyle  = {{backgroundColor : "#d3d5d6"}}
-                optionListStyle = {{backgroundColor : "#F5FCFF",width:250,height:250}}
-              >
+                <Select 
+                  onSelect = {this.onSelect.bind(this)}
+                  defaultText  = {this.state.colour}
+                  style = {{ margin:23,marginTop:150,width:250, height:150,borderWidth : 1, backgroundColor :this.state.colour} }
+                  textStyle = {{color:this.state.colour}}
+                  backdropStyle  = {{backgroundColor : "#d3d5d6"}}
+                  optionListStyle = {{backgroundColor : "#F5FCFF",width:250,height:250}}>
+                <Option  style = {{backgroundColor : "#C84B02",height:125}}value = "#C84B02"></Option>
+                <Option style = {{backgroundColor : "#3300CC",height:125}} value = "#3300CC"></Option>
+                <Option style = {{backgroundColor : "#D12734",height:125}} value = "#D12734"></Option>
+                <Option style = {{backgroundColor : "#47761C",height:125}} value = "#47761C"></Option>
+                <Option style = {{backgroundColor : "#0B797E",height:125}} value = "#0B797E"></Option>
+                <Option style = {{backgroundColor : "#A646DD",height:125}} value = "#A646DD"></Option>
+                <Option style = {{backgroundColor : "#000000",height:125}} value = "#000000"></Option>
+                <Option style = {{backgroundColor : "#CF2EAD",height:125}} value = "#CF2EAD"></Option>
+                </Select>
 
-              <Option  style = {{backgroundColor : "#C84B02",height:125}}value = "#C84B02"></Option>
-              <Option style = {{backgroundColor : "#3300CC",height:125}} value = "#3300CC"></Option>
-              <Option style = {{backgroundColor : "#D12734",height:125}} value = "#D12734"></Option>
-              <Option style = {{backgroundColor : "#47761C",height:125}} value = "#47761C"></Option>
-              <Option style = {{backgroundColor : "#0B797E",height:125}} value = "#0B797E"></Option>
-              <Option style = {{backgroundColor : "#A646DD",height:125}} value = "#A646DD"></Option>
-              <Option style = {{backgroundColor : "#000000",height:125}} value = "#000000"></Option>
-              <Option style = {{backgroundColor : "#CF2EAD",height:125}} value = "#CF2EAD"></Option>
-
-              </Select>
-              <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
-              <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
+                <Dialog.Button style = {{marginRight:25,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={this.addPlaylist} />
+                <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={this.hideDialog} />
+              
               </Dialog.Container>
+           
+
+            { /*PARA VER LAS CANCIONES DE LA PLAYLIST
+            
+            <FlatList
+                  data={this.state.elementsListPlaylist}
+                  ItemSeparatorComponent={this.ListViewItemSeparator}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+
+                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
+
+                      <Text style={{fontSize :20}}>{item.title}</Text>
+
+                    </View>
+                  )}
+                />*/}
+
+
+{ /*  SOLO PARA VER TODAS LAS CANCIONES
+           <FlatList
+                  data={this.state.listAllSong}
+                  ItemSeparatorComponent={this.ListViewItemSeparator}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+
+                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
+
+                      <Text style={{fontSize :20}}>{item.title}</Text>
+
+
+                    </View>
+                  )}
+                  />*/}
+
           </View>
       )
    }
 }
 export default ScreenPlaylists
+
+function Lista(props){
+  const { item } = props;
+  const {name} = item;
+  console.log(name);
+  const navigation = useNavigation();
+  return(
+    <Button
+                      titleStyle={{
+                      color: "white",
+                      fontSize: 38,
+                      fontWeight: "bold"
+                      }}
+
+                      buttonStyle={{
+                        backgroundColor: item.colour,
+                        borderRadius: 10,
+                        height: 90,
+                        width: 250,  
+                        }}
+                     onPress={() => 
+                        navigation.navigate("PlayListSelected", {
+                        screen: "PlayListSelected",
+                          params: { name },
+                        })
+                      }
+                        
+                      title={name}/>
+  );
+}
 
 const styles = StyleSheet.create ({
    container: {
