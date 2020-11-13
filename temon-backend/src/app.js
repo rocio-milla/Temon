@@ -37,7 +37,7 @@ app.get('/musica/escuchar', async (req, res) => {
 app.get('/musica/genero', async (req, res) => {
   try {
     const genre = req.query.genre;
-    res.send(Artists[genre.trim()]);
+    res.send(Artists[genre.replace(/\s/g, "")]);
   } catch (error) {
     console.log(`ocurrió un error al obtener la data`);
     res.status(500);
