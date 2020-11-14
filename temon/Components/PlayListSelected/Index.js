@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from "react";
 import { StyleSheet, View } from 'react-native';
+import ResultList from '../Results/ResultList';
 
 const ScreenPlayListSelected = ({ route }) => {
 
