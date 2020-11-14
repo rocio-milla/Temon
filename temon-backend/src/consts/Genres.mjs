@@ -1,0 +1,17 @@
+export default [
+        'Baladas',
+        'Country',
+        'Cumbia',
+        'Electro',
+        'Jazz',
+        'Jpop',
+        'Kpop',
+        'Pop',
+        'Rap',
+        'Reggaeton',
+        'Rock',
+        'Salsa',
+        'Metal',
+        'Punk',
+        'Rock Nacional',
+]

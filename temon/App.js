@@ -6,16 +6,18 @@
  * @flow strict-local
  */
 
-import { NavigationContainer, ThemeProvider, DefaultTheme } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import 'react-native-gesture-handler';
+import GenreListScreen from './Components/GenreList/GenreList';
+import GenreListArtistsScreen from './Components/GenreList/GenreListArtists';
 import HomeScreen from './Components/Home/Index';
-import { createStackNavigator } from '@react-navigation/stack';
-import ResultsScreen from './Components/Results/Index';
+import ScreenLibrary from './Components/Library/Index';
 import MusicPlayerScreen from './Components/MusicPlayer/Index';
 import ScreenPlaylists from './Components/Playlists/Index';
-import ScreenLibrary from './Components/Library/Index';
 import ScreenPlayListSelected from './Components/PlayListSelected/Index';
+import ResultsScreen from './Components/Results/Index';
 
 const Stack = createStackNavigator();
 
@@ -41,7 +43,7 @@ const App: () => React$Node = () => {
     // <ThemeProvider theme={theme}>
     <NavigationContainer theme={themeNavigation}>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} unmountOnBlur={true} />
         <Stack.Screen
           name="Results"
           component={ResultsScreen}
@@ -75,8 +77,8 @@ const App: () => React$Node = () => {
             },
           }}
         />
-        <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true}/>
-        <Stack.Screen name="Playlists" component={ScreenPlaylists} options={{ headerShown: false }} unmountOnBlur={true}/>
+        <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true} />
+        <Stack.Screen name="Playlists" component={ScreenPlaylists} options={{ headerShown: false }} unmountOnBlur={true} />
         <Stack.Screen
           name="PlayListSelected"
           component={ScreenPlayListSelected}
@@ -84,6 +86,38 @@ const App: () => React$Node = () => {
             title: '',
             headerStyle: {
               backgroundColor: 'white',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="GenreList"
+          component={GenreListScreen}
+          options={{
+            title: 'GÉNEROS',
+            headerStyle: {
+              backgroundColor: '#a548d8',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="GenreListSongs"
+          component={GenreListArtistsScreen}
+          options={{
+            title: 'ARTISTAS',
+            headerStyle: {
+              backgroundColor: '#a548d8',
               height: 100,
             },
             headerTintColor: '#fff',
