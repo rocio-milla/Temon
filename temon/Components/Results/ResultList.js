@@ -21,7 +21,7 @@ export default function ResultList(props) {
       ) : (
           <View style={styles.loaderCanciones}>
             <ActivityIndicator size="large" />
-            <Text>0 RESULTADOS</Text>
+            <Text style={styles.cancionName}>0 RESULTADOS</Text>
           </View>
         )}
     </>
@@ -31,8 +31,8 @@ export default function ResultList(props) {
 function Cancion(props) {
   const { cancion, navigation } = props;
   const { item } = cancion;
-  const { url, video } = item;
-
+  let { url, video, title } = item;
+  video = video ? video : title;
   const playCancion = () => {
     navigation.navigate('MusicPlayer', {
       title: video,

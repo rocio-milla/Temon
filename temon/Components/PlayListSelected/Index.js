@@ -1,52 +1,44 @@
-import React, { useEffect} from "react";
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import {useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from "react";
+import { StyleSheet, View } from 'react-native';
 
-  const ScreenPlayListSelected = ( {route }) => {
+const ScreenPlayListSelected = ({ route }) => {
 
-  const navigation = useNavigation() 
-  const { title, colour,songs} = route.params;
-
+  const navigation = useNavigation()
+  const { title, colour, songs } = route.params;
 
   useEffect(() => {
-    navigation.setOptions({ title: title,            headerStyle: {
-      backgroundColor: colour,
-      height: 100,
-    },})
-
-    }, []);
+    navigation.setOptions({
+      title: title, headerStyle: {
+        backgroundColor: colour,
+        height: 100,
+      },
+    })
+  }, []);
 
   return (
     <>
-         <View>
-
-        <FlatList
-
-              data={songs}
-                
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-
-                <View key={item.id} style={styles.cancionView}>
-
-                  <Text style={styles.cancionName}>{item.title.substr(0, 18)}...</Text>
-                  <Text style={styles.divider}></Text>
-
-                </View>
-                  )}
-                />
-          </View>
+      <View>
+        {/* <FlatList
+          data={songs}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View key={item.id} style={styles.cancionView}>
+              <Text style={styles.cancionName}>{item.title.substr(0, 18)}...</Text>
+              <Text style={styles.divider}></Text>
+            </View>
+          )}
+        /> */}
+        <ResultList navigation={navigation} results={songs} />
+      </View>
     </>
-);
+  );
 }
 export default ScreenPlayListSelected;
 
-
 const styles = StyleSheet.create({
-
-
   cancionView: {
-    backgroundColor: 'white' ,flexDirection: 'column'  ,alignItems:'center'  ,  justifyContent: 'center' ,   marginTop: 8,
+    backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 8,
     marginTop: 8,
     marginLeft: 20,
     marginRight: 20
@@ -62,7 +54,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     height: 12,
-    width:340
+    width: 340
   },
-
 });

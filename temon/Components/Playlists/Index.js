@@ -61,10 +61,11 @@ class ScreenPlaylists extends Component {
  
         tx.executeSql(        
           'INSERT OR IGNORE INTO song (url,title,namePlaylist,colour) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)',
-          ["url1","Queen - We will rock you","Clasicos!","#CF2EAD",
-           "url2","Madonna - La isla bonita","Clasicos!","#CF2EAD",
-           "url3","Virus - Imágenes paganas","Variados","#3300CC",
-           "url4","Queen - Killer Queen","Variados","#3300CC"],
+          ["https://www.youtube.com/watch?v=-tJYN-eG1zk","Queen - We will rock you","Clasicos!","#CF2EAD",
+          "https://www.youtube.com/watch?v=zpzdgmqIHOQ","Madonna - La isla bonita","Clasicos!","#CF2EAD",
+          "https://www.youtube.com/watch?v=9UY8kqV7KgE","Virus - Imágenes paganas","Variados","#3300CC",
+          "https://www.youtube.com/watch?v=2ZBtPf7FOoM","Queen - Killer Queen","Variados","#3300CC"],
+       
          // "Clasicos!","Guns N Roses","Roses - Welcome To The Jungle",
          // "Clasicos!","The Beatles","Helter Skelter"],
           //"Variados","Madonna","La isla bonita",
