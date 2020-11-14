@@ -1,0 +1,15 @@
+export {default as Baladas} from './Baladas.mjs';
+export {default as Country} from './Country.mjs';
+export {default as Cumbia} from './Cumbia.mjs';
+export {default as Electro} from './Electro.mjs';
+export {default as Jazz} from './Jazz.mjs';
+export {default as Jpop} from './Jpop.mjs';
+export {default as Kpop} from './Kpop.mjs';
+export {default as Metal} from './Metal.mjs';
+export {default as Punk} from './Punk.mjs';
+export {default as Pop} from './Pop.mjs';
+export {default as Rap} from './Rap.mjs';
+export {default as Reggaeton} from './Reggaeton.mjs';
+export {default as Rock} from './Rock.mjs';
+export {default as RockNacional} from './RockNacional.mjs';
+export {default as Salsa} from './Salsa.mjs';
