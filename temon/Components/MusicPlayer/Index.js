@@ -65,7 +65,6 @@ const MusicPlayerScreen = ({ route }) => {
           title: res[i].video
         });
       }
-      console.log("track actual\n")
       await TrackPlayer.skip(idActualTrack)
       await TrackPlayer.play();
       setMusicTheme({ ...musicTheme, title: title })
@@ -95,13 +94,11 @@ const MusicPlayerScreen = ({ route }) => {
         }
         if(increment == true){
           posi = position + incrementable
-          console.log(posi); 
           TrackPlayer.seekTo(posi)
           //playAndStop()
         }
         else if(increment == false){
           posi = position - incrementable
-          console.log(posi); 
           TrackPlayer.seekTo(posi)
           //playAndStop()
         } 
@@ -120,7 +117,7 @@ const MusicPlayerScreen = ({ route }) => {
             TrackPlayer.play()
           }
           setIncrement(null)
-          TrackPlayer.getPosition().then((res)=>{console.log("pos-actual => "+ res)});
+          // TrackPlayer.getPosition().then((res)=>{console.log("pos-actual => "+ res)});
           //TrackPlayer.play()
         }else{
           clearInterval(interval)   
@@ -133,7 +130,6 @@ const MusicPlayerScreen = ({ route }) => {
       let diff = dateTouch.getTime() - newDate.getTime();
       let dateDiff = diff / 1000;
       let diffSecond = Math.abs(dateDiff);
-      console.log("tiempo diff: "+diffSecond);
       return diffSecond;
     }
 
@@ -142,7 +138,6 @@ const MusicPlayerScreen = ({ route }) => {
     else if(touchState==1){
       const timer = setTimeout(() => {
         playAndStop()
-        console.log("play")
         setIncrement(null)
       }, 500);
       setCount(1)
@@ -153,7 +148,6 @@ const MusicPlayerScreen = ({ route }) => {
       if(makeADifference()<=0.500){
         const timer = setTimeout(() => {
           nextTrack()
-          console.log("next 1")
           setIncrement(null)
         }, 500);
         setCount(3)
@@ -163,7 +157,6 @@ const MusicPlayerScreen = ({ route }) => {
       }
       else{
         const timer = setTimeout(() => {
-          console.log("play 1")
           playAndStop()
           setIncrement(null)
         }, 500);
@@ -177,7 +170,6 @@ const MusicPlayerScreen = ({ route }) => {
       if(makeADifference()<=0.500){
         const timer = setTimeout(() => {
           nextTrack()
-          console.log("next 2")
           setIncrement(null)
         }, 500)
         setCount(3)
@@ -187,7 +179,6 @@ const MusicPlayerScreen = ({ route }) => {
       }
       else{
         const timer = setTimeout(() => {
-          console.log("play 2")
           playAndStop()
           setIncrement(null)
         }, 500)
@@ -201,7 +192,6 @@ const MusicPlayerScreen = ({ route }) => {
       if(makeADifference()<=0.500){
         const timer = setTimeout(() => {
           prevTrack()
-          console.log("prev")
           setIncrement(null)
         }, 500)
         setCount(1)
@@ -212,7 +202,6 @@ const MusicPlayerScreen = ({ route }) => {
       else{
         const timer = setTimeout(() => {
           playAndStop()
-          console.log("play prev 3 ")
         }, 500)
         setCount(1)
         setIncrement(true)
@@ -241,13 +230,11 @@ const MusicPlayerScreen = ({ route }) => {
   }
 
   const nextTrack = () => {
-    console.log("next track")
     TrackPlayer.skipToNext();
     TrackActual()
   }
 
   const prevTrack = () => {
-    console.log("previous track")
     TrackPlayer.skipToPrevious()
     TrackActual()
   }
@@ -318,7 +305,6 @@ const MusicPlayerScreen = ({ route }) => {
     else{
       setTouchState(6)
       pressOutCancel = 1
-      console.log("onPress")
       touchScreen()
     }
   }
