@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
 	Image,
-	TouchableOpacity, View, Text
+	Text, TouchableOpacity, View
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Sound from 'react-native-sound';
@@ -106,6 +106,11 @@ const HomeScreen = ({ navigation }) => {
 		});
 	};
 
+	const library = () => {
+		navigation.navigate('Library');
+	  };
+	
+
 	return (
 		<>
 			{!loading ? <>
@@ -114,7 +119,27 @@ const HomeScreen = ({ navigation }) => {
 						style={{ height: "100%", width: "100%", resizeMode: 'contain' }} />
 				</View>
 				<View>
-					<TouchableOpacity 
+					<TouchableOpacity
+						onPress={() => library()}
+						style={{
+							backgroundColor: "#a646dd",
+							paddingHorizontal: 30,
+							paddingVertical: 5,
+							borderRadius: 10,
+							margin: 7
+						}}>
+
+						<Text
+							style={{
+								fontSize: 30,
+								fontWeight: "bold",
+								textAlign: 'center',
+								color: '#000'
+							}}>
+							PLAYLISTS
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
 						onPress={getGenreResults}
 						style={{
 							backgroundColor: "#1b7701",
@@ -124,14 +149,14 @@ const HomeScreen = ({ navigation }) => {
 							margin: 7
 						}}>
 
-						<Text 
+						<Text
 							style={{
 								fontSize: 30,
 								fontWeight: "bold",
 								textAlign: 'center',
 								color: '#000'
 							}}>
-									 BUSCAR POR GÉNERO
+							BUSCAR POR GÉNERO
 						</Text>
 					</TouchableOpacity>
 				</View>
