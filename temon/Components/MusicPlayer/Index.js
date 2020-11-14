@@ -6,10 +6,12 @@ import TrackPlayer, { useTrackPlayerProgress } from 'react-native-track-player';
 import runes from 'runes';
 import { PersonalConfig } from '../../PersonalConfig.js';
 import styles from './IndexStyle';
+import {useNavigation } from '@react-navigation/native' 
 
 const MusicPlayerScreen = ({ route }) => {
-  const { results ,title, song } = route.params;
+  const navigation = useNavigation()
 
+  const { results ,title, song } = route.params;
   const { position, duration } = useTrackPlayerProgress(100)
   // const progress = TrackPlayer.useTrackPlayerProgress();
   const [buttonPlay, setButtonPlay] = useState("pause")
@@ -24,7 +26,6 @@ const MusicPlayerScreen = ({ route }) => {
   let date;
   let timer;
   let playerReady = false;
-
   useEffect(() => {
     const setPlayer = async () => {
       if (!playerReady) {
@@ -322,6 +323,10 @@ const MusicPlayerScreen = ({ route }) => {
     }
   }
 
+  const library = () => {
+    navigation.navigate('Library');
+  };
+
   return (
     <>
       <View style={styles.headers}>
@@ -329,7 +334,7 @@ const MusicPlayerScreen = ({ route }) => {
           <TouchableOpacity style={styles.iconSearch}>
             <Icon name="search" type='font-awesome' color='black' reverse size={40} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconLibrary}>
+          <TouchableOpacity style={styles.iconLibrary} onPress={() => library()}>
             <Text style={styles.library}></Text>
           </TouchableOpacity>
         </View>
