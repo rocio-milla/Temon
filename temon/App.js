@@ -42,7 +42,7 @@ const App: () => React$Node = () => {
   return (
     // <ThemeProvider theme={theme}>
     <NavigationContainer theme={themeNavigation}>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Playlists">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} unmountOnBlur={true} />
         <Stack.Screen
           name="Results"
