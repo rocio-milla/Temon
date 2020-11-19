@@ -37,8 +37,9 @@ class ScreenPlaylists extends Component {
 
             //--------------------------------tabla de canciones -------------------------//
       tx.executeSql(
-        'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
-      );
+    //    'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
+    'create table if not exists song (url text not null,title text,namePlaylist text,colour text,primary key(url,namePlaylist,colour));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
+    );
 ///////////////------------------//////////////////////
 
 
