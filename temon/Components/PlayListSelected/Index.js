@@ -111,7 +111,7 @@ console.log(urlElegida)
                 
                 <View key={item.id} style={styles.cancionView}>
                   <TouchableOpacity onLongPress={()=>showDialog(item.url,item.namePlaylist,item.colour)}>
-                  <Text style={styles.cancionName}>{item.title.substr(0, 18)}...</Text>
+                  <Text style={styles.cancionName}>{item.title.substr(0, 33)}...</Text>
                   </TouchableOpacity>
                   <Text style={styles.divider}></Text>
 
