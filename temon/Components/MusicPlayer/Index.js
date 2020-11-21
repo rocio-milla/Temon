@@ -33,7 +33,7 @@ const MusicPlayerScreen = ({ route }) => {
   const [listPlaylist, setListPlaylist] = useState([]);
   const [defaultPlaylist, setDefaultPlaylist] = useState();
   const [defaultColour, setDefaultColour] = useState();
-  const [status, setStatus] = useState(true);
+//  const [status, setStatus] = useState(true);
 
   //const [count,setCount] = useState({value:0,state:0})
   //const [dateTouch,setDateTouch] = useState(null)
@@ -331,8 +331,32 @@ const MusicPlayerScreen = ({ route }) => {
    //-------modal---------//
    const showDialog = () => {
 
+   db.transaction(tx => {
+
+    //---------listar playlists----------//
+    tx.executeSql('SELECT * from playlist', [], (tx, results) => {
+
+      var len = results.rows.length;
+
+      let elements = [];
+
+        for (let i = 0; i < len; i++) {
+          elements.push(results.rows.item(i));
+        }
+        setListPlaylist(elements)
+        console.log("playlists cargadas:")
+
+          console.log("--------------------")
+          console.log("nombre"+elements[0].name)
+          console.log("color"+elements[0].colour)
+       setDefaultPlaylist(elements[0].name)
+       setDefaultColour(elements[0].colour)
+
+    });
+
+  });
   setVisible(true)
-  
+
 };
  
 const hideDialog = () => {
@@ -348,7 +372,7 @@ const onSelect = (item) => {
  setDefaultColour(item.colour)
 
 }
-useEffect(() => {
+/*useEffect(() => {
   
 
   db.transaction(tx => {
@@ -377,7 +401,7 @@ useEffect(() => {
   });
 
   
-  }, [listPlaylist]);
+  }, [listPlaylist]);*/
 
 
   const addToPlaylist = () => {
@@ -397,6 +421,7 @@ useEffect(() => {
           }
         }
       );
+
 
     });
 
