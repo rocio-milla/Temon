@@ -437,11 +437,11 @@ const onSelect = (item) => {
           </TouchableOpacity>
 
           <TouchableOpacity  onPress={showDialog}>
-          <Icon style = {{ marginLeft:70} }
-                        name='plus'
-                        type='evilicon'
-                        color='orange'
-                        size={100}
+          <Icon style = {{ marginLeft:80} }
+                        name='add-circle'
+                        type='ionicon'
+                        color='#C74E08'
+                        size={90}
                   
                         />
           </TouchableOpacity>
