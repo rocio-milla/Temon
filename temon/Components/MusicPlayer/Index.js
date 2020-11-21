@@ -485,7 +485,7 @@ const onSelect = (item) => {
           <Select
                       onSelect = {onSelect.bind(this)}
                       defaultText  = {defaultPlaylist}
-                      style = {{borderWidth : 1,backgroundColor:defaultColour}}
+                      style = {{borderWidth : 1,backgroundColor:defaultColour,width:300}}
                       textStyle = {{fontSize:38,fontWeight: "bold",color:"white"}}
                       backdropStyle  = {{backgroundColor : "#d3d5d6"}}
                       optionListStyle = {{backgroundColor : "#F5FCFF",width:250,height:250}}
