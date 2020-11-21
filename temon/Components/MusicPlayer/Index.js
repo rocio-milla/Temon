@@ -339,7 +339,7 @@ const MusicPlayerScreen = ({ route }) => {
       var len = results.rows.length;
 
       let elements = [];
-
+      if(len > 0) {
         for (let i = 0; i < len; i++) {
           elements.push(results.rows.item(i));
         }
@@ -351,7 +351,14 @@ const MusicPlayerScreen = ({ route }) => {
           console.log("color"+elements[0].colour)
        setDefaultPlaylist(elements[0].name)
        setDefaultColour(elements[0].colour)
-
+      }
+      
+      if(len==0){
+        let elements = [];
+        setListPlaylist(elements)
+        setDefaultPlaylist(null)
+        setDefaultColour(null)
+  }
     });
 
   });
