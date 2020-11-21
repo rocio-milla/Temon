@@ -54,7 +54,7 @@ console.log(urlElegida)
 
      db.transaction(tx => {
      tx.executeSql(
-     'DELETE FROM  song where url=?', [url],
+     'DELETE FROM  song where url=? and namePlaylist=? and colour=?', [url,name,colour],
      (tx, results) => {
      console.log('Results', results.rowsAffected); 
      
