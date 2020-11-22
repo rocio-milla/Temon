@@ -8,6 +8,9 @@ import { PersonalConfig } from '../../PersonalConfig.js';
 import styles from './IndexStyle';
 import {useNavigation } from '@react-navigation/native' 
 
+const SQLite = require('react-native-sqlite-storage')
+const temonApiFileUrl = `${PersonalConfig.url}/musica/escuchar?url=`;
+
 const MusicPlayerScreen = ({ route }) => {
   const navigation = useNavigation()
 
@@ -21,6 +24,7 @@ const MusicPlayerScreen = ({ route }) => {
   const [dateTouch,setDateTouch] = useState(null)
   const [increment,setIncrement] = useState(0)
   const [touchState,setTouchState] = useState({state1: 0,state2: 0})
+  const [enFavoritos, setEnFavoritos] = useState(false);
   //const [count,setCount] = useState({value:0,state:0})
   //const [dateTouch,setDateTouch] = useState(null)
   let date;
@@ -31,7 +35,7 @@ const MusicPlayerScreen = ({ route }) => {
       if (!playerReady) {
         await TrackPlayer.setupPlayer();
 
-        await TrackPlayer.updateOptions({
+        TrackPlayer.updateOptions({
           stopWithApp: true,
           capabilities: [
             TrackPlayer.CAPABILITY_PLAY,
@@ -55,10 +59,11 @@ const MusicPlayerScreen = ({ route }) => {
       res = results;
       //let urls = "https://cdns-preview-d.dzcdn.net/stream/c-deda7fa9316d9e9e880d2c6207e92260-8.mp3" 
       let idActualTrack;
-      for(let i=0;i<res.length;i++){
+      for(let i = 0; i < res.length; i++){
         if(song == res[i].url){
           idActualTrack = ""+i+""
         }
+
         await TrackPlayer.add({
           id: ""+i+"",
           url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(res[i].url)}`,
@@ -67,9 +72,9 @@ const MusicPlayerScreen = ({ route }) => {
       }
       await TrackPlayer.skip(idActualTrack)
       await TrackPlayer.play();
-      setMusicTheme({ ...musicTheme, title: title })
-      
+      setMusicTheme({ ...musicTheme, url: song, title: title })
     };
+
     setPlayer();
     setIncrement(null)
     setDateTouch(null)
@@ -242,7 +247,7 @@ const MusicPlayerScreen = ({ route }) => {
   let updateTheme = (res) => {
     setMusicTheme({
       id: res.id,
-      url: res.url,
+      url: res.url.substring(temonApiFileUrl.length),
       title: res.title,
     })
   }
@@ -313,6 +318,48 @@ const MusicPlayerScreen = ({ route }) => {
     navigation.navigate('Library');
   };
 
+  useEffect(() => {
+    var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexample.db'});
+    db.transaction(tx => {
+      tx.executeSql('SELECT 1 FROM favoritos WHERE url=?', [musicTheme.url], (_, results) => {
+        setEnFavoritos(results.rows.length > 0);
+      });
+    });
+  }, [musicTheme]);
+
+  const agregarAFavoritos = () => {
+    console.log(enFavoritos)
+    if (!enFavoritos) {
+      var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexample.db'})
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT OR IGNORE INTO favoritos (url, title) values (?, ?)',
+          [musicTheme.url, musicTheme.title],
+          (_, results) => setEnFavoritos(true),
+          (_, error) => {
+            console.log(error.code);
+            console.log(error.message);
+        });
+      });
+    }
+  };
+
+  const quitarDeFavoritos = () => {
+    console.log(enFavoritos)
+    if (enFavoritos) {
+      var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexample.db'})
+      db.transaction(tx => {
+        tx.executeSql('DELETE FROM favoritos WHERE url=?',
+          [musicTheme.url],
+          () => setEnFavoritos(false),
+          (_, error) => {
+            console.log(error.code);
+            console.log(error.message);
+        });
+      });
+    }
+  };
+
   return (
     <>
       <View style={styles.headers}>
@@ -320,6 +367,31 @@ const MusicPlayerScreen = ({ route }) => {
           <TouchableOpacity style={styles.iconSearch}>
             <Icon name="search" type='font-awesome' color='black' reverse size={40} />
           </TouchableOpacity>
+          {
+            !enFavoritos &&
+            <TouchableOpacity onPress = {() => agregarAFavoritos()} >
+              <Icon
+                style = {{ marginLeft:80} }
+                name='heart'
+                type='ionicon'
+                color='#1b7701'
+                size={90}
+              />
+            </TouchableOpacity>
+          }
+          {
+            enFavoritos &&
+            <TouchableOpacity
+              onPress = {() => quitarDeFavoritos()} >
+              <Icon 
+                style = {{ marginLeft:80} }
+                name='heart-dislike'
+                type='ionicon'
+                color='#a646dd'
+                size={90}
+              />
+            </TouchableOpacity>
+          }
           <TouchableOpacity style={styles.iconLibrary} onPress={() => library()}>
             <Text style={styles.library}></Text>
           </TouchableOpacity>
