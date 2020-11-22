@@ -28,7 +28,6 @@ const MusicPlayerScreen = ({ route }) => {
   let playerReady = false;
   useEffect(() => {
     const setPlayer = async () => {
-      console.log(results)
       if (!playerReady) {
         await TrackPlayer.setupPlayer();
 
