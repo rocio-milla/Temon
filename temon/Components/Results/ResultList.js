@@ -6,9 +6,6 @@ import runes from 'runes';
 
 export default function ResultList(props) {
   const { navigation, results } = props;
-
-  console.log(results)
-
   return (
     <>
       {size(results) > 0 ? (
@@ -32,14 +29,22 @@ export default function ResultList(props) {
 
 function Cancion(props) {
   const { results, cancion, navigation } = props;
+  console.log("results", results)
   const { item } = cancion;
   let { url, video, title } = item;
   video = video ? video : title;
+  let resultsList = title ? results.map(s => {
+    if (s.hasOwnProperty("title")) {
+      s.video = s.title;
+      delete s.title;
+    }
+    return s;
+  }) : results
   const playCancion = () => {
     navigation.navigate('MusicPlayer', {
       title: video,
       song: url,
-      results: results
+      results: resultsList
     });
   };
   return (
