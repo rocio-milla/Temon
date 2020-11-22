@@ -1,17 +1,22 @@
-import Genres from './consts/Genres.mjs';
-import * as Artists from './consts/artists/index.mjs';
+import Genres from './src/consts/Genres.mjs';
+import * as Artists from './src/consts/artists/index.mjs';
 import youtubeSearcher from 'yt-search';
 import youtubeDownloader from 'ytdl-core';
 import express from 'express';
 import bodyParser from 'body-parser';
 import retry from 'async-retry';
 
+const port = process.env.PORT || 8080;
 const app = express();
 app.use(bodyParser.json());
 
-app.listen(3000, () => {
-  console.log("El servidor está inicializado en el puerto 3000");
+app.listen(port, () => {
+  console.log(`El servidor está inicializado en el puerto ${port}`);
 });
+
+app.get('/', (req, res) => {
+  res.send('TEMON API running');
+})
 
 app.get('/musica/escuchar', async (req, res) => {
   try {
