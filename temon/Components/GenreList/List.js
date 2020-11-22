@@ -6,7 +6,6 @@ import runes from 'runes';
 
 export default function List(props) {
   const { navigation, listItems } = props;
-
   return (
     <>
       {size(listItems) > 0 ? (
@@ -46,6 +45,8 @@ function Item(props) {
 const styles = StyleSheet.create({
   main: {
     backgroundColor: "#fff",
+    alignSelf:'center',
+    width: '100%'
   },
   loaderCanciones: {
     marginTop: 8,

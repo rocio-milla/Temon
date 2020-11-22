@@ -5,7 +5,7 @@ import List from './List';
 const GenreListArtistsScreen = ({route, navigation}) => {
   const { genreListSongs } = route.params;
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View >
       <TouchableOpacity onPress={() => navigation.navigate('MusicPlayer')}>
         <List navigation={navigation} listItems={genreListSongs}/>
       </TouchableOpacity>
