@@ -12,11 +12,11 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/voice": "^1.1.9",
+    "@react-navigation/native": "^5.8.2",
     "@react-navigation/stack": "^5.9.2",
     "buffer": "^5.6.0",
     "lodash": "^4.17.20",
     "react": "16.13.1",
-    "@react-navigation/native": "^5.8.2",
     "react-devtools": "^4.8.2",
     "react-native": "0.63.3",
     "react-native-chooser": "^1.7.0",
@@ -31,6 +31,7 @@
     "react-native-sound": "^0.11.0",
     "react-native-sqlite-storage": "^5.0.0",
     "react-native-swift": "^1.2.3",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-track-player": "^1.2.3",
     "react-native-vector-icons": "^7.1.0",
     "runes": "^0.4.3"
