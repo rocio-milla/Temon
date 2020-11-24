@@ -38,7 +38,7 @@ const themeNavigation = {
   },
 };
 
-const App: () => React$Node = () => {
+const App = () => {
   return (
     // <ThemeProvider theme={theme}>
     <NavigationContainer theme={themeNavigation}>

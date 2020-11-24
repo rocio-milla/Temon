@@ -29,19 +29,6 @@ class ScreenPlaylists extends Component {
    componentDidMount() {
 
     db.transaction(tx => {
-
-      tx.executeSql(
-        'create table if not exists playlist (name text not null,colour text not null, primary key(name,colour));',[],()=>console.log("creeeated"),(a,b)=>console.log(b)
-      );
-
-
-            //--------------------------------tabla de canciones -------------------------//
-      tx.executeSql(
-        'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
-      );
-///////////////------------------//////////////////////
-
-
         tx.executeSql(  
           'INSERT OR IGNORE  INTO playlist (name,colour) VALUES (?,?),(?,?),(?,?)',
           ["Clasicos!","#CF2EAD",
