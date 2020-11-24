@@ -37,8 +37,9 @@ class ScreenPlaylists extends Component {
 
             //--------------------------------tabla de canciones -------------------------//
       tx.executeSql(
-        'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
-      );
+    //    'create table if not exists song (url text not null,title text,namePlaylist text,colour text, FOREIGN KEY(namePlaylist,colour) REFERENCES playlist(name,colour),primary key(url));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
+    'create table if not exists song (url text not null,title text,namePlaylist text not null,colour text not null,primary key(url,namePlaylist,colour));',[],()=>console.log("creeeated table song"),(a,b)=>console.log(b)
+    );
 ///////////////------------------//////////////////////
 
 
@@ -61,10 +62,10 @@ class ScreenPlaylists extends Component {
  
         tx.executeSql(        
           'INSERT OR IGNORE INTO song (url,title,namePlaylist,colour) VALUES (?,?,?,?),(?,?,?,?),(?,?,?,?),(?,?,?,?)',
-          ["url1","Queen - We will rock you","Clasicos!","#CF2EAD",
-           "url2","Madonna - La isla bonita","Clasicos!","#CF2EAD",
-           "url3","Virus - Imágenes paganas","Variados","#3300CC",
-           "url4","Queen - Killer Queen","Variados","#3300CC"],
+          ["https://www.youtube.com/watch?v=-tJYN-eG1zk","Queen - We Will Rock You (Official Video)","Clasicos!","#CF2EAD",
+           "https://www.youtube.com/watch?v=zpzdgmqIHOQ","Madonna - La Isla Bonita (Video Oficial)","Clasicos!","#CF2EAD",
+           "https://www.youtube.com/watch?v=9UY8kqV7KgE","Virus- Imagenes Paganas","Variados","#3300CC",
+           "https://www.youtube.com/watch?v=2ZBtPf7FOoM","Queen - Killer Queen (Top Of The Pops, 1974)","Variados","#3300CC"],
          // "Clasicos!","Guns N Roses","Roses - Welcome To The Jungle",
          // "Clasicos!","The Beatles","Helter Skelter"],
           //"Variados","Madonna","La isla bonita",
@@ -99,7 +100,7 @@ class ScreenPlaylists extends Component {
        //-------------///
 
 ////////////----------SOLO PARA VER TODAS LAS CANCIONES------///////////
-    /*   tx.executeSql('SELECT * from song', [], (tx, results) => {
+     /*  tx.executeSql('SELECT * from song', [], (tx, results) => {
         var len = results.rows.length;
         console.log(len)
         let elements = [];
@@ -311,6 +312,48 @@ class ScreenPlaylists extends Component {
     }
     );
 
+
+
+/////////se borran aquellas canciones pertenecientes a esa playlist///////////////
+    tx.executeSql(
+      'DELETE FROM  song where namePlaylist=? and colour=?', [name,colour],
+      (tx, results) => {
+      console.log('Results', results.rowsAffected); if (results.rowsAffected > 0) {
+        console.log("id borrado :"+id)
+  
+      } 
+      }
+      );
+
+
+
+//solo para cargar de nuevos las songs luego de borrar la playlist a la que pertecen////
+
+    /*  tx.executeSql('SELECT * from song', [], (tx, results) => {
+        var len = results.rows.length;
+        console.log(len)
+        let elements = [];
+        if(len > 0) {
+          for (let i = 0; i < len; i++) {
+            elements.push(results.rows.item(i));
+            console.log(results.rows.item(i));
+          }
+          this.setState({ listAllSong:elements});
+          console.log(this.state.listAllSong)
+    
+        }
+      if(len==0){
+          console.log("no hay")
+        let elements = [];
+    
+        this.setState({ listAllSong:elements});
+    }
+    
+      });
+*/
+
+
+
     //----------listar playlists------//
     tx.executeSql('SELECT * from playlist', [], (tx, results) => {
       var len = results.rows.length;
@@ -467,8 +510,9 @@ class ScreenPlaylists extends Component {
                 />*/}
 
 
-{ /*  SOLO PARA VER TODAS LAS CANCIONES
-           <FlatList
+
+         {/*solo para ver todas las canciones de la tabla song
+         }  <FlatList
                   data={this.state.listAllSong}
                   ItemSeparatorComponent={this.ListViewItemSeparator}
                   keyExtractor={(item, index) => index.toString()}

@@ -8,6 +8,14 @@ import runes from 'runes';
 import { PersonalConfig } from '../../PersonalConfig.js';
 import styles from './IndexStyle';
 import {useNavigation } from '@react-navigation/native' 
+import Dialog from "react-native-dialog";
+import {Select, Option} from "react-native-chooser";
+import { set } from 'lodash';
+
+
+var SQLite = require('react-native-sqlite-storage')
+
+var db = SQLite.openDatabase({name: 'test.db', createFromLocation: '~sqliteexample.db'})
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 const MusicPlayerScreen = ({ route }) => {
@@ -16,15 +24,20 @@ const MusicPlayerScreen = ({ route }) => {
   const { results ,title, song } = route.params;
   const { position, duration } = useTrackPlayerProgress(200);
   // const progress = TrackPlayer.useTrackPlayerProgress();
-  const [buttonPlay, setButtonPlay] = useState("pause");
-  const [idTrack, setIdTrack] = useState("");
-  const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 });
-  const [count, setCount] = useState(0);
+  const [buttonPlay, setButtonPlay] = useState("pause")
+  const [idTrack, setIdTrack] = useState("")
+  const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 })
+  const [count, setCount] = useState(0)
+  const [dateTouch,setDateTouch] = useState(null)
+  const [increment,setIncrement] = useState(0)
+  const [touchState,setTouchState] = useState({state1: 0,state2: 0})
+  const [visible, setVisible] = useState(false);
+  const [listPlaylist, setListPlaylist] = useState([]);
+  const [defaultPlaylist, setDefaultPlaylist] = useState();
+  const [defaultColour, setDefaultColour] = useState();
   const [swipeState,setSwipeState] = useState(0);
-  const [touchState,setTouchState] = useState({state1: 0,state2: 0});
   const [gestureName,setGestureName] = useState("none");
-  //const [count,setCount] = useState({value:0,state:0})
-  //const [dateTouch,setDateTouch] = useState(null)
+
   let playerReady = false;
   useEffect(() => {
     const setPlayer = async () => {
@@ -256,6 +269,114 @@ const MusicPlayerScreen = ({ route }) => {
     navigation.navigate('Library');
   };
 
+
+   //-------modal---------//
+   const showDialog = () => {
+
+   db.transaction(tx => {
+
+    //---------listar playlists----------//
+    tx.executeSql('SELECT * from playlist', [], (tx, results) => {
+
+      var len = results.rows.length;
+
+      let elements = [];
+      if(len > 0) {
+        for (let i = 0; i < len; i++) {
+          elements.push(results.rows.item(i));
+        }
+        setListPlaylist(elements)
+        console.log("playlists cargadas:")
+
+          console.log("--------------------")
+          console.log("nombre"+elements[0].name)
+          console.log("color"+elements[0].colour)
+       setDefaultPlaylist(elements[0].name)
+       setDefaultColour(elements[0].colour)
+      }
+      
+      if(len==0){
+        let elements = [];
+        setListPlaylist(elements)
+        setDefaultPlaylist(null)
+        setDefaultColour(null)
+  }
+    });
+
+  });
+  setVisible(true)
+
+};
+ 
+const hideDialog = () => {
+    
+  setVisible(false)
+};
+//----------------//
+
+const onSelect = (item) => {
+
+  console.log("nombre: "+ item.name)
+ setDefaultPlaylist(item.name)
+ setDefaultColour(item.colour)
+
+}
+/*useEffect(() => {
+  
+
+  db.transaction(tx => {
+
+    //---------listar playlists----------//
+    tx.executeSql('SELECT * from playlist', [], (tx, results) => {
+       var len = results.rows.length;
+
+       let elements = [];
+
+         for (let i = 0; i < len; i++) {
+           elements.push(results.rows.item(i));
+         }
+         setListPlaylist(elements)
+         console.log("playlists cargadas:"+status)
+
+
+         if(status==true){
+      setDefaultPlaylist(elements[0].name)
+        setDefaultColour(elements[0].colour)}
+
+        setStatus(false)
+  
+     });
+
+  });
+
+  
+  }, [listPlaylist]);*/
+
+
+  const addToPlaylist = () => {
+
+    console.log(song+"---"+title+"---"+defaultPlaylist+"---"+defaultColour)
+    
+    db.transaction(tx => {
+
+      tx.executeSql(        
+        'INSERT OR IGNORE INTO song (url,title,namePlaylist,colour) VALUES (?,?,?,?)',
+        [song,title,defaultPlaylist,defaultColour],
+        (tx, results) => {               
+          if (results.rowsAffected > 0 ) {
+            console.log('cancion insertada');              
+          } else {
+            console.log('cancion no insertada');
+          }
+        }
+      );
+
+
+    });
+
+    setVisible(false)
+  };
+
   return (
     <>
       <View style={styles.headers}>
@@ -263,9 +384,21 @@ const MusicPlayerScreen = ({ route }) => {
           <TouchableOpacity style={styles.iconSearch}>
             <Icon name="search" type='font-awesome' color='black' reverse size={40} />
           </TouchableOpacity>
+
+          <TouchableOpacity  onPress={showDialog}>
+          <Icon style = {{ marginLeft:80} }
+                        name='add-circle'
+                        type='ionicon'
+                        color='#C74E08'
+                        size={90}
+                  
+                        />
+          </TouchableOpacity>
+
           <TouchableOpacity style={styles.iconLibrary} onPress={() => library()}>
             <Text style={styles.library}></Text>
           </TouchableOpacity>
+          
         </View>
       </View>
       <View style={styles.screen}>
@@ -303,6 +436,34 @@ const MusicPlayerScreen = ({ route }) => {
               {<Icon name="forward" type='font-awesome' color='#ffffff' size={50} />}
             </TouchableOpacity>
           </View>
+
+          <Dialog.Container visible={visible}  >
+
+           <Dialog.Title style = {{fontSize:38 , fontWeight: "bold"}}>PLAYLIST</Dialog.Title>
+
+          <Select
+                      onSelect = {onSelect.bind(this)}
+                      defaultText  = {defaultPlaylist}
+                      style = {{borderWidth : 1,backgroundColor:defaultColour,width:300}}
+                      textStyle = {{fontSize:38,fontWeight: "bold",color:"white"}}
+                      backdropStyle  = {{backgroundColor : "#d3d5d6"}}
+                      optionListStyle = {{backgroundColor : "#F5FCFF",width:250,height:250}}
+                    >
+                {listPlaylist.map(item => (
+                  
+                <Option  style = {{backgroundColor :item.colour ,height:80}} value = {item}>
+                  <Text style = {{fontSize:38,color:'white',fontWeight: "bold"}} >
+                  {item.name}
+                  </Text>
+                </Option> ))}
+          </Select>
+
+            <Dialog.Button style = {{marginRight:25,fontSize:25 , fontWeight: "bold"}} label="AGREGAR" onPress={addToPlaylist} />
+            <Dialog.Button style = {{margin:0,fontSize:25 , fontWeight: "bold"}} label="CANCELAR" onPress={hideDialog}  />
+
+        </Dialog.Container>
+
+
           <View style={styles.contSlider}>
           {<Slider
             style={styles.slider}
@@ -317,6 +478,8 @@ const MusicPlayerScreen = ({ route }) => {
             thumbStyle={{ height: 20, width: 20, backgroundColor: 'transparent' }}
           /> }
         </View>
+
+
       </View>
     </>
   );
