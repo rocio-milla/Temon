@@ -1,5 +1,5 @@
 import { size } from 'lodash';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Dialog from "react-native-dialog";
 import { Divider } from 'react-native-elements';
@@ -29,6 +29,10 @@ export default function ResultList(props) {
       });
     });
   }
+
+  useEffect(() => {
+    setResultList(results)
+  }, [results])
 
   return (
     <>
