@@ -6,7 +6,6 @@ import { Icon, Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Mic from './mic';
 
-
 var SQLite = require('react-native-sqlite-storage')
 
 var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' })
@@ -47,11 +46,8 @@ class ScreenPlaylists extends Component {
         'INSERT OR IGNORE  INTO playlist (name,colour) VALUES (?,?),(?,?),(?,?)',
         ["Clasicos!", "#CF2EAD",
           "Variados", "#3300CC",
-          "Rock", "#C84B02"]
-        ,
+          "Rock", "#C84B02"],
         (tx, results) => {
-
-
           if (results.rowsAffected > 0) {
             console.log('Insert success');
           } else {
@@ -87,14 +83,11 @@ class ScreenPlaylists extends Component {
       //---------listar playlists----------//
       tx.executeSql('SELECT * from playlist', [], (tx, results) => {
         var len = results.rows.length;
-
         let elements = [];
-
         for (let i = 0; i < len; i++) {
           elements.push(results.rows.item(i));
         }
         this.setState({ elementList: elements });
-        console.log(this.state.elementList)
       });
 
       //-------------///
@@ -136,7 +129,6 @@ class ScreenPlaylists extends Component {
 
       tx.executeSql('SELECT * from song where namePlaylist=? and colour=?', [name, colour], (tx, results) => {
         var len = results.rows.length;
-        console.log(len)
         let elements = [];
         if (len > 0) {
           for (let i = 0; i < len; i++) {
@@ -146,9 +138,6 @@ class ScreenPlaylists extends Component {
           this.setState({ elementsListPlaylist: elements });
           //  console.log(this.state.elementsListPlaylist)
 
-          console.log("-------------------lista de canciones-------------------")
-          console.log(this.state.elementsListPlaylist)
-
           this.props.navigation.navigate('PlayListSelected', {
             title: name,
             colour: colour,
@@ -157,14 +146,8 @@ class ScreenPlaylists extends Component {
         }
 
         if (len == 0) {
-          console.log("no hay")
           let elements = [];
-
           this.setState({ elementsListPlaylist: elements });
-
-          console.log("-------------------lista de canciones-------------------")
-          console.log(this.state.elementsListPlaylist)
-
           this.props.navigation.navigate('PlayListSelected', {
             title: name,
             colour: colour,
@@ -180,8 +163,6 @@ class ScreenPlaylists extends Component {
 
 
   onSelect(value) {
-
-    console.log("color seleccionado es: " + value)
     this.setState({ colour: value });
   }
 
@@ -200,34 +181,18 @@ class ScreenPlaylists extends Component {
 
 
   source = (name) => {
-
-    console.log(name);
     this.setState({ 'name': name });
-
   }
 
   addPlaylist = () => {
     let cont = 0;
-    console.log("a agregar")
-    console.log(this.state.name)
-    console.log(this.state.colour)
-
     if (this.state.name != '') {
-
       for (let element of this.state.elementList) {
-
         if (element.name == this.state.name && element.colour == this.state.colour) {
-
-          console.log("cambia a 1")
           cont = cont + 1;
-
         }
       }
-
-      console.log("la condicion es : " + cont)
-
       if (cont == 1) {
-
         Animated.sequence([
           Animated.timing(this.state.startValue, {
 
@@ -244,41 +209,20 @@ class ScreenPlaylists extends Component {
         ]).start()
 
         // ToastAndroid.show('YA EXISTE', ToastAndroid.SHORT);
-        console.log("ya existe")
       }
-
       else {
-
-        console.log("no existe")
         db.transaction(
           tx => {
-            tx.executeSql('insert into playlist (name,colour) values (?,?)', [this.state.name, this.state.colour],
-              (tx, results) => {
-
-                if (results.rowsAffected > 0) {
-                  console.log("insertado")
-
-                }
-
-                else {
-                  console.log("no se inserto")
-                }
-              });
-
-            console.log("segunda parte")
-            tx.executeSql('SELECT * from playlist', [], (tx, results) => {
+            tx.executeSql('insert into playlist (name,colour) values (?,?)', [this.state.name, this.state.colour]);
+            tx.executeSql('SELECT * from playlist', [], (_, results) => {
               var len = results.rows.length;
               let elements = [];
 
               if (len > 0) {
-
                 for (let i = 0; i < len; i++) {
                   elements.push(results.rows.item(i));
-                  console.log(results.rows.item(i));
                 }
                 this.setState({ elementList: elements });
-                console.log(this.state.elementList)
-
               }
             });
 
@@ -298,27 +242,22 @@ class ScreenPlaylists extends Component {
   };
 
   deletePlaylist = (name, colour) => {
-    console.log(name)
-    console.log(colour)
     db.transaction(tx => {
       tx.executeSql(
         'DELETE FROM  playlist where name=? and colour=?', [name, colour],
         (tx, results) => {
-          console.log('Results', results.rowsAffected); if (results.rowsAffected > 0) {
+          if (results.rowsAffected > 0) {
             console.log("id borrado :" + id)
           }
         }
       );
 
-
-
       /////////se borran aquellas canciones pertenecientes a esa playlist///////////////
       tx.executeSql(
         'DELETE FROM  song where namePlaylist=? and colour=?', [name, colour],
         (tx, results) => {
-          console.log('Results', results.rowsAffected); if (results.rowsAffected > 0) {
+          if (results.rowsAffected > 0) {
             console.log("id borrado :" + id)
-
           }
         }
       );
@@ -337,19 +276,14 @@ class ScreenPlaylists extends Component {
             }
             this.setState({ listAllSong:elements});
             console.log(this.state.listAllSong)
-      
           }
         if(len==0){
             console.log("no hay")
           let elements = [];
-      
           this.setState({ listAllSong:elements});
       }
-      
         });
   */
-
-
 
       //----------listar playlists------//
       tx.executeSql('SELECT * from playlist', [], (tx, results) => {
@@ -358,15 +292,12 @@ class ScreenPlaylists extends Component {
         if (len > 0) {
           for (let i = 0; i < len; i++) {
             elements.push(results.rows.item(i));
-            console.log(results.rows.item(i));
           }
           this.setState({ elementList: elements });
-          console.log(this.state.elementList)
 
         }
         if (len == 0) {
           let elements = [];
-
           this.setState({ elementList: elements });
         }
 
@@ -376,11 +307,6 @@ class ScreenPlaylists extends Component {
     });
 
   };
-
-  onChangeText = (text) => {
-    console.log(text);
-  }
-
 
   ListViewItemSeparator = () => {
     return (
@@ -403,6 +329,9 @@ class ScreenPlaylists extends Component {
             borderRadius: 10,
             height: 90,
             width: 340,
+            padding: '10%',
+            paddingBottom: '15%',
+            paddingTop: '15%'
           }}
           title="NUEVA PLAYLIST" />
         <FlatList
@@ -428,9 +357,11 @@ class ScreenPlaylists extends Component {
               { /* <Lista       item={item}  />*/}
               <Icon onPress={() => this.deletePlaylist(item.name, item.colour)}
                 name='trash'
-                type='evilicon'
-                color='black'
-                size={100}
+                type='font-awesome'
+                color='#D12734'
+                size={40}
+                iconStyle={{fontSize: 60}}
+                reverse
               />
             </View>
 
@@ -458,7 +389,7 @@ class ScreenPlaylists extends Component {
             style={{ margin: 23, marginTop: 150, width: 250, height: 150, borderWidth: 1, backgroundColor: this.state.colour }}
             textStyle={{ color: this.state.colour }}
             backdropStyle={{ backgroundColor: "#d3d5d6" }}
-            optionListStyle={{ backgroundColor: "#F5FCFF", width: 250, height: 250 }}>
+            optionListStyle={{ backgroundColor: "#F5FCFF", width: '100%', height: '100%' }}>
             <Option style={{ backgroundColor: "#C84B02", height: 125 }} value="#C84B02"></Option>
             <Option style={{ backgroundColor: "#3300CC", height: 125 }} value="#3300CC"></Option>
             <Option style={{ backgroundColor: "#D12734", height: 125 }} value="#D12734"></Option>
@@ -516,7 +447,6 @@ export default ScreenPlaylists
 function Lista(props) {
   const { item } = props;
   const { name } = item;
-  console.log(name);
   const navigation = useNavigation();
   return (
     <Button

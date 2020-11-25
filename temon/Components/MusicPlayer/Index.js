@@ -96,7 +96,6 @@ const MusicPlayerScreen = ({ route }) => {
     }
     else if (touchState >= 1 && touchState <= 2) {
       let incremental = position
-      console.log(incremental + "\n")
       TrackPlayer.setVolume(0)
       TrackPlayer.play()
       let adelantar = duration * 0.025
@@ -145,40 +144,19 @@ const MusicPlayerScreen = ({ route }) => {
       };
     }, []));
 
-  /*comienso swipe*/
+  /*comienzo swipe*/
 
   let cancelOut = 0
   const onSwipeLeft = (gestureState) => {
     cancelOut = 1
-    console.log("swipe : izquierda")
     prevTrack()
   }
 
   const onSwipeRight = (gestureState) => {
     cancelOut = 1
-    console.log("swipe : derecha")
     nextTrack()
-
   }
 
-  const onSwipe = (gestureName, gestureState) => {
-    const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-    setGestureName(gestureName)
-    switch (gestureName) {
-      case SWIPE_UP:
-        console.log("arriba");
-        break;
-      case SWIPE_DOWN:
-        console.log("abajo");
-        break;
-      case SWIPE_LEFT:
-        console.log("izquierda");
-        break;
-      case SWIPE_RIGHT:
-        console.log("derecha");
-        break;
-    }
-  }
   const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80,
@@ -233,12 +211,10 @@ const MusicPlayerScreen = ({ route }) => {
 
   const pressInLeft = () => {
     setTouchState(1)
-    console.log("in isquierda")
   }
 
   const pressOutLeft = () => {
     if (cancelOut == 0) {
-      console.log("out isquierda: ")
       setTouchState(3)
     }
     else {
@@ -249,12 +225,10 @@ const MusicPlayerScreen = ({ route }) => {
 
   const pressInRight = () => {
     setTouchState(2)
-    console.log("in derecha")
   }
 
   const pressOutRight = () => {
     if (cancelOut == 0) {
-      console.log("out derecha")
       setTouchState(3)
     }
     else {
@@ -277,7 +251,6 @@ const MusicPlayerScreen = ({ route }) => {
   }, [musicTheme]);
 
   const agregarAFavoritos = () => {
-    console.log(enFavoritos)
     if (!enFavoritos) {
       var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' })
       db.transaction(tx => {
@@ -294,7 +267,6 @@ const MusicPlayerScreen = ({ route }) => {
   };
 
   const quitarDeFavoritos = () => {
-    console.log(enFavoritos)
     if (enFavoritos) {
       var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' })
       db.transaction(tx => {
@@ -325,11 +297,6 @@ const MusicPlayerScreen = ({ route }) => {
             elements.push(results.rows.item(i));
           }
           setListPlaylist(elements)
-          console.log("playlists cargadas:")
-
-          console.log("--------------------")
-          console.log("nombre" + elements[0].name)
-          console.log("color" + elements[0].colour)
           setDefaultPlaylist(elements[0].name)
           setDefaultColour(elements[0].colour)
         }
@@ -354,11 +321,8 @@ const MusicPlayerScreen = ({ route }) => {
   //----------------//
 
   const onSelect = (item) => {
-
-    console.log("nombre: " + item.name)
     setDefaultPlaylist(item.name)
     setDefaultColour(item.colour)
-
   }
   /*useEffect(() => {
     
@@ -493,7 +457,7 @@ const MusicPlayerScreen = ({ route }) => {
             style={{ borderWidth: 1, backgroundColor: defaultColour, width: 300 }}
             textStyle={{ fontSize: 38, fontWeight: "bold", color: "white" }}
             backdropStyle={{ backgroundColor: "#d3d5d6" }}
-            optionListStyle={{ backgroundColor: "#F5FCFF", width: 250, height: 250 }}
+            optionListStyle={{ backgroundColor: "#F5FCFF", width: '100%', height: '100%' }}
           >
             {listPlaylist.map((item, i) => (
               <Option style={{ backgroundColor: item.colour, height: 80 }} value={item} key={i}>

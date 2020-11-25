@@ -79,12 +79,6 @@ function Cancion(props) {
     db.transaction(tx => {
       tx.executeSql(
         'DELETE FROM  song where url=? and namePlaylist=? and colour=?', [url, name, colour],
-        (tx, results) => {
-          console.log('Results', results.rowsAffected);
-          if (results.rowsAffected > 0) {
-            console.log("id borrado :" + url)
-          }
-        }
       );
     });
     reloadIfPlaylist(name, colour);

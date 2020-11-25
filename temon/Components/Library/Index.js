@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-elements';
 
 var SQLite = require('react-native-sqlite-storage');
 
@@ -23,7 +23,6 @@ const ScreenLibrary = () => {
 
    const favoritos = () => {
       var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' });
-
       db.transaction(tx => {
          tx.executeSql('SELECT * FROM favoritos', [], (tx, results) => {
             const rowsLength = results.rows.length;
@@ -31,8 +30,6 @@ const ScreenLibrary = () => {
             for (let i = 0; i < rowsLength; i++) {
                canciones.push(results.rows.item(i));
             }
-            
-            console.log(canciones)
             navigation.navigate('Results', {
                results: canciones,
             });
