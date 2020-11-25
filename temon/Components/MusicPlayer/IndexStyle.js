@@ -23,7 +23,6 @@ export default StyleSheet.create({
       borderRadius:35,
       justifyContent:"center",
       alignItems:"center",
-      
     },
     iconLibrary:{
       height:70,
@@ -38,12 +37,19 @@ export default StyleSheet.create({
     screen:{
       flex:3,
       justifyContent:"center",
-      alignItems:"center",  
+      alignItems:"center",
+      backgroundColor:"red",
+      flexDirection:"row",
     },
-    screenButton:{
+    gestureRecognizer1:{
       width:"100%",
       height:"100%",
-      backgroundColor:"#787878",
+      backgroundColor:"#03902D",
+    },
+    gestureRecognizer2:{
+      width:"100%",
+      height:"100%",
+      backgroundColor:"#9E00B4",
     },
   
     soundOptions:{
@@ -68,7 +74,6 @@ export default StyleSheet.create({
     },
     iconPlus:{
       justifyContent:"center",
-      
       height:70,
       width:70,
       backgroundColor:"#FE4900",

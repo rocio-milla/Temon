@@ -113,7 +113,7 @@ const HomeScreen = ({ navigation }) => {
 
 		const tablaCreada = (nombreTabla) => console.log(`tabla '${nombreTabla}' creada!`);
 		const errorCreandoTabla = (error, nombreTabla) => console.log(`ocurrió un error al crear la tabla '${nombreTabla}'`, error);
-	
+
 		db.transaction(tx => {
 			tx.executeSql(
 				'CREATE TABLE IF NOT EXISTS favoritos (url TEXT NOT NULL, title TEXT NOT NULL, primary key(url));',
@@ -126,24 +126,24 @@ const HomeScreen = ({ navigation }) => {
 				[],
 				() => tablaCreada('playlist'),
 				(_, error) => errorCreandoTabla(error, 'playlist')
-      );
+			);
 
-      tx.executeSql(
-				'CREATE TABLE IF NOT EXISTS song (url TEXT NOT NULL, title TEXT, namePlaylist TEXT, colour TEXT, FOREIGN KEY(namePlaylist, colour) REFERENCES playlist(name, colour), PRIMARY KEY(url));',
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS song (url text not null,title text,namePlaylist text not null,colour text not null,primary key(url,namePlaylist,colour));',
 				[],
 				() => tablaCreada('song'),
 				(_, error) => errorCreandoTabla(error, 'song')
-      );
+			);
 		});
 	};
 
 	const library = () => {
 		navigation.navigate('Library');
-		};
+	};
 
-		useEffect(() => {
-			crearTablas();
-		});
+	useEffect(() => {
+		crearTablas();
+	});
 
 	return (
 		<>
