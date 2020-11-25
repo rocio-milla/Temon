@@ -78,7 +78,20 @@ const App = () => {
           }}
         />
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true} />
-        <Stack.Screen name="Playlists" component={ScreenPlaylists} options={{ headerShown: false }} unmountOnBlur={true} />
+        <Stack.Screen name="Playlists" component={ScreenPlaylists}
+          unmountOnBlur={true}
+          options={{
+            title: 'PLAYLIST',
+            headerStyle: {
+              backgroundColor: '#0B797E',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }} />
         <Stack.Screen
           name="PlayListSelected"
           component={ScreenPlayListSelected}

@@ -325,15 +325,14 @@ class ScreenPlaylists extends Component {
           }}
           buttonStyle={{
             marginBottom: 10,
+            marginTop: 0,
             backgroundColor: "#C84B02",
             borderRadius: 10,
             height: 90,
             width: 340,
             padding: '10%',
-            paddingBottom: '15%',
-            paddingTop: '15%'
           }}
-          title="NUEVA PLAYLIST" />
+          title="CREAR" />
         <FlatList
           data={this.state.elementList}
           ItemSeparatorComponent={this.ListViewItemSeparator}
@@ -477,8 +476,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-
-    marginTop: 50
+    marginTop: 15
   },
   textInput: {
     borderWidth: 1,
