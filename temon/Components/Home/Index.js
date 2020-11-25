@@ -168,9 +168,9 @@ const HomeScreen = ({ navigation }) => {
 								fontSize: 30,
 								fontWeight: "bold",
 								textAlign: 'center',
-								color: '#000'
+								color: 'white'
 							}}>
-							PLAYLISTS
+							BIBLIOTECA
 						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -188,7 +188,7 @@ const HomeScreen = ({ navigation }) => {
 								fontSize: 30,
 								fontWeight: "bold",
 								textAlign: 'center',
-								color: '#000'
+								color: 'white'
 							}}>
 							BUSCAR POR GÉNERO
 						</Text>
@@ -205,7 +205,7 @@ const HomeScreen = ({ navigation }) => {
 							name="microphone"
 							type='font-awesome'
 							color='#a646dd'
-							size={130}
+							size={115}
 							reverse
 						/>
 					</TouchableOpacity>

@@ -18,6 +18,7 @@ import MusicPlayerScreen from './Components/MusicPlayer/Index';
 import ScreenPlaylists from './Components/Playlists/Index';
 import ScreenPlayListSelected from './Components/PlayListSelected/Index';
 import ResultsScreen from './Components/Results/Index';
+import ScreenFavorites from './Components/Favorites/Index';
 
 const Stack = createStackNavigator();
 
@@ -77,6 +78,24 @@ const App = () => {
             },
           }}
         />
+
+<Stack.Screen
+          name="Favorites"
+          component={ScreenFavorites}
+          options={{
+            title: 'FAVORITOS',
+            headerStyle: {
+              backgroundColor: '#0B797E',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+        />
+
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true} />
         <Stack.Screen name="Playlists" component={ScreenPlaylists}
           unmountOnBlur={true}
