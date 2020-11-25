@@ -11,6 +11,8 @@ import Sound from 'react-native-sound';
 import { PersonalConfig } from '../../PersonalConfig.js';
 import { GetGenres } from '../../services/GenreService.js';
 
+const SQLite = require('react-native-sqlite-storage')
+
 const HomeScreen = ({ navigation }) => {
 
 	const [error, setError] = useState('');
@@ -106,10 +108,42 @@ const HomeScreen = ({ navigation }) => {
 		});
 	};
 
+	const crearTablas = () => {
+		var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' });
+
+		const tablaCreada = (nombreTabla) => console.log(`tabla '${nombreTabla}' creada!`);
+		const errorCreandoTabla = (error, nombreTabla) => console.log(`ocurrió un error al crear la tabla '${nombreTabla}'`, error);
+
+		db.transaction(tx => {
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS favoritos (url TEXT NOT NULL, title TEXT NOT NULL, primary key(url));',
+				[],
+				() => tablaCreada('favoritos'),
+				(_, error) => errorCreandoTabla(error, 'favoritos')
+			);
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS playlist (name TEXT NOT NULL,colour TEXT NOT NULL, PRIMARY KEY(name,colour));',
+				[],
+				() => tablaCreada('playlist'),
+				(_, error) => errorCreandoTabla(error, 'playlist')
+			);
+
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS song (url text not null,title text,namePlaylist text not null,colour text not null,primary key(url,namePlaylist,colour));',
+				[],
+				() => tablaCreada('song'),
+				(_, error) => errorCreandoTabla(error, 'song')
+			);
+		});
+	};
+
 	const library = () => {
 		navigation.navigate('Library');
-	  };
-	
+	};
+
+	useEffect(() => {
+		crearTablas();
+	}, []);
 
 	return (
 		<>
