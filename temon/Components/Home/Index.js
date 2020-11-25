@@ -143,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
 
 	useEffect(() => {
 		crearTablas();
-	});
+	}, []);
 
 	return (
 		<>

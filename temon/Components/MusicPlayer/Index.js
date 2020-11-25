@@ -393,11 +393,7 @@ const MusicPlayerScreen = ({ route }) => {
 
 
   const addToPlaylist = () => {
-
-    console.log(song + "---" + title + "---" + defaultPlaylist + "---" + defaultColour)
-
     db.transaction(tx => {
-
       tx.executeSql(
         'INSERT OR IGNORE INTO song (url,title,namePlaylist,colour) VALUES (?,?,?,?)',
         [song, title, defaultPlaylist, defaultColour],
@@ -409,10 +405,7 @@ const MusicPlayerScreen = ({ route }) => {
           }
         }
       );
-
-
     });
-
     setVisible(false)
   };
 
@@ -502,8 +495,8 @@ const MusicPlayerScreen = ({ route }) => {
             backdropStyle={{ backgroundColor: "#d3d5d6" }}
             optionListStyle={{ backgroundColor: "#F5FCFF", width: 250, height: 250 }}
           >
-            {listPlaylist.map(item => (
-              <Option style={{ backgroundColor: item.colour, height: 80 }} value={item}>
+            {listPlaylist.map((item, i) => (
+              <Option style={{ backgroundColor: item.colour, height: 80 }} value={item} key={i}>
                 <Text style={{ fontSize: 38, color: 'white', fontWeight: "bold" }} >
                   {item.name}
                 </Text>

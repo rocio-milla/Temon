@@ -68,7 +68,6 @@ function Cancion(props) {
   }) : results
 
   const playCancion = () => {
-    console.log("i'm here!")
     navigation.navigate('MusicPlayer', {
       title: video,
       song: url,
