@@ -76,6 +76,9 @@ const MusicPlayerScreen = ({ route }) => {
           title: res[i].video
         });
       }
+      TrackPlayer.addEventListener('playback-track-changed', () => {
+        TrackActual()
+      });
       await TrackPlayer.skip(idActualTrack)
       await TrackPlayer.play();
       setMusicTheme({ ...musicTheme, url: song, title: title })
@@ -241,13 +244,32 @@ const MusicPlayerScreen = ({ route }) => {
     navigation.navigate('Library');
   };
 
+  const home = () => {
+    navigation.navigate('Home');
+  };
+
   useEffect(() => {
     var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' });
     db.transaction(tx => {
+      
       tx.executeSql('SELECT 1 FROM favoritos WHERE url=?', [musicTheme.url], (_, results) => {
         setEnFavoritos(results.rows.length > 0);
       });
     });
+
+    if(musicTheme.url!="" || musicTheme.title!=""){
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT OR IGNORE INTO historial (url, title) values (?, ?)',
+          [musicTheme.url, musicTheme.title],
+          (_, results) => console.log(results),
+          (_, error) => {
+            console.log(error.code);
+            console.log(error.message);
+        });
+      });
+    }
+
   }, [musicTheme]);
 
   const agregarAFavoritos = () => {
@@ -377,40 +399,51 @@ const MusicPlayerScreen = ({ route }) => {
     <>
       <View style={styles.headers}>
         <View style={styles.menu}>
-          <TouchableOpacity style={styles.iconSearch}>
-            <Icon name="search" type='font-awesome' color='black' reverse size={40} />
+          <TouchableOpacity style={styles.iconHead} onPress= {()=>home()} >
+          <Icon
+                name='home'
+                type='ionicon'
+                color='#ffffff'
+                size={80}
+              />
           </TouchableOpacity>
           {!enFavoritos ?
-            <TouchableOpacity onPress={() => agregarAFavoritos()} >
+            <TouchableOpacity style={styles.iconHead} 
+            onPress={() => agregarAFavoritos()} >
               <Icon
                 name='heart'
                 type='ionicon'
                 color='#1b7701'
-                size={90}
+                size={80}
               />
             </TouchableOpacity>
             :
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconHead}
               onPress={() => quitarDeFavoritos()} >
               <Icon
                 name='heart-dislike'
                 type='ionicon'
                 color='#a646dd'
-                size={90}
+                size={80}
               />
             </TouchableOpacity>
           }
-          <TouchableOpacity onPress={showDialog}>
+          <TouchableOpacity style={styles.iconHead} 
+            onPress={showDialog}>
             <Icon
               name='add-circle'
               type='ionicon'
               color='#C74E08'
-              size={90}
-
+              size={80}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconLibrary} onPress={() => library()}>
-            <Text style={styles.library}></Text>
+          <TouchableOpacity style={styles.iconHead} onPress={() => library()}>
+          <Icon
+              name='book'
+              type='ionicon'
+              color='#0B797E'
+              size={80}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -479,8 +512,8 @@ const MusicPlayerScreen = ({ route }) => {
             onValueChange={(res) => setPositionTrack(res)}
             minimumTrackTintColor="#000"
             maximumTrackTintColor="#C3C3C3"
-            trackStyle={{ height: 30, backgroundColor: 'transparent' }}
-            thumbStyle={{ height: 20, width: 20, backgroundColor: 'transparent' }}
+            trackStyle={styles.track}
+            thumbStyle={styles.thumb}
           />}
         </View>
       </View>

@@ -138,7 +138,18 @@ export default StyleSheet.create({
       width:"100%",
       flex:1,
     },
-  
+    
+    track:{
+      height: 30, 
+      borderRadius:15,
+      backgroundColor: 'transparent'
+    }
+    ,
+    thumb:{
+      height: 40, width: 40,
+      borderRadius:20, 
+      backgroundColor: '#03902D'
+    }
   });
 
   
