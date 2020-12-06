@@ -98,6 +98,7 @@ const App = () => {
           }}
         />
         <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true} />
+        <Stack.Screen name="HistorialMusicPlayer" component={MusicPlayerScreen} options={{ headerShown: false }} unmountOnBlur={true} />
         <Stack.Screen name="Playlists" component={ScreenPlaylists}
           unmountOnBlur={true}
           options={{

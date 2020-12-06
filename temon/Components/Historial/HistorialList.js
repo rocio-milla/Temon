@@ -41,7 +41,7 @@ const HistorialList = (props) => {
           style={styles.main}
           data={resultList}
           renderItem={(cancion) => (
-            <MusicTheme results={results} cancion={cancion} navigation={navigation} reloadHistorial={reloadHistorial} />
+            <MusicTheme results={resultList} cancion={cancion} navigation={navigation} reloadHistorial={reloadHistorial} />
           )}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -61,7 +61,7 @@ const MusicTheme = (props) => {
   const [visible, setVisible] = useState(false);
   const { results, cancion, navigation, reloadHistorial } = props;
   const { item } = cancion;
-  let { url, video, title, colour, namePlaylist } = item;
+  let { url, video, title } = item;
   video = video ? video : title;
 
   let resultsList = title ? results.map(s => {
@@ -73,7 +73,7 @@ const MusicTheme = (props) => {
   }) : results
 
   const playCancion = () => {
-    navigation.navigate('MusicPlayer', {
+    navigation.navigate('HistorialMusicPlayer', {
       title: video,
       song: url,
       results: resultsList

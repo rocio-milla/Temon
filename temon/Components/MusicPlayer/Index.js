@@ -38,53 +38,54 @@ const MusicPlayerScreen = ({ route }) => {
   const [enFavoritos, setEnFavoritos] = useState(false);
 
   let playerReady = false;
-  useEffect(() => {
-    const setPlayer = async () => {
-      if (!playerReady) {
-        await TrackPlayer.setupPlayer();
+  const setPlayer = async () => {
+    if (!playerReady) {
+      await TrackPlayer.setupPlayer();
 
-        TrackPlayer.updateOptions({
-          stopWithApp: true,
-          capabilities: [
-            TrackPlayer.CAPABILITY_PLAY,
-            TrackPlayer.CAPABILITY_PAUSE,
-            TrackPlayer.CAPABILITY_STOP,
-            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-          ],
+      TrackPlayer.updateOptions({
+        stopWithApp: true,
+        capabilities: [
+          TrackPlayer.CAPABILITY_PLAY,
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_STOP,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        ],
 
-          compactCapabilities: [
-            TrackPlayer.CAPABILITY_PLAY,
-            TrackPlayer.CAPABILITY_PAUSE,
-            TrackPlayer.CAPABILITY_SKIP,
-          ]
-        });
-        playerReady = true;
-      }
-      await TrackPlayer.reset();
-      let res = [];
-      res = results;
-      let idActualTrack;
-      for (let i = 0; i < res.length; i++) {
-        if (song == res[i].url) {
-          idActualTrack = "" + i + ""
-        }
-
-        await TrackPlayer.add({
-          id: "" + i + "",
-          url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(res[i].url)}`,
-          title: res[i].video
-        });
-      }
-      setLast(res[res.length-1].url)
-      setFirst(res[0].url)
-      TrackPlayer.addEventListener('playback-track-changed', () => {
-        TrackActual()
+        compactCapabilities: [
+          TrackPlayer.CAPABILITY_PLAY,
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_SKIP,
+        ]
       });
-      await TrackPlayer.skip(idActualTrack)
-      await TrackPlayer.play();
-      setMusicTheme({ ...musicTheme, url: song, title: title })
+      playerReady = true;
     }
+    await TrackPlayer.reset();
+    let res = [];
+    res = results;
+    let idActualTrack;
+    for (let i = 0; i < res.length; i++) {
+      if (song == res[i].url) {
+        idActualTrack = "" + i + ""
+      }
+
+      await TrackPlayer.add({
+        id: "" + i + "",
+        url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(res[i].url)}`,
+        title: res[i].video
+      });
+    }
+    setLast(res[res.length-1].url)
+    setFirst(res[0].url)
+    TrackPlayer.addEventListener('playback-track-changed', () => {
+      TrackActual()
+    });
+    await TrackPlayer.skip(idActualTrack)
+    await TrackPlayer.play();
+    setMusicTheme({ ...musicTheme, url: song, title: title })
+  }
+  
+  useEffect(() => {
     setPlayer();
     setSwipeState(0)
     setCount(0)
