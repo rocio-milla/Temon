@@ -81,20 +81,23 @@ export default StyleSheet.create({
     },
   
     viewName:{
+      flex:0.8,
       justifyContent:"center",
       alignItems:"center",
-      height:70
+      height:140,
     },
     name:{
       justifyContent:"center",
       alignItems:"center",
       width:"90%",
+      
     },
     nameMusic:{
       fontSize:38,
+      textAlign: 'center',
     },
     musicPlayer: {
-      flex:2,
+      flex:1.7,
       justifyContent:"center",
       alignItems:"center",
     },
@@ -127,7 +130,7 @@ export default StyleSheet.create({
     },
     
     contSlider:{
-      flex:2,
+      flex:0.8,
       width:"90%",
       marginLeft: 10,
       marginRight: 10,

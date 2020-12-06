@@ -22,12 +22,13 @@ const MusicPlayerScreen = ({ route }) => {
 
   const { results, title, song } = route.params;
   const { position, duration } = useTrackPlayerProgress(200);
-  // const progress = TrackPlayer.useTrackPlayerProgress();
-  const [buttonPlay, setButtonPlay] = useState("pause")
-  const [idTrack, setIdTrack] = useState("")
-  const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 })
-  const [count, setCount] = useState(0)
-  const [touchState, setTouchState] = useState({ state1: 0, state2: 0 })
+  const [first,setFirst] = useState("");
+  const [last,setLast] = useState("");
+  const [buttonPlay, setButtonPlay] = useState("pause");
+  const [idTrack, setIdTrack] = useState("");
+  const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 });
+  const [count, setCount] = useState(0);
+  const [touchState, setTouchState] = useState({ state1: 0, state2: 0 });
   const [visible, setVisible] = useState(false);
   const [listPlaylist, setListPlaylist] = useState([]);
   const [defaultPlaylist, setDefaultPlaylist] = useState();
@@ -58,7 +59,6 @@ const MusicPlayerScreen = ({ route }) => {
             TrackPlayer.CAPABILITY_SKIP,
           ]
         });
-
         playerReady = true;
       }
       await TrackPlayer.reset();
@@ -76,6 +76,8 @@ const MusicPlayerScreen = ({ route }) => {
           title: res[i].video
         });
       }
+      setLast(res[res.length-1].url)
+      setFirst(res[0].url)
       TrackPlayer.addEventListener('playback-track-changed', () => {
         TrackActual()
       });
@@ -109,12 +111,16 @@ const MusicPlayerScreen = ({ route }) => {
       const interval = setInterval(() => {
         if (touchState == 1) {
           incremental = incremental - adelantar
-          TrackPlayer.seekTo(incremental)
+          if(incremental<=0){
+            incremental=0
+            TrackPlayer.seekTo(incremental)
+          }else{
+            TrackPlayer.seekTo(incremental)
+          }
         }
         else if (touchState == 2) {
           incremental = incremental + adelantar
           TrackPlayer.seekTo(incremental)
-          TrackPlayer.getPosition().then((res) => { console.log(res) })
         }
       }, 200);
 
@@ -178,13 +184,17 @@ const MusicPlayerScreen = ({ route }) => {
   }
 
   const nextTrack = () => {
-    TrackPlayer.skipToNext();
-    TrackActual()
+    if(musicTheme.url != last){
+      TrackPlayer.skipToNext();
+      TrackActual()
+    }
   }
 
   const prevTrack = () => {
-    TrackPlayer.skipToPrevious()
-    TrackActual()
+    if(musicTheme.url != first){
+      TrackPlayer.skipToPrevious()
+      TrackActual()
+    }
   }
 
   let updateTheme = (res) => {
@@ -262,7 +272,7 @@ const MusicPlayerScreen = ({ route }) => {
         tx.executeSql(
           'INSERT OR IGNORE INTO historial (url, title) values (?, ?)',
           [musicTheme.url, musicTheme.title],
-          (_, results) => console.log(results),
+          (_, results) => results,
           (_, error) => {
             console.log(error.code);
             console.log(error.message);
