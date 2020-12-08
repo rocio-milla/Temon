@@ -94,8 +94,7 @@ const MusicTheme = (props) => {
     <>
       <TouchableOpacity onPress={() => playCancion()} onLongPress={() => { setVisible(true) }}>
         <View style={styles.cancionView}>
-          <Text style={styles.cancionName}>{runes.substr(video, 0, 18)}</Text>
-          {runes.substr(video, 18, 15) !== "" && <Text style={styles.cancionName}>{`${runes.substr(video, 18, 15)}...`}</Text>}
+          <Text style={styles.cancionName} numberOfLines={2}>{video}</Text>
         </View>
         <Divider style={styles.divider} />
       </TouchableOpacity>
