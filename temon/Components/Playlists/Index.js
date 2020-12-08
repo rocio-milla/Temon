@@ -376,12 +376,6 @@ class ScreenPlaylists extends Component {
             <Text style={{ margin: 0, fontSize: 38, fontWeight: "bold", textAlign: 'center' }}>{this.state.name}</Text>
             <Mic setResults={(texto) => this.setState({ name: texto })} />
           </View>
-
-          { /* <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
-                onChangeText={ this.source}/>*/}
-
-          {/*        <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input> */}
-
           <Select
             onSelect={this.onSelect.bind(this)}
             defaultText={this.state.colour}
@@ -401,42 +395,6 @@ class ScreenPlaylists extends Component {
           <Dialog.Button style={{ marginRight: 25, fontSize: 25, fontWeight: "bold" }} label="AGREGAR" onPress={this.addPlaylist} />
           <Dialog.Button style={{ margin: 0, fontSize: 25, fontWeight: "bold" }} label="CANCELAR" onPress={this.hideDialog} />
         </Dialog.Container>
-
-
-        { /*PARA VER LAS CANCIONES DE LA PLAYLIST
-            
-            <FlatList
-                  data={this.state.elementsListPlaylist}
-                  ItemSeparatorComponent={this.ListViewItemSeparator}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
-
-                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-
-                      <Text style={{fontSize :20}}>{item.title}</Text>
-
-                    </View>
-                  )}
-                />*/}
-
-
-
-        {/*solo para ver todas las canciones de la tabla song
-         }  <FlatList
-                  data={this.state.listAllSong}
-                  ItemSeparatorComponent={this.ListViewItemSeparator}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
-
-                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-
-                      <Text style={{fontSize :20}}>{item.title}</Text>
-
-
-                    </View>
-                  )}
-                  />*/}
-
       </View>
     )
   }
