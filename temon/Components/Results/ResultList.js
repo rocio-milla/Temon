@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Dialog from "react-native-dialog";
 import { Divider } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 import runes from 'runes';
 
 var SQLite = require('react-native-sqlite-storage')
@@ -92,10 +93,13 @@ function Cancion(props) {
   return (
     <>
       <TouchableOpacity onPress={() => playCancion()} onLongPress={() => { isAPlaylist && setVisible(true) }}>
-        <View style={styles.cancionView}>
+        {/* <View style={styles.cancionView}>
           <Text style={styles.cancionName}>{runes.substr(video, 0, 18)}</Text>
           {runes.substr(video, 18, 15) !== "" && <Text style={styles.cancionName}>{`${runes.substr(video, 18, 15)}...`}</Text>}
-        </View>
+        </View> */}
+        <ScrollView style={styles.cancionView} >
+          <Text style={styles.cancionName} numberOfLines={2}>{video}</Text>
+        </ScrollView>
         <Divider style={styles.divider} />
       </TouchableOpacity>
       <Dialog.Container visible={visible}>
