@@ -22,12 +22,13 @@ const MusicPlayerScreen = ({ route }) => {
 
   const { results, title, song } = route.params;
   const { position, duration } = useTrackPlayerProgress(200);
-  // const progress = TrackPlayer.useTrackPlayerProgress();
-  const [buttonPlay, setButtonPlay] = useState("pause")
-  const [idTrack, setIdTrack] = useState("")
-  const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 })
-  const [count, setCount] = useState(0)
-  const [touchState, setTouchState] = useState({ state1: 0, state2: 0 })
+  const [first,setFirst] = useState("");
+  const [last,setLast] = useState("");
+  const [buttonPlay, setButtonPlay] = useState("pause");
+  const [idTrack, setIdTrack] = useState("");
+  const [musicTheme, setMusicTheme] = useState({ id: "", url: "", title: "", duration: 0 });
+  const [count, setCount] = useState(0);
+  const [touchState, setTouchState] = useState({ state1: 0, state2: 0 });
   const [visible, setVisible] = useState(false);
   const [listPlaylist, setListPlaylist] = useState([]);
   const [defaultPlaylist, setDefaultPlaylist] = useState();
@@ -37,49 +38,54 @@ const MusicPlayerScreen = ({ route }) => {
   const [enFavoritos, setEnFavoritos] = useState(false);
 
   let playerReady = false;
-  useEffect(() => {
-    const setPlayer = async () => {
-      if (!playerReady) {
-        await TrackPlayer.setupPlayer();
+  const setPlayer = async () => {
+    if (!playerReady) {
+      await TrackPlayer.setupPlayer();
 
-        TrackPlayer.updateOptions({
-          stopWithApp: true,
-          capabilities: [
-            TrackPlayer.CAPABILITY_PLAY,
-            TrackPlayer.CAPABILITY_PAUSE,
-            TrackPlayer.CAPABILITY_STOP,
-            TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-            TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-          ],
+      TrackPlayer.updateOptions({
+        stopWithApp: true,
+        capabilities: [
+          TrackPlayer.CAPABILITY_PLAY,
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_STOP,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        ],
 
-          compactCapabilities: [
-            TrackPlayer.CAPABILITY_PLAY,
-            TrackPlayer.CAPABILITY_PAUSE,
-            TrackPlayer.CAPABILITY_SKIP,
-          ]
-        });
-
-        playerReady = true;
-      }
-      await TrackPlayer.reset();
-      let res = [];
-      res = results;
-      let idActualTrack;
-      for (let i = 0; i < res.length; i++) {
-        if (song == res[i].url) {
-          idActualTrack = "" + i + ""
-        }
-
-        await TrackPlayer.add({
-          id: "" + i + "",
-          url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(res[i].url)}`,
-          title: res[i].video
-        });
-      }
-      await TrackPlayer.skip(idActualTrack)
-      await TrackPlayer.play();
-      setMusicTheme({ ...musicTheme, url: song, title: title })
+        compactCapabilities: [
+          TrackPlayer.CAPABILITY_PLAY,
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_SKIP,
+        ]
+      });
+      playerReady = true;
     }
+    await TrackPlayer.reset();
+    let res = [];
+    res = results;
+    let idActualTrack;
+    for (let i = 0; i < res.length; i++) {
+      if (song == res[i].url) {
+        idActualTrack = "" + i + ""
+      }
+
+      await TrackPlayer.add({
+        id: "" + i + "",
+        url: `${PersonalConfig.url}/musica/escuchar?url=${encodeURI(res[i].url)}`,
+        title: res[i].video
+      });
+    }
+    setLast(res[res.length-1].url)
+    setFirst(res[0].url)
+    TrackPlayer.addEventListener('playback-track-changed', () => {
+      TrackActual()
+    });
+    await TrackPlayer.skip(idActualTrack)
+    await TrackPlayer.play();
+    setMusicTheme({ ...musicTheme, url: song, title: title })
+  }
+  
+  useEffect(() => {
     setPlayer();
     setSwipeState(0)
     setCount(0)
@@ -106,12 +112,16 @@ const MusicPlayerScreen = ({ route }) => {
       const interval = setInterval(() => {
         if (touchState == 1) {
           incremental = incremental - adelantar
-          TrackPlayer.seekTo(incremental)
+          if(incremental<=0){
+            incremental=0
+            TrackPlayer.seekTo(incremental)
+          }else{
+            TrackPlayer.seekTo(incremental)
+          }
         }
         else if (touchState == 2) {
           incremental = incremental + adelantar
           TrackPlayer.seekTo(incremental)
-          TrackPlayer.getPosition().then((res) => { console.log(res) })
         }
       }, 200);
 
@@ -175,13 +185,17 @@ const MusicPlayerScreen = ({ route }) => {
   }
 
   const nextTrack = () => {
-    TrackPlayer.skipToNext();
-    TrackActual()
+    if(musicTheme.url != last){
+      TrackPlayer.skipToNext();
+      TrackActual()
+    }
   }
 
   const prevTrack = () => {
-    TrackPlayer.skipToPrevious()
-    TrackActual()
+    if(musicTheme.url != first){
+      TrackPlayer.skipToPrevious()
+      TrackActual()
+    }
   }
 
   let updateTheme = (res) => {
@@ -241,13 +255,32 @@ const MusicPlayerScreen = ({ route }) => {
     navigation.navigate('Library');
   };
 
+  const home = () => {
+    navigation.navigate('Home');
+  };
+
   useEffect(() => {
     var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' });
     db.transaction(tx => {
+      
       tx.executeSql('SELECT 1 FROM favoritos WHERE url=?', [musicTheme.url], (_, results) => {
         setEnFavoritos(results.rows.length > 0);
       });
     });
+
+    if(musicTheme.url!="" || musicTheme.title!=""){
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT OR IGNORE INTO historial (url, title) values (?, ?)',
+          [musicTheme.url, musicTheme.title],
+          (_, results) => results,
+          (_, error) => {
+            console.log(error.code);
+            console.log(error.message);
+        });
+      });
+    }
+
   }, [musicTheme]);
 
   const agregarAFavoritos = () => {
@@ -377,40 +410,51 @@ const MusicPlayerScreen = ({ route }) => {
     <>
       <View style={styles.headers}>
         <View style={styles.menu}>
-          <TouchableOpacity style={styles.iconSearch}>
-            <Icon name="search" type='font-awesome' color='black' reverse size={40} />
+          <TouchableOpacity style={styles.iconHead} onPress= {()=>home()} >
+          <Icon
+                name='home'
+                type='ionicon'
+                color='#ffffff'
+                size={80}
+              />
           </TouchableOpacity>
           {!enFavoritos ?
-            <TouchableOpacity onPress={() => agregarAFavoritos()} >
+            <TouchableOpacity style={styles.iconHead} 
+            onPress={() => agregarAFavoritos()} >
               <Icon
                 name='heart'
                 type='ionicon'
                 color='#1b7701'
-                size={90}
+                size={80}
               />
             </TouchableOpacity>
             :
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconHead}
               onPress={() => quitarDeFavoritos()} >
               <Icon
                 name='heart-dislike'
                 type='ionicon'
                 color='#a646dd'
-                size={90}
+                size={80}
               />
             </TouchableOpacity>
           }
-          <TouchableOpacity onPress={showDialog}>
+          <TouchableOpacity style={styles.iconHead} 
+            onPress={showDialog}>
             <Icon
               name='add-circle'
               type='ionicon'
               color='#C74E08'
-              size={90}
-
+              size={80}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconLibrary} onPress={() => library()}>
-            <Text style={styles.library}></Text>
+          <TouchableOpacity style={styles.iconHead} onPress={() => library()}>
+          <Icon
+              name='book'
+              type='ionicon'
+              color='#0B797E'
+              size={80}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -479,8 +523,8 @@ const MusicPlayerScreen = ({ route }) => {
             onValueChange={(res) => setPositionTrack(res)}
             minimumTrackTintColor="#000"
             maximumTrackTintColor="#C3C3C3"
-            trackStyle={{ height: 30, backgroundColor: 'transparent' }}
-            thumbStyle={{ height: 20, width: 20, backgroundColor: 'transparent' }}
+            trackStyle={styles.track}
+            thumbStyle={styles.thumb}
           />}
         </View>
       </View>
