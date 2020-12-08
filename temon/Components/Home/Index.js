@@ -134,6 +134,13 @@ const HomeScreen = ({ navigation }) => {
 				() => tablaCreada('song'),
 				(_, error) => errorCreandoTabla(error, 'song')
 			);
+
+			tx.executeSql(
+				'CREATE TABLE IF NOT EXISTS historial (url text not null,title text,primary key(url));',
+				[],
+				() => tablaCreada('historial'),
+				(_, error) => errorCreandoTabla(error, 'historial')
+			);
 		});
 	};
 

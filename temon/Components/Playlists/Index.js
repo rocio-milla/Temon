@@ -20,6 +20,9 @@ class ScreenPlaylists extends Component {
     'elementsListPlaylist': [],
     'listAllSong': [],
     'results': [],
+    'visibleContainerForDelete':false,
+    'namePlaylistForDelete':'',
+    'colourPlaylistForDelete':'',
 
     startValue: new Animated.Value(0),
     endValue: new Animated.Value(1)
@@ -306,6 +309,8 @@ class ScreenPlaylists extends Component {
 
     });
 
+    this.setState({ visibleContainerForDelete: false });
+
   };
 
   ListViewItemSeparator = () => {
@@ -313,6 +318,26 @@ class ScreenPlaylists extends Component {
       <View style={{ height: 0, width: '100%', backgroundColor: '#808080' }} />
     );
   };
+
+
+
+  //-------modal---------//
+  showDialogDelete = (name,colour) => {
+
+    console.log(name+"--"+colour)
+
+    this.setState({ visibleContainerForDelete: true });
+
+    this.setState({ namePlaylistForDelete: name });
+    this.setState({ colourPlaylistForDelete: colour });
+
+  };
+
+  hideDialogDelete = () => {
+
+    this.setState({ visibleContainerForDelete: false });
+  };
+  //----------------//
 
   render() {
     return (
@@ -353,8 +378,8 @@ class ScreenPlaylists extends Component {
                 }}
                 onPress={() => this.PlaylistElements(item.name, item.colour)}
                 title={item.name} />
-              { /* <Lista       item={item}  />*/}
-              <Icon onPress={() => this.deletePlaylist(item.name, item.colour)}
+
+             <Icon onPress={() => this.showDialogDelete(item.name, item.colour)}
                 name='trash'
                 type='font-awesome'
                 color='#D12734'
@@ -362,10 +387,18 @@ class ScreenPlaylists extends Component {
                 iconStyle={{fontSize: 60}}
                 reverse
               />
+
+              <Dialog.Container visible={this.state.visibleContainerForDelete}>
+              <Dialog.Description style={{ fontSize: 38, fontWeight: "bold" }}>
+                ¿ELIMINAR?
+              </Dialog.Description>
+              <Dialog.Button style={{ marginRight: 40, fontSize: 35, fontWeight: "bold" }} label="CANCELAR" onPress={() => this.hideDialogDelete()} />
+              <Dialog.Button style={{ fontSize: 35, fontWeight: "bold" }} label="SI" onPress={() =>  this.deletePlaylist(this.state.namePlaylistForDelete,this.state.colourPlaylistForDelete)} />
+                </Dialog.Container>
             </View>
 
-          )}
-        />
+          )}  />
+
         <Dialog.Container visible={this.state.visible}  >
           <Animated.View style={[styles.square, { opacity: this.state.startValue }]} >
             <Text style={{ color: 'white', fontSize: 38, fontWeight: 'bold' }}> YA EXISTE
@@ -376,12 +409,6 @@ class ScreenPlaylists extends Component {
             <Text style={{ margin: 0, fontSize: 38, fontWeight: "bold", textAlign: 'center' }}>{this.state.name}</Text>
             <Mic setResults={(texto) => this.setState({ name: texto })} />
           </View>
-
-          { /* <TextInput style={{ height: 60,fontSize:38, borderColor: 'gray', borderWidth: 1,fontWeight: "bold" ,width:250,margin:7}}
-                onChangeText={ this.source}/>*/}
-
-          {/*        <Dialog.Input onChangeText = { this.source} defaultValue='' style = {styles.textInput}></Dialog.Input> */}
-
           <Select
             onSelect={this.onSelect.bind(this)}
             defaultText={this.state.colour}
@@ -401,42 +428,6 @@ class ScreenPlaylists extends Component {
           <Dialog.Button style={{ marginRight: 25, fontSize: 25, fontWeight: "bold" }} label="AGREGAR" onPress={this.addPlaylist} />
           <Dialog.Button style={{ margin: 0, fontSize: 25, fontWeight: "bold" }} label="CANCELAR" onPress={this.hideDialog} />
         </Dialog.Container>
-
-
-        { /*PARA VER LAS CANCIONES DE LA PLAYLIST
-            
-            <FlatList
-                  data={this.state.elementsListPlaylist}
-                  ItemSeparatorComponent={this.ListViewItemSeparator}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
-
-                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-
-                      <Text style={{fontSize :20}}>{item.title}</Text>
-
-                    </View>
-                  )}
-                />*/}
-
-
-
-        {/*solo para ver todas las canciones de la tabla song
-         }  <FlatList
-                  data={this.state.listAllSong}
-                  ItemSeparatorComponent={this.ListViewItemSeparator}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
-
-                    <View key={item.id} style={{ backgroundColor: 'white' ,flexDirection: 'row'  ,alignItems:'center'  ,  justifyContent: 'center' }}>
-
-                      <Text style={{fontSize :20}}>{item.title}</Text>
-
-
-                    </View>
-                  )}
-                  />*/}
-
       </View>
     )
   }

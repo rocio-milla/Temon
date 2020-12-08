@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
    container: {
       flex: 1,
       alignItems: 'center',
-
       marginTop: 30,
    }
 });
@@ -19,6 +18,22 @@ const ScreenLibrary = () => {
 
    const playlists = () => {
       navigation.navigate('Playlists');
+   };
+
+   const historial = () => {
+      var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexample.db' });
+      db.transaction(tx => {
+         tx.executeSql('SELECT * FROM historial', [], (tx, results) => {
+            const rowsLength = results.rows.length;
+            const canciones = [];
+            for (let i = 0; i < rowsLength; i++) {
+               canciones.push(results.rows.item(i));
+            }
+            navigation.navigate('Historial', {
+               results: canciones,
+            });
+         });
+      });
    };
 
    const favoritos = () => {
@@ -53,7 +68,7 @@ const ScreenLibrary = () => {
             }}
             title="PLAYLISTS" />
 
-         <Button
+         <Button onPress={()=> historial()}
             titleStyle={{
                color: "white",
                fontSize: 38,

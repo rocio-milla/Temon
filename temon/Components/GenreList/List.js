@@ -34,8 +34,7 @@ function Item(props) {
   return (
     <TouchableOpacity onPress={item.onTouchAction}>
       <View style={styles.itemView}>
-        <Text style={styles.itemName}>{runes.substr(item.Name, 0, 18)}</Text>
-        {runes.substr(item.Name, 18, 15) !== "" && <Text style={styles.itemName}>{`${runes.substr(item.Name, 18, 15)}...`}</Text>}
+        <Text style={styles.itemName} numberOfLines={2}>{item.Name}</Text>
       </View>
       <Divider style={styles.divider} />
     </TouchableOpacity>
@@ -45,7 +44,7 @@ function Item(props) {
 const styles = StyleSheet.create({
   main: {
     backgroundColor: "#fff",
-    alignSelf:'center',
+    alignSelf: 'center',
     width: '100%'
   },
   loaderCanciones: {
