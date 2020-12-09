@@ -157,7 +157,7 @@ const HomeScreen = ({ navigation }) => {
 			{!loading ? <>
 				<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 					<Image source={require('../../images/logo.png')}
-						style={{ height: "100%", width: "100%", resizeMode: 'contain' }} />
+						style={{ height: "84%", width: "100%", resizeMode: 'contain' }} />
 				</View>
 				<View>
 					<TouchableOpacity
@@ -167,7 +167,10 @@ const HomeScreen = ({ navigation }) => {
 							paddingHorizontal: 30,
 							paddingVertical: 5,
 							borderRadius: 10,
-							margin: 7
+							marginLeft: 30,
+							marginRight: 30,
+							marginBottom: 7,
+							marginTop: 7
 						}}>
 
 						<Text
@@ -177,7 +180,7 @@ const HomeScreen = ({ navigation }) => {
 								textAlign: 'center',
 								color: '#000'
 							}}>
-							PLAYLISTS
+							BIBLIOTECA
 						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -187,7 +190,10 @@ const HomeScreen = ({ navigation }) => {
 							paddingHorizontal: 30,
 							paddingVertical: 5,
 							borderRadius: 10,
-							margin: 7
+							marginLeft: 30,
+							marginRight: 30,
+							marginBottom: 7,
+							marginTop: 7
 						}}>
 
 						<Text
