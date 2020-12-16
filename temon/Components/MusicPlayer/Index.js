@@ -510,8 +510,8 @@ const MusicPlayerScreen = ({ route }) => {
                 </Text>
               </Option>))}
           </Select>
-          <Dialog.Button style={{ marginRight: 25, fontSize: 25, fontWeight: "bold" }} label="AGREGAR" onPress={addToPlaylist} />
-          <Dialog.Button style={{ margin: 0, fontSize: 25, fontWeight: "bold" }} label="CANCELAR" onPress={hideDialog} />
+          <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "green", color: "white", height: 70, width: 100 }} label="OK" onPress={addToPlaylist} />
+          <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "red", color: "white", height: 70, width: 100 }} label="X" onPress={hideDialog} />
         </Dialog.Container>
         <View style={styles.contSlider}>
           {<Slider

@@ -10,7 +10,7 @@ var db = SQLite.openDatabase({ name: 'test.db', createFromLocation: '~sqliteexam
 
 const HistorialList = (props) => {
   const { navigation, results } = props;
-  const [ resultList, setResultList ] = useState(results);
+  const [resultList, setResultList] = useState(results);
   const reloadHistorial = () => {
     db.transaction(tx => {
       tx.executeSql('SELECT * from historial', [], (tx, r) => {
@@ -102,8 +102,8 @@ const MusicTheme = (props) => {
         <Dialog.Description style={{ fontSize: 38, fontWeight: "bold" }}>
           ¿ELIMINAR?
         </Dialog.Description>
-        <Dialog.Button style={{ marginRight: 40, fontSize: 35, fontWeight: "bold" }} label="CANCELAR" onPress={() => setVisible(false)} />
-        <Dialog.Button style={{ fontSize: 35, fontWeight: "bold" }} label="SI" onPress={() => deleteSongHistorial(url, video)} />
+        <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "red", color: "white", height: 70, width: 100 }} label="NO" onPress={() => setVisible(false)} />
+        <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "green", color: "white", height: 70, width: 100 }} label="SI" onPress={() => deleteSongHistorial(url, video)} />
       </Dialog.Container>
     </>
   );
