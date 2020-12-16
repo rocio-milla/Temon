@@ -63,6 +63,24 @@ const App = () => {
           }}
         />
 
+      <Stack.Screen
+          name="Favoritos"
+          component={ResultsScreen}
+          unmountOnBlur={true}
+          options={{
+            title: 'FAVORITOS',
+            headerStyle: {
+              backgroundColor: '#3300CC',
+              height: 100,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 45,
+            },
+          }}
+        />
+
         <Stack.Screen
           name="Historial"
           component={HistorialScreen}

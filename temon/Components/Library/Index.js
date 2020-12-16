@@ -45,7 +45,7 @@ const ScreenLibrary = () => {
             for (let i = 0; i < rowsLength; i++) {
                canciones.push(results.rows.item(i));
             }
-            navigation.navigate('Results', {
+            navigation.navigate('Favoritos', {
                results: canciones,
             });
          });
