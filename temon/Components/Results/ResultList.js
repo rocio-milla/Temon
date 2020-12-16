@@ -102,8 +102,8 @@ function Cancion(props) {
         <Dialog.Description style={{ fontSize: 38, fontWeight: "bold" }}>
           ¿ELIMINAR?
         </Dialog.Description>
-        <Dialog.Button style={{ marginRight: 40, fontSize: 35, fontWeight: "bold" }} label="CANCELAR" onPress={() => setVisible(false)} />
-        <Dialog.Button style={{ fontSize: 35, fontWeight: "bold" }} label="SI" onPress={() => deleteSongPlaylist(url, namePlaylist, colour)} />
+        <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "red", color: "white", height: 70, width: 100 }} label="NO" onPress={() => setVisible(false)} />
+        <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "green", color: "white", height: 70, width: 100 }} label="SI" onPress={() => deleteSongPlaylist(url, namePlaylist, colour)} />
       </Dialog.Container>
     </>
   );

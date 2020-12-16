@@ -392,8 +392,8 @@ class ScreenPlaylists extends Component {
               <Dialog.Description style={{ fontSize: 38, fontWeight: "bold" }}>
                 ¿ELIMINAR?
               </Dialog.Description>
-              <Dialog.Button style={{ marginRight: 40, fontSize: 35, fontWeight: "bold" }} label="CANCELAR" onPress={() => this.hideDialogDelete()} />
-              <Dialog.Button style={{ fontSize: 35, fontWeight: "bold" }} label="SI" onPress={() =>  this.deletePlaylist(this.state.namePlaylistForDelete,this.state.colourPlaylistForDelete)} />
+              <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "red", color: "white", height: 70, width: 100 }} label="NO" onPress={() => this.hideDialogDelete()} />
+              <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "green", color: "white", height: 70, width: 100 }} label="SI" onPress={() =>  this.deletePlaylist(this.state.namePlaylistForDelete,this.state.colourPlaylistForDelete)} />
                 </Dialog.Container>
             </View>
 
@@ -425,8 +425,8 @@ class ScreenPlaylists extends Component {
             <Option style={{ backgroundColor: "#000000", height: 125 }} value="#000000"></Option>
             <Option style={{ backgroundColor: "#CF2EAD", height: 125 }} value="#CF2EAD"></Option>
           </Select>
-          <Dialog.Button style={{ marginRight: 25, fontSize: 25, fontWeight: "bold" }} label="AGREGAR" onPress={this.addPlaylist} />
-          <Dialog.Button style={{ margin: 0, fontSize: 25, fontWeight: "bold" }} label="CANCELAR" onPress={this.hideDialog} />
+          <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "green", color: "white", height: 70, width: 100 }} label="OK" onPress={this.addPlaylist} />
+          <Dialog.Button style={{ marginRight: 25, fontSize: 35, fontWeight: "bold", backgroundColor: "red", color: "white", height: 70, width: 100 }}  label="X" onPress={this.hideDialog} />
         </Dialog.Container>
       </View>
     )
